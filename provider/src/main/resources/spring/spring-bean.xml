@@ -11,8 +11,7 @@
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
-    <bean
-      class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+    <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
         <property name="customEditors">
             <map>
                 <entry key="java.net.SocketAddress" value="org.apache.mina.integration.beans.InetSocketAddressEditor" >
