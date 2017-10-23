@@ -4,14 +4,45 @@
     <property name="LOG_HOME" value="${CATALINA_BASE}/logs" />
 
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- this is important, without this info level in thread will log out -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
         <encoder>
-            <pattern>[%d{yyyy/MM/dd HH:mm:ss.SSS}][%p][%logger{0}:%L] %m%n</pattern>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss} %X{QTRACER} %thread %-5p %c{36}:%L %X{rtxId} %X{ip}] %m%n</pattern>
         </encoder>
     </appender>
 
-    <!-- 不那么麻烦, dev环境不记那么麻烦-->
-    <root level="debug">
+
+    <appender name="mtsAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/mts.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/mts.%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <maxHistory>15</maxHistory>
+            <!-- max-day 15 -->
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss} %X{QTRACER} %thread %-5p %c{36}:%L %X{rtxId} %X{ip}] %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- http request log -->
+    <appender name="accessAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/request.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/request.log.%d{yyyy-MM-dd}</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss} %X{QTRACER} %thread %-5p %c{36}:%L %X{rtxId} %X{ip}] %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
         <appender-ref ref="console" />
+        <appender-ref ref="mtsAppender"/>
     </root>
 
+    <logger name="accessDataLog" level="INFO" additivity="false">
+        <appender-ref ref="accessAppender"/>
+    </logger>
 </configuration>
