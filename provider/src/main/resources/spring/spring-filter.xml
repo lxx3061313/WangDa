@@ -5,19 +5,19 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
     <!-- 下单日志记录过滤器 -->
-    <bean id="mossadAccessLogFilter" class="com.benmu.root.bom.bundles.filter.AccessDataLogFilter">
+    <bean id="mossadAccessLogFilter" class="com.wangda.alarm.service.util.filter.AccessDataLogFilter">
         <property name="loggerName" value="accessDataLog"/>
     </bean>
 
-    <bean id="authFilter" class="com.benmu.mts.batman.authority.api.AuthFilter">
-        <property name="excludeUris">
-            <list>
-                <value>/batman/auth/checkUser</value>
-                <value>/batman/auth/getCode</value>
-                <value>/batman/auth/login</value>
-                <value>/batman/auth/logout</value>
-            </list>
-        </property>
-    </bean>
+    <!--<bean id="authFilter" class="com.benmu.mts.batman.authority.api.AuthFilter">-->
+        <!--<property name="excludeUris">-->
+            <!--<list>-->
+                <!--<value>/batman/auth/checkUser</value>-->
+                <!--<value>/batman/auth/getCode</value>-->
+                <!--<value>/batman/auth/login</value>-->
+                <!--<value>/batman/auth/logout</value>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
 
 </beans>
