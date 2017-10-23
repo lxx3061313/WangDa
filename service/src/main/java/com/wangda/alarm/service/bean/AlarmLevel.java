@@ -6,8 +6,8 @@ package com.wangda.alarm.service.bean;
  */
 public enum  AlarmLevel {
     LEVEL_ONE(1, "1级报警"),
-    LEVEL_TWO(1, "2级报警"),
-    LEVEL_THREE(1, "3级报警"),
+    LEVEL_TWO(2, "2级报警"),
+    LEVEL_THREE(3, "3级报警"),
     WARN(4, "预警");
     private int code;
     private String desc;
@@ -15,5 +15,13 @@ public enum  AlarmLevel {
     AlarmLevel(int code, String desc) {
         this.code = code;
         this.desc = desc;
+    }
+
+    public static AlarmLevel codeOf(int code) {
+        for (AlarmLevel level : values()) {
+            if (level.code == code)
+                return level;
+        }
+        return WARN;
     }
 }

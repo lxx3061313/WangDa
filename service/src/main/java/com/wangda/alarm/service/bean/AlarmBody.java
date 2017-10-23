@@ -41,7 +41,7 @@ public class AlarmBody {
     private AlarmStatus status;
 
     /** 报警描述字节长度-1字节 */
-    private int alarmCtxLenght;
+    private byte alarmCtxLenght;
 
     /** 设备名称字节长度-1字节 */
     private int deviceNameLength;
@@ -149,11 +149,11 @@ public class AlarmBody {
         this.status = status;
     }
 
-    public int getAlarmCtxLenght() {
+    public byte getAlarmCtxLenght() {
         return alarmCtxLenght;
     }
 
-    public void setAlarmCtxLenght(int alarmCtxLenght) {
+    public void setAlarmCtxLenght(byte alarmCtxLenght) {
         this.alarmCtxLenght = alarmCtxLenght;
     }
 

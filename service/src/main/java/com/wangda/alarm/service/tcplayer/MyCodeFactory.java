@@ -15,14 +15,18 @@ import org.apache.mina.filter.codec.textline.TextLineEncoder;
  */
 public class MyCodeFactory implements ProtocolCodecFactory {
 
-    private final TextLineEncoder encoder;
-    private final TextLineDecoder decoder;
+    //private final TextLineEncoder encoder;
+    //private final TextLineDecoder decoder;
+    private final AlarmCtxEncoder encoder;
+    private final AlarmCtxDecoder decoder;
     public MyCodeFactory() {
         this(Charset.forName("utf-8"));
     }
     public MyCodeFactory(Charset charset) {
-        encoder = new TextLineEncoder(charset, LineDelimiter.UNIX);
-        decoder = new TextLineDecoder(charset, LineDelimiter.AUTO);
+        //encoder = new TextLineEncoder(charset, LineDelimiter.UNIX);
+        //decoder = new TextLineDecoder(charset, LineDelimiter.AUTO);
+        encoder = new AlarmCtxEncoder();
+        decoder = new AlarmCtxDecoder(Charset.forName("utf-8"));
     }
 
 
@@ -36,11 +40,11 @@ public class MyCodeFactory implements ProtocolCodecFactory {
         return decoder;
     }
 
-    public TextLineEncoder getEncoder() {
+    public AlarmCtxEncoder getEncoder() {
         return encoder;
     }
 
-    public TextLineDecoder getDecoder() {
+    public AlarmCtxDecoder getDecoder() {
         return decoder;
     }
 }

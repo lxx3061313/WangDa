@@ -7,53 +7,19 @@ import java.nio.ByteBuffer;
  * @version 2017-10-23
  */
 public class ByteBufferUtil {
-    public static short getUnsignedByte(ByteBuffer buff) {
-        return (short) (buff.get() & 0xff);
-    }
 
-    public static short getUnsignedByte(ByteBuffer buff, int position) {
-        return (short) (buff.get(position) & (short) 0xff);
-    }
-
-    public static void putUnsignedByte(ByteBuffer buff, int value) {
-        buff.put((byte) (value & 0xff));
-    }
-
-    public static void putUnsignedByte(ByteBuffer buff, int position, int value) {
-        buff.put(position, (byte) (value & 0xff));
-    }
-
-    // --------------------------------------------
-    public static int getUnsignedShort(ByteBuffer buff) {
-        return buff.getShort() & 0xffff;
-    }
-
-    public static int getUnsignedShort(ByteBuffer buff, int position) {
-        return buff.getShort(position) & (short) 0xffff;
-    }
-
-    public static void putUnsignedShort(ByteBuffer buff, int value) {
-        buff.putShort((short) (value & 0xffff));
-    }
-
-    public static void putUnsignedShort(ByteBuffer buff, int position, int value) {
-        buff.putShort(position, (short) (value & 0xffff));
-    }
-
-    // --------------------------------------------
-    public static long getUnsignedInt(ByteBuffer buff) {
-        return buff.getInt() & 0xffffffffL;
-    }
-
-    public static long getUnsignedInt(ByteBuffer buff, int position) {
-        return buff.getInt(position) & 0xffffffffL;
-    }
-
-    public static void putUnsignedInt(ByteBuffer buff, int value) {
-        buff.putInt((int) (value & 0xffffffffL));
-    }
-
-    public static void putUnsignedInt(ByteBuffer buff, int position, int value) {
-        buff.putInt(position, (int) (value & 0xffff));
+    /**
+     * byte数组中取int数值，本方法适用于(低位在前，高位在后)的顺序
+     * @param ary
+     * @param offset
+     * @return
+     */
+    public static int bytesToInt(byte[] ary, int offset) {
+        int value;
+        value = (int) ((ary[offset]&0xFF)
+                | ((ary[offset+1]<<8) & 0xFF00)
+                | ((ary[offset+2]<<16)& 0xFF0000)
+                | ((ary[offset+3]<<24) & 0xFF000000));
+        return value;
     }
 }
