@@ -22,4 +22,33 @@ public class ByteBufferUtil {
                 | ((ary[offset+3]<<24) & 0xFF000000));
         return value;
     }
+
+    /**
+     * 16进制转字节数组
+     * @param hex 16进制字符串
+     * @return 5F->95
+     */
+    public static byte[] hexString2Bytes(String hex) {
+
+        if ((hex == null) || (hex.equals(""))) {
+            return null;
+        } else if (hex.length() % 2 != 0) {
+            return null;
+        } else {
+            hex = hex.toUpperCase();
+            int len = hex.length() / 2;
+            byte[] b = new byte[len];
+            char[] hc = hex.toCharArray();
+            for (int i = 0; i < len; i++) {
+                int p = 2 * i;
+                b[i] = (byte) (charToByte(hc[p]) << 4 | charToByte(hc[p + 1]));
+            }
+            return b;
+        }
+
+    }
+    private static byte charToByte(char c) {
+        return (byte) "0123456789ABCDEF".indexOf(c);
+    }
+
 }

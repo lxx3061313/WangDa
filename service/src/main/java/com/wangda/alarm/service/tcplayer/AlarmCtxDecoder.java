@@ -209,6 +209,6 @@ public class AlarmCtxDecoder extends CumulativeProtocolDecoder {
         alarmContext.setBody(body);
         context.setData(alarmContext);
         out.write(context);
-        return false;
+        return true;
     }
 }
