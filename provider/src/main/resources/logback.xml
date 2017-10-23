@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <property name="LOG_HOME" value="${CATALINA_BASE}/logs" />
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%d{yyyy/MM/dd HH:mm:ss.SSS}][%p][%logger{0}:%L] %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 不那么麻烦, dev环境不记那么麻烦-->
+    <root level="debug">
+        <appender-ref ref="console" />
+    </root>
+
+</configuration>
