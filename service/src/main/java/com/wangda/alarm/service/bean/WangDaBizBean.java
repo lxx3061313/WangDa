@@ -5,15 +5,15 @@ package com.wangda.alarm.service.bean;
  * @version 2017-10-23
  */
 public class WangDaBizBean<T> {
-    private long dataLength;
+    private int dataLength;
     private BizBeanType beanType;
     T Data;
 
-    public long getDataLength() {
+    public int getDataLength() {
         return dataLength;
     }
 
-    public void setDataLength(long dataLength) {
+    public void setDataLength(int dataLength) {
         this.dataLength = dataLength;
     }
 

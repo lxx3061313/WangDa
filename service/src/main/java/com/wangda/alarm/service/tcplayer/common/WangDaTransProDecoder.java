@@ -1,6 +1,7 @@
-package com.wangda.alarm.service.tcplayer;
+package com.wangda.alarm.service.tcplayer.common;
 
 import com.wangda.alarm.service.bean.BizBeanType;
+import com.wangda.alarm.service.bean.RespContext;
 import com.wangda.alarm.service.bean.WangDaBizBean;
 import com.wangda.alarm.service.bean.protocol.ProtocalFieldsDesc;
 import com.wangda.alarm.service.util.ByteBufferUtil;
@@ -34,5 +35,5 @@ public abstract class WangDaTransProDecoder<T> {
         return context;
     }
 
-    abstract T decodeData(IoBuffer buffer, CharsetDecoder cd);
+    public abstract T decodeData(IoBuffer buffer, CharsetDecoder cd);
 }

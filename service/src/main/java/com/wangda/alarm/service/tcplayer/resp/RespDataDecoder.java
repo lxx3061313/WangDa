@@ -1,6 +1,9 @@
-package com.wangda.alarm.service.tcplayer;
+package com.wangda.alarm.service.tcplayer.resp;
 
 import com.wangda.alarm.service.bean.RespContext;
+import com.wangda.alarm.service.tcplayer.common.WangDaTransProDecoder;
+import com.wangda.alarm.service.tcplayer.resp.RespBodyDecoder;
+import com.wangda.alarm.service.tcplayer.resp.RespHeaderDecoder;
 import java.nio.charset.CharsetDecoder;
 import javax.annotation.Resource;
 import org.apache.mina.core.buffer.IoBuffer;
@@ -20,10 +23,10 @@ public class RespDataDecoder extends WangDaTransProDecoder<RespContext> {
     RespBodyDecoder bodyDecoder;
 
     @Override
-    RespContext decodeData(IoBuffer buffer, CharsetDecoder cd) {
+    public RespContext decodeData(IoBuffer buffer, CharsetDecoder cd) {
         RespContext context = new RespContext();
         context.setHeader(headerDecoder.headerDecode(buffer, cd));
         context.setBody(bodyDecoder.bodyDecode(buffer, cd));
-        return null;
+        return context;
     }
 }

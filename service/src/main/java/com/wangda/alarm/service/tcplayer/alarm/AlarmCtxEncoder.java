@@ -1,4 +1,4 @@
-package com.wangda.alarm.service.tcplayer;
+package com.wangda.alarm.service.tcplayer.alarm;
 
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolEncoderAdapter;

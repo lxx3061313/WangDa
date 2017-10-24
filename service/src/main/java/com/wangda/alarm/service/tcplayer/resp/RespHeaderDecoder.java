@@ -1,4 +1,4 @@
-package com.wangda.alarm.service.tcplayer;
+package com.wangda.alarm.service.tcplayer.resp;
 
 import com.wangda.alarm.service.bean.AlarmHeader;
 import com.wangda.alarm.service.bean.DataType;

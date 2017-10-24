@@ -1,4 +1,4 @@
-package com.wangda.alarm.service.tcplayer;
+package com.wangda.alarm.service.tcplayer.alarm;
 
 import com.wangda.alarm.service.bean.AlarmBody;
 import com.wangda.alarm.service.bean.AlarmLevel;

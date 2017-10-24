@@ -1,16 +1,12 @@
-package com.wangda.alarm.service.tcplayer;
+package com.wangda.alarm.service.tcplayer.fault;
 
 import com.wangda.alarm.service.bean.FaultContext;
 import com.wangda.alarm.service.bean.protocol.ProtocalFieldsDesc;
+import com.wangda.alarm.service.tcplayer.common.WangDaContextDecoder;
 import com.wangda.alarm.service.util.ByteBufferUtil;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
 import javax.annotation.Resource;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
-import org.apache.mina.filter.codec.CumulativeProtocolDecoder;
-import org.apache.mina.filter.codec.ProtocolDecoderOutput;
-import org.apache.mina.filter.codec.demux.MessageDecoder;
 import org.apache.mina.filter.codec.demux.MessageDecoderResult;
 import org.springframework.stereotype.Service;
 
@@ -19,18 +15,21 @@ import org.springframework.stereotype.Service;
  * @version 2017-10-24
  */
 @Service
-public class FaultCtxDecoder implements MessageDecoder {
+public class FaultCtxDecoder extends WangDaContextDecoder<FaultContext> {
 
     @Resource
     FaultDataDecoder faultDataDecoder;
 
-    private CharsetDecoder cd;
     public FaultCtxDecoder() {
-        cd = Charset.forName("GBK").newDecoder();
     }
 
     @Override
-    public MessageDecoderResult decodable(IoSession session, IoBuffer in) {
+    public FaultContext decodeData(IoSession session, IoBuffer in) {
+        return faultDataDecoder.decodeData(in, cd);
+    }
+
+    @Override
+    public MessageDecoderResult intervalDecodeable(IoSession session, IoBuffer in) {
         in.position(ProtocalFieldsDesc.FAULT_HEADER_DATACMD_CODE.getPosition());
         in.limit(ProtocalFieldsDesc.FAULT_HEADER_DATACMD_CODE.getLimit());
         byte dataCmd = in.get();
@@ -62,24 +61,5 @@ public class FaultCtxDecoder implements MessageDecoder {
 
         in.flip();
         return result;
-    }
-
-    @Override
-    public MessageDecoderResult decode(IoSession session, IoBuffer in, ProtocolDecoderOutput out)
-            throws Exception {
-        IoBuffer buffer = IoBuffer.allocate(100).setAutoExpand(true);
-        while (in.hasRemaining()) {
-            byte b = in.get();
-            buffer.put(b);
-        }
-        buffer.flip();
-        FaultContext faultContext = faultDataDecoder.decodeData(buffer, cd);
-        out.write(faultContext);
-        return MessageDecoderResult.OK;
-    }
-
-    @Override
-    public void finishDecode(IoSession session, ProtocolDecoderOutput out) throws Exception {
-
     }
 }

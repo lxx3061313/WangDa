@@ -30,6 +30,48 @@ public class ByteBufferUtil {
     }
 
     /**
+     * 将int数值转换为占四个字节的byte数组，本方法适用于(低位在前，高位在后)的顺序。
+     * @param value
+     *            要转换的int值
+     * @return byte数组
+     */
+    public static byte[] intToBytes(int value)
+    {
+        byte[] byte_src = new byte[4];
+        byte_src[3] = (byte) ((value & 0xFF000000)>>24);
+        byte_src[2] = (byte) ((value & 0x00FF0000)>>16);
+        byte_src[1] = (byte) ((value & 0x0000FF00)>>8);
+        byte_src[0] = (byte) ((value & 0x000000FF));
+        return byte_src;
+    }
+
+    /**
+     * 低位在前,高位在后
+     * @param value
+     * @return
+     */
+    public static byte [] shortToBytes(short value) {
+        byte[] byte_src = new byte[2];
+        byte_src[1] = (byte) ((value & 0xFF00)>>8);
+        byte_src[0] = (byte) ((value & 0x00FF));
+        return byte_src;
+    }
+
+    public static byte[] stringToBytes(String str, int count) {
+        char[] chars = str.toCharArray();
+        byte[] result = new byte[count];
+        int index = 0;
+        for (char c : chars) {
+            if (index >= count) {
+                break;
+            }
+            result[index] = (byte) c;
+            index++;
+        }
+        return result;
+    }
+
+    /**
      * 低位在前，高位在后
      * @param ary 字节数组
      * @param offset 偏移量
@@ -110,6 +152,17 @@ public class ByteBufferUtil {
         buffer.get(ntime);
         int ptimestamp = ByteBufferUtil.bytesToInt(ntime, 0);
         return new Date(ptimestamp * 1000L);
+    }
+
+    /**
+     * Date转字节数组, 低位在前,高位在后
+     * @param date
+     * @return
+     */
+    public static byte [] dateToBytes(Date date) {
+        long timestamp = date.getTime() / 1000;
+        byte[] bytes = intToBytes((int) timestamp);
+        return bytes;
     }
 
     /**
