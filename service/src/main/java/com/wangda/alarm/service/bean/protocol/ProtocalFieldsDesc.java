@@ -109,4 +109,12 @@ public enum ProtocalFieldsDesc {
     public void setDesc(String desc) {
         this.desc = desc;
     }
+
+    public int getByteLth() {
+        return byteLth;
+    }
+
+    public void setByteLth(int byteLth) {
+        this.byteLth = byteLth;
+    }
 }

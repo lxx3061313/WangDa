@@ -1,6 +1,9 @@
 package com.wangda.alarm.service.util;
 
+import com.wangda.alarm.service.bean.protocol.ProtocalFieldsDesc;
 import java.nio.ByteBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.CharsetDecoder;
 import java.util.Date;
 import java.util.Stack;
 import org.apache.mina.core.buffer.IoBuffer;
@@ -39,6 +42,12 @@ public class ByteBufferUtil {
         return value;
     }
 
+    public static short byteToShort(IoBuffer buffer) {
+        byte []temp = new byte[2];
+        buffer.get(temp);
+        return bytesToShort(temp, 0);
+    }
+
     public static int byteToInt(byte b) {
         return b & 0xFF;
     }
@@ -50,6 +59,47 @@ public class ByteBufferUtil {
         return i;
     }
 
+    public static byte extractByte(IoBuffer buffer, ProtocalFieldsDesc position) {
+        return extractByte(buffer, position.getPosition(), position.getLimit());
+    }
+
+    public static byte extractByte(IoBuffer buffer, int position, int limit) {
+        buffer.position(position);
+        buffer.limit(limit);
+        return buffer.get();
+    }
+
+    public static short extractShort(IoBuffer buffer, ProtocalFieldsDesc position) {
+        buffer.position(position.getPosition());
+        buffer.limit(position.getLimit());
+        return byteToShort(buffer);
+    }
+
+    public static Date extractDate(IoBuffer buffer, int postion, int limit) {
+        buffer.position(postion);
+        buffer.limit(limit);
+        return byteToDate(buffer);
+    }
+
+    public static String extractString(IoBuffer buffer, int postion, int limit, CharsetDecoder cd)
+            throws CharacterCodingException {
+        buffer.position(postion);
+        buffer.limit(limit);
+        return buffer.getString(cd);
+    }
+
+    public static String extractString(IoBuffer buffer, ProtocalFieldsDesc position, CharsetDecoder cd)
+            throws CharacterCodingException {
+       return extractString(buffer, position.getPosition(), position.getLimit(), cd);
+    }
+
+    public static byte[] extractByteArray(IoBuffer buffer, int postion, int limit, int count) {
+        buffer.limit(limit);
+        buffer.position(postion);
+        byte [] temp = new byte[count];
+        buffer.get(temp);
+        return temp;
+    }
     /**
      * 四个字节标识, 精确到秒
      * @param buffer
