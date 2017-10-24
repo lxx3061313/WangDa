@@ -1,6 +1,7 @@
 package com.wangda.alarm.service.util;
 
 import java.nio.ByteBuffer;
+import org.apache.mina.core.buffer.IoBuffer;
 
 /**
  * @author lixiaoxiong
@@ -21,6 +22,17 @@ public class ByteBufferUtil {
                 | ((ary[offset+2]<<16)& 0xFF0000)
                 | ((ary[offset+3]<<24) & 0xFF000000));
         return value;
+    }
+
+    public static int byteToInt(byte b) {
+        return b & 0xFF;
+    }
+
+    public static int IobufferToInt(IoBuffer buffer) {
+        byte [] temp = new byte[4];
+        buffer.get(temp);
+        int i = bytesToInt(temp, 0);
+        return i;
     }
 
     /**

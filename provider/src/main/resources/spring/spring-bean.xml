@@ -33,10 +33,7 @@
 
     <!--编解码-->
     <bean id="codecFilter" class="org.apache.mina.filter.codec.ProtocolCodecFilter">
-        <constructor-arg>
-            <!--构造函数的参数传入自己实现的对象-->
-            <bean class="com.wangda.alarm.service.tcplayer.MyCodeFactory"></bean>
-        </constructor-arg>
+        <constructor-arg ref="myCodeFactory"/>
     </bean>
 
 

@@ -2,6 +2,7 @@ package com.wangda.alarm.service.tcplayer;
 
 import static com.oracle.deploy.update.UpdateCheck.UpdateCheckState.IDLE;
 
+import com.wangda.alarm.service.util.json.JsonUtil;
 import java.net.InetSocketAddress;
 import java.util.concurrent.ConcurrentHashMap;
 import org.apache.mina.core.service.IoHandlerAdapter;
@@ -21,12 +22,11 @@ public class TestHandler extends IoHandlerAdapter {
 
     @Override
     public void messageReceived(IoSession session, Object message) throws Exception {
-        String str = message.toString();
         logger.warn("客户端" + ((InetSocketAddress) session.getRemoteAddress()).getAddress().getHostAddress() + "连接成功！");
         session.setAttribute("type", message);
         String remoteAddress = ((InetSocketAddress) session.getRemoteAddress()).getAddress().getHostAddress();
         session.setAttribute("ip", remoteAddress);
-        logger.warn("服务器收到的消息是：" + str);
+        logger.warn("服务器收到的消息是：" + JsonUtil.of(message));
         session.write("welcome by he");
     }
 
