@@ -31,7 +31,7 @@ public class FaultRecord {
     /**
      * 故障原因长度
      */
-    private int faultReasonLth;
+    private short faultReasonLth;
 
     /**
      * 故障原因
@@ -70,11 +70,11 @@ public class FaultRecord {
         this.reserveTime = reserveTime;
     }
 
-    public int getFaultReasonLth() {
+    public short getFaultReasonLth() {
         return faultReasonLth;
     }
 
-    public void setFaultReasonLth(int faultReasonLth) {
+    public void setFaultReasonLth(short faultReasonLth) {
         this.faultReasonLth = faultReasonLth;
     }
 

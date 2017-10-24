@@ -16,39 +16,39 @@ import org.springframework.stereotype.Service;
  * @version 2017-10-23
  */
 @Service
-public class MyCodeFactory implements ProtocolCodecFactory {
+public class MyCodeFactory /*implements ProtocolCodecFactory*/ {
 
     //private final TextLineEncoder encoder;
     //private final TextLineDecoder decoder;
 
-    @Resource
-    private final AlarmCtxEncoder encoder;
-
-    @Resource
-    private final AlarmCtxDecoder decoder;
-    public MyCodeFactory() {
-        //encoder = new TextLineEncoder(charset, LineDelimiter.UNIX);
-        //decoder = new TextLineDecoder(charset, LineDelimiter.AUTO);
-        encoder = new AlarmCtxEncoder();
-        decoder = new AlarmCtxDecoder(Charset.forName("GBK"));
-    }
-
-
-    @Override
-    public ProtocolEncoder getEncoder(IoSession ioSession) throws Exception {
-        return encoder;
-    }
-
-    @Override
-    public ProtocolDecoder getDecoder(IoSession ioSession) throws Exception {
-        return decoder;
-    }
-
-    public AlarmCtxEncoder getEncoder() {
-        return encoder;
-    }
-
-    public AlarmCtxDecoder getDecoder() {
-        return decoder;
-    }
+//    @Resource
+//    AlarmCtxEncoder encoder;
+//
+//    @Resource
+//    AlarmCtxDecoder decoder;
+//
+//    public MyCodeFactory() {
+//        //encoder = new TextLineEncoder(charset, LineDelimiter.UNIX);
+//        //decoder = new TextLineDecoder(charset, LineDelimiter.AUTO);
+//
+//    }
+//
+//
+//    @Override
+//    public ProtocolEncoder getEncoder(IoSession ioSession) throws Exception {
+//        return encoder;
+//    }
+//
+//    @Override
+//    public ProtocolDecoder getDecoder(IoSession ioSession) throws Exception {
+//        return decoder;
+//    }
+//
+//    public AlarmCtxEncoder getEncoder() {
+//        return encoder;
+//    }
+//
+//    public AlarmCtxDecoder getDecoder() {
+//        return decoder;
+//    }
 }

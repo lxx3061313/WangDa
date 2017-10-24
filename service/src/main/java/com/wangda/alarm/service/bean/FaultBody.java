@@ -10,8 +10,8 @@ public class FaultBody {
     /** 实时数据标记 */
     private byte realTimeData;
 
-    /** 记录数 todo 记录可能>1个吗*/
-    private int recordNum;
+    /** 记录数 记录只会有1个*/
+    private short recordNum;
 
     List<FaultRecord> records;
 
@@ -23,11 +23,11 @@ public class FaultBody {
         this.realTimeData = realTimeData;
     }
 
-    public int getRecordNum() {
+    public short getRecordNum() {
         return recordNum;
     }
 
-    public void setRecordNum(int recordNum) {
+    public void setRecordNum(short recordNum) {
         this.recordNum = recordNum;
     }
 

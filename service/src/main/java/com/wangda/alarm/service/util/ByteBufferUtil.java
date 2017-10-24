@@ -1,6 +1,8 @@
 package com.wangda.alarm.service.util;
 
 import java.nio.ByteBuffer;
+import java.util.Date;
+import java.util.Stack;
 import org.apache.mina.core.buffer.IoBuffer;
 
 /**
@@ -24,6 +26,19 @@ public class ByteBufferUtil {
         return value;
     }
 
+    /**
+     * 低位在前，高位在后
+     * @param ary 字节数组
+     * @param offset 偏移量
+     * @return 结果
+     */
+    public static short bytesToShort(byte[] ary, int offset) {
+        short value;
+        value = (short) ((ary[offset]&0xFF)
+                | ((ary[offset+1]<<8) & 0xFF00));
+        return value;
+    }
+
     public static int byteToInt(byte b) {
         return b & 0xFF;
     }
@@ -33,6 +48,18 @@ public class ByteBufferUtil {
         buffer.get(temp);
         int i = bytesToInt(temp, 0);
         return i;
+    }
+
+    /**
+     * 四个字节标识, 精确到秒
+     * @param buffer
+     * @return
+     */
+    public static Date byteToDate(IoBuffer buffer) {
+        byte [] ntime = new byte[4];
+        buffer.get(ntime);
+        int ptimestamp = ByteBufferUtil.bytesToInt(ntime, 0);
+        return new Date(ptimestamp * 1000L);
     }
 
     /**

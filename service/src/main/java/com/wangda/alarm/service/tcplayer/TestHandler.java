@@ -1,7 +1,5 @@
 package com.wangda.alarm.service.tcplayer;
 
-import static com.oracle.deploy.update.UpdateCheck.UpdateCheckState.IDLE;
-
 import com.wangda.alarm.service.util.json.JsonUtil;
 import java.net.InetSocketAddress;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,7 +25,7 @@ public class TestHandler extends IoHandlerAdapter {
         String remoteAddress = ((InetSocketAddress) session.getRemoteAddress()).getAddress().getHostAddress();
         session.setAttribute("ip", remoteAddress);
         logger.warn("服务器收到的消息是：" + JsonUtil.of(message));
-        session.write("welcome by he");
+        //session.write("welcome by he");
     }
 
     @Override
@@ -59,7 +57,7 @@ public class TestHandler extends IoHandlerAdapter {
     public void sessionOpened(IoSession session) throws Exception {
         logger.warn("sessionOpened.");
         //  
-        session.getConfig().setIdleTime(IdleStatus.BOTH_IDLE, IDLE);
+        //session.getConfig().setIdleTime(IdleStatus.BOTH_IDLE, IDLE);
     }
     @Override
     public void exceptionCaught(IoSession session, Throwable cause) throws Exception {

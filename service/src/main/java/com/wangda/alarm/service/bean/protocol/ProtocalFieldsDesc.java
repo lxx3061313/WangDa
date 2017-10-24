@@ -10,7 +10,6 @@ public enum ProtocalFieldsDesc {
     ALARM_HEADER_TARGET_TELECODE(5, 8, "目的电报码"),
     ALARM_HEADER_SOURCE_TELECODE(8, 11, "源电报码"),
     ALARM_HEADER_DATACMD_CODE(11, 12, "数据/命令代码"),
-    //报警么有压缩标识
     ALARM_HEADER_VERSION(12, 13, "版本码"),
     ALARM_HEADER_DATA_TYPE_CODE(13, 14, "数据类型码"),
     ALARM_HEADER_DATA_SUBTYPE_CODE(14, 15, "数据子类型码"),
@@ -32,7 +31,25 @@ public enum ProtocalFieldsDesc {
     ALARM_BODY_DEVICE_NAME(0, 0, "设备名称, 不定长"),
     ALARM_BODY_OVERHAUL_FLAG(0, 0, "检修标志"),
     ALARM_BODY_RESERVED_LENGTH(0, 0, "预留内容长度"),
-    ALARM_BODY_RESERVED_CONTEXT(0, 0, "预留内容");
+    ALARM_BODY_RESERVED_CONTEXT(0, 0, "预留内容"),
+
+
+    //故障
+    FAULT_HEADER_TARGET_TELECODE(5, 8, "目的电报码"),
+    FAULT_HEADER_SOURCE_TELECODE(8, 11, "源电报码"),
+    FAULT_HEADER_DATACMD_CODE(11, 12, "数据命令代码"),
+    FAULT_HEADER_ZIP_FLAG(12, 13, "压缩标记"),
+    FAULT_HEADER_VERSION(13, 14, "版本码"),
+    FAULT_HEADER_DATA_TYPE(14, 15, "数据类型码"),
+    FAULT_HEADER_DATA_SUBTYPE(15, 16, "数据子类型码"),
+    FAULT_BODY_REALTIME_FLAG(16, 17, "实时数据"),
+    FAULT_BODY_RECORD_NUM(17, 19, "记录数"),
+    FAULT_BODY_NOC_TIME(19, 23, "通知时间"),
+    FAULT_BODY_PROC_TIME(23, 27, "受理时间"),
+    FAULT_BODY_RECOVER_TIME(27, 31, "恢复时间"),
+    FAULT_BODY_RESERVE_TIME(31, 35, "预留时间"),
+    FAULT_BODY_REASON_LENGTH(35, 36, "故障原因长度"),
+    FAULT_BODY_REASON(36, 0, "故障原因");
     private int position;
     private int limit;
     private String desc;
