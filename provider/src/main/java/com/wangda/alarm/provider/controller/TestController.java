@@ -1,6 +1,6 @@
 package com.wangda.alarm.provider.controller;
 
-import com.wangda.alarm.service.springconfig.annotation.JsonBody;
+import com.wangda.alarm.service.common.springconfig.annotation.JsonBody;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Controller;

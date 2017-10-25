@@ -21,13 +21,11 @@
         <property name="MConfigLocations"><!-- 远程文件-->
             <set>
                 <value>profile.properties</value>
-                <value>jdbc.properties</value>
-                <value>redis.properties</value>
             </set>
         </property>
     </bean>
 
-    <!--<import resource="classpath*:spring/spring-datasource.xml"/>-->
+    <import resource="classpath*:spring/spring-datasource.xml"/>
     <import resource="classpath*:spring/spring-bean.xml"/>
     <import resource="classpath*:spring/spring-web.xml"/>
     <import resource="classpath*:spring/spring-filter.xml"/>

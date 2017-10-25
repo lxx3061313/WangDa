@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wangda.alarm.service.dao.UserInfoDao">
+
+    <sql id="fields">
+        id,
+        user_name as userName,
+        password,
+        status,
+        phone,
+        email,
+        create_time AS createTime,
+    </sql>
+
+    <insert id="saveAlarmInfo" parameterType="com.wangda.alarm.service.dao.po.UserInfoPo">
+        INSERT INTO user_info(
+        user_name,
+        password,
+        status,
+        phone,
+        email,
+        create_time
+        ) VALUES (
+        #{userName},
+        #{password},
+        #{status},
+        #{phone},
+        #{email},
+        #{createTime}
+        )
+    </insert>
+
+    <select id="authUser" parameterType="java.util.Map" resultType="com.wangda.alarm.service.dao.po.UserInfoPo">
+        SELECT
+        <include refid="fields"/>
+        FROM user_info
+        WHERE user_name=#{userName}
+    </select>
+</mapper>
