@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wangda.alarm.service.dao.AlarmInfoDao">
+
+    <sql id="fields">
+        id,
+        segment,
+        target_telecode AS targetTeleCode,
+        source_telecode AS sourceTeleCode,
+        alarm_type AS alarmType,
+        alarm_level AS alarmLevel,
+        device_type AS deviceType,
+        device_no AS deviceNo,
+        device_name AS deviceName,
+        alarm_time AS alarmTime,
+        recover_time AS recoverTime,
+        status,
+        alarm_context AS alarmContext,
+        overhaul_flag AS overhaulFlag,
+        repeat_count AS repeatCount,
+        create_time AS createTime,
+        remark,
+        ext_info AS extInfo
+    </sql>
+
+    <insert id="saveAlarmInfo" parameterType="com.wangda.alarm.service.dao.po.AlarmInfoPo">
+        INSERT INTO alarm_info(
+        segment,
+        target_telecode,
+        source_telecode,
+        alarm_type,
+        alarm_level,
+        device_type,
+        device_no,
+        device_name,
+        alarm_time,
+        recover_time,
+        status,
+        alarm_context,
+        overhaul_flag,
+        repeat_count,
+        create_time,
+        remark,
+        ext_info
+        ) VALUES (
+        #{segment},
+        #{targetTeleCode},
+        #{sourceTeleCode},
+        #{alarmType},
+        #{alarmLevel},
+        #{deviceType},
+        #{deviceNo},
+        #{deviceName},
+        #{alarmTime},
+        #{recoverTime},
+        #{status},
+        #{alarmContext},
+        #{overhaulFlag},
+        #{repeatCount},
+        #{createTime},
+        #{remark},
+        #{extInfo}
+        )
+    </insert>
+
+    <select id="queryAlarmBySegAndLev" parameterType="java.util.Map" resultType="com.wangda.alarm.service.dao.po.AlarmInfoPo">
+        SELECT
+        <include refid="fields"/>
+        FROM alarm_info
+        <where>
+            <if test="segment != null">
+                AND segment=#{segment}
+            </if>
+            <if test="level != null">
+                AND alarm_level = #{level}
+            </if>
+        </where>
+    </select>
+</mapper>

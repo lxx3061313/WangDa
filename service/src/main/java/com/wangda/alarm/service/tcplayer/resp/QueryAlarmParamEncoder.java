@@ -1,9 +1,9 @@
 package com.wangda.alarm.service.tcplayer.resp;
 
-import com.wangda.alarm.service.bean.BizBeanType;
-import com.wangda.alarm.service.bean.QueryAlarmBody;
-import com.wangda.alarm.service.bean.QueryAlarmHeader;
-import com.wangda.alarm.service.bean.QueryAlarmParam;
+import com.wangda.alarm.service.bean.standard.BizBeanType;
+import com.wangda.alarm.service.bean.standard.alarminfo.resp.QueryAlarmBody;
+import com.wangda.alarm.service.bean.standard.alarminfo.resp.QueryAlarmHeader;
+import com.wangda.alarm.service.bean.standard.alarminfo.resp.QueryAlarmParam;
 import com.wangda.alarm.service.util.ByteBufferUtil;
 import java.util.List;
 import org.apache.mina.core.buffer.IoBuffer;

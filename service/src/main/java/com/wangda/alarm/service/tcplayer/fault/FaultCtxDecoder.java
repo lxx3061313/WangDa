@@ -1,7 +1,7 @@
 package com.wangda.alarm.service.tcplayer.fault;
 
-import com.wangda.alarm.service.bean.FaultContext;
-import com.wangda.alarm.service.bean.protocol.ProtocalFieldsDesc;
+import com.wangda.alarm.service.bean.standard.alarminfo.fault.FaultContext;
+import com.wangda.alarm.service.bean.standard.protocol.ProtocalFieldsDesc;
 import com.wangda.alarm.service.tcplayer.common.WangDaContextDecoder;
 import com.wangda.alarm.service.util.ByteBufferUtil;
 import javax.annotation.Resource;

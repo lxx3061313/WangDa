@@ -1,6 +1,6 @@
 package com.wangda.alarm.service.tcplayer.common;
 
-import com.wangda.alarm.service.bean.constant.KeepAliveMsg;
+import com.wangda.alarm.service.bean.standard.constant.KeepAliveMsg;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.keepalive.KeepAliveMessageFactory;
 import org.springframework.stereotype.Service;

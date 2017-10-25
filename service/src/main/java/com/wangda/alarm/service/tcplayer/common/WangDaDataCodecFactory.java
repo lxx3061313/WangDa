@@ -1,7 +1,7 @@
 package com.wangda.alarm.service.tcplayer.common;
 
-import com.wangda.alarm.service.bean.QueryAlarmParam;
-import com.wangda.alarm.service.bean.constant.KeepAliveMsg;
+import com.wangda.alarm.service.bean.standard.alarminfo.resp.QueryAlarmParam;
+import com.wangda.alarm.service.bean.standard.constant.KeepAliveMsg;
 import com.wangda.alarm.service.tcplayer.KeepAliveMsgEncoder;
 import com.wangda.alarm.service.tcplayer.alarm.AlarmCtxDecoder;
 import com.wangda.alarm.service.tcplayer.fault.FaultCtxDecoder;

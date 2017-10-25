@@ -1,11 +1,9 @@
 package com.wangda.alarm.service.util;
 
-import com.wangda.alarm.service.bean.protocol.ProtocalFieldsDesc;
-import java.nio.ByteBuffer;
+import com.wangda.alarm.service.bean.standard.protocol.ProtocalFieldsDesc;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.CharsetDecoder;
 import java.util.Date;
-import java.util.Stack;
 import org.apache.mina.core.buffer.IoBuffer;
 
 /**

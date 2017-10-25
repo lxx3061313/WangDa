@@ -1,14 +1,12 @@
 package com.wangda.alarm.service.tcplayer.fault;
 
-import com.wangda.alarm.service.bean.AlarmBody;
-import com.wangda.alarm.service.bean.FaultBody;
-import com.wangda.alarm.service.bean.FaultRecord;
-import com.wangda.alarm.service.bean.protocol.ProtocalFieldsDesc;
+import com.wangda.alarm.service.bean.standard.alarminfo.fault.FaultBody;
+import com.wangda.alarm.service.bean.standard.alarminfo.fault.FaultRecord;
+import com.wangda.alarm.service.bean.standard.protocol.ProtocalFieldsDesc;
 import com.wangda.alarm.service.util.ByteBufferUtil;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.CharsetDecoder;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.springframework.stereotype.Service;

@@ -1,8 +1,8 @@
 package com.wangda.alarm.service.tcplayer.alarm;
 
-import com.wangda.alarm.service.bean.AlarmHeader;
-import com.wangda.alarm.service.bean.DataType;
-import com.wangda.alarm.service.bean.protocol.ProtocalFieldsDesc;
+import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmHeader;
+import com.wangda.alarm.service.bean.standard.DataType;
+import com.wangda.alarm.service.bean.standard.protocol.ProtocalFieldsDesc;
 import com.wangda.alarm.service.util.ByteBufferUtil;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.CharsetDecoder;

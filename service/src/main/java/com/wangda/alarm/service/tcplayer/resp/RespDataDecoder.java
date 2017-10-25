@@ -1,9 +1,7 @@
 package com.wangda.alarm.service.tcplayer.resp;
 
-import com.wangda.alarm.service.bean.RespContext;
+import com.wangda.alarm.service.bean.standard.alarminfo.resp.RespContext;
 import com.wangda.alarm.service.tcplayer.common.WangDaTransProDecoder;
-import com.wangda.alarm.service.tcplayer.resp.RespBodyDecoder;
-import com.wangda.alarm.service.tcplayer.resp.RespHeaderDecoder;
 import java.nio.charset.CharsetDecoder;
 import javax.annotation.Resource;
 import org.apache.mina.core.buffer.IoBuffer;

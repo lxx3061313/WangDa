@@ -1,10 +1,10 @@
 package com.wangda.alarm.service.tcplayer.alarm;
 
-import com.wangda.alarm.service.bean.AlarmBody;
-import com.wangda.alarm.service.bean.AlarmLevel;
-import com.wangda.alarm.service.bean.AlarmStatus;
-import com.wangda.alarm.service.bean.OverhaulType;
-import com.wangda.alarm.service.bean.protocol.ProtocalFieldsDesc;
+import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmBody;
+import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmLevel;
+import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmStatus;
+import com.wangda.alarm.service.bean.standard.OverhaulType;
+import com.wangda.alarm.service.bean.standard.protocol.ProtocalFieldsDesc;
 import com.wangda.alarm.service.util.ByteBufferUtil;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.CharsetDecoder;

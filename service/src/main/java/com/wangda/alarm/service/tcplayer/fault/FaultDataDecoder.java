@@ -1,6 +1,6 @@
 package com.wangda.alarm.service.tcplayer.fault;
 
-import com.wangda.alarm.service.bean.FaultContext;
+import com.wangda.alarm.service.bean.standard.alarminfo.fault.FaultContext;
 import com.wangda.alarm.service.tcplayer.common.WangDaTransProDecoder;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.CharsetDecoder;

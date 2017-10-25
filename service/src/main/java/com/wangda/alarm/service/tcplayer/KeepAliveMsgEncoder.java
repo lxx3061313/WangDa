@@ -1,6 +1,6 @@
 package com.wangda.alarm.service.tcplayer;
 
-import com.wangda.alarm.service.bean.constant.KeepAliveMsg;
+import com.wangda.alarm.service.bean.standard.constant.KeepAliveMsg;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolEncoderOutput;
 import org.apache.mina.filter.codec.demux.MessageEncoder;

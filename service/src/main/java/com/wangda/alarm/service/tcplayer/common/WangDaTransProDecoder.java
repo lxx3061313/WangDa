@@ -1,13 +1,11 @@
 package com.wangda.alarm.service.tcplayer.common;
 
-import com.wangda.alarm.service.bean.BizBeanType;
-import com.wangda.alarm.service.bean.RespContext;
-import com.wangda.alarm.service.bean.WangDaBizBean;
-import com.wangda.alarm.service.bean.protocol.ProtocalFieldsDesc;
+import com.wangda.alarm.service.bean.standard.BizBeanType;
+import com.wangda.alarm.service.bean.standard.WangDaBizBean;
+import com.wangda.alarm.service.bean.standard.protocol.ProtocalFieldsDesc;
 import com.wangda.alarm.service.util.ByteBufferUtil;
 import java.nio.charset.CharsetDecoder;
 import org.apache.mina.core.buffer.IoBuffer;
-import org.omg.CORBA.PUBLIC_MEMBER;
 
 /**
  * @author lixiaoxiong
