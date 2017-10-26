@@ -249,8 +249,14 @@
             <artifactId>lettuce</artifactId>
             <version>4.3.0.Final</version>
         </dependency>
-    </dependencies>
 
+        <!-- https://mvnrepository.com/artifact/org.apache.shiro/shiro-core -->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+    </dependencies>
     <build>
         <plugins>
             <plugin>

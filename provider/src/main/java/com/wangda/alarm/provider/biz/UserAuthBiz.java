@@ -33,10 +33,10 @@ public class UserAuthBiz {
 
         //验证成功
         if (auth != null) {
-            String token = TokenGenerator.generate(auth.getUserName());
+            String token = TokenGenerator.generate(auth.getAccount());
             UserSession build = UserSession.createBuilder()
                     .addToken(token)
-                    .addUserName(auth.getUserName())
+                    .addUserName(auth.getAccount())
                     .addLoginTime(new Date())
                     .addRole(new RoleInfo())
                     .build();
@@ -50,5 +50,4 @@ public class UserAuthBiz {
             throw new BizException("用户名或密码错误");
         }
     }
-
 }

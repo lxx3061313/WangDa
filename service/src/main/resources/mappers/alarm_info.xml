@@ -5,6 +5,9 @@
     <sql id="fields">
         id,
         segment,
+        wordshop_code AS workshopCode,
+        wordarea_code AS workAreaCode,
+        station_code AS stationCode,
         target_telecode AS targetTeleCode,
         source_telecode AS sourceTeleCode,
         alarm_type AS alarmType,
@@ -26,6 +29,9 @@
     <insert id="saveAlarmInfo" parameterType="com.wangda.alarm.service.dao.po.AlarmInfoPo">
         INSERT INTO alarm_info(
         segment,
+        wordshop_code,
+        wordarea_code,
+        station_code,
         target_telecode,
         source_telecode,
         alarm_type,

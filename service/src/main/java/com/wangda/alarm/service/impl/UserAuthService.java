@@ -1,5 +1,6 @@
 package com.wangda.alarm.service.impl;
 
+import com.wangda.alarm.service.common.util.WebUtil;
 import com.wangda.alarm.service.dao.UserInfoDao;
 import com.wangda.alarm.service.dao.po.UserInfoPo;
 import javax.annotation.Resource;
@@ -21,7 +22,8 @@ public class UserAuthService {
             return null;
         }
 
-        if (userInfoPo.getPassword().equals(password)) {
+        String comparePass = WebUtil.md5(password, userInfoPo.getSalt());
+        if (comparePass.equals(password)) {
             return userInfoPo;
         }
         return null;

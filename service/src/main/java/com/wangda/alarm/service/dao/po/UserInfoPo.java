@@ -1,6 +1,7 @@
 package com.wangda.alarm.service.dao.po;
 
 import com.wangda.alarm.service.bean.biz.UserStatus;
+import com.wangda.alarm.service.common.util.pojo.Sex;
 import java.util.Date;
 
 /**
@@ -9,12 +10,20 @@ import java.util.Date;
  */
 public class UserInfoPo {
     private int id;
-    private String userName;
+    private String avatar = "girl.git";
+    private String account;
     private String password;
-    private UserStatus status;
-    private Date createTime;
-    private String phone;
+    private String salt;
+    private String name;
+    private Date birthday;
+    private int sex;
     private String email;
+    private String phone;
+    private int roleId;
+    private int deptId;
+    private int status;
+    private Date createTime;
+    private int version;
 
     public int getId() {
         return id;
@@ -24,12 +33,20 @@ public class UserInfoPo {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String getPassword() {
@@ -40,11 +57,75 @@ public class UserInfoPo {
         this.password = password;
     }
 
-    public UserStatus getStatus() {
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public int getSex() {
+        return sex;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
+
+    public int getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(int deptId) {
+        this.deptId = deptId;
+    }
+
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(UserStatus status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -56,19 +137,11 @@ public class UserInfoPo {
         this.createTime = createTime;
     }
 
-    public String getPhone() {
-        return phone;
+    public int getVersion() {
+        return version;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setVersion(int version) {
+        this.version = version;
     }
 }

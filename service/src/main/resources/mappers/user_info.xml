@@ -4,29 +4,55 @@
 
     <sql id="fields">
         id,
-        user_name as userName,
+        avatar,
+        account,
         password,
-        status,
-        phone,
+        salt,
+        name,
+        birthday,
+        sex,
         email,
-        create_time AS createTime,
+        phone,
+        roleId,
+        deptId,
+        status,
+        createtime AS createTime,
+        version
     </sql>
 
     <insert id="saveAlarmInfo" parameterType="com.wangda.alarm.service.dao.po.UserInfoPo">
         INSERT INTO user_info(
-        user_name,
+        avatar,
+        account,
         password,
-        status,
-        phone,
+        salt,
+        name,
+        birthday,
+        sex,
         email,
+        phone,
+        roleId,
+        deptId,
+        status,
+        createtime,
+        version
         create_time
         ) VALUES (
-        #{userName},
+        #{avatar},
+        #{account},
         #{password},
-        #{status},
         #{phone},
+        #{salt},
+        #{name},
+        #{birthday},
+        #{sex},
         #{email},
-        #{createTime}
+        #{phone},
+        #{roleId},
+        #{deptId},
+        #{status},
+        #{createTime},
+        #{version},
         )
     </insert>
 

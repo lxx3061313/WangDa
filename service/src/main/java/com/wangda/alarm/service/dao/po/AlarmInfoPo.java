@@ -12,7 +12,25 @@ import java.util.Date;
 public class AlarmInfoPo {
     private int id;
 
+    /**
+     * 电务段code
+     */
     private String segment;
+
+    /**
+     * 工作间code
+     */
+    private String workshopCode;
+
+    /**
+     * 工区code
+     */
+    private String workAreaCode;
+
+    /**
+     * 车站code
+     */
+    private String stationCode;
 
     /**
      * 目的电报码(服务器编码)
@@ -226,5 +244,29 @@ public class AlarmInfoPo {
 
     public void setSegment(String segment) {
         this.segment = segment;
+    }
+
+    public String getWorkshopCode() {
+        return workshopCode;
+    }
+
+    public void setWorkshopCode(String workshopCode) {
+        this.workshopCode = workshopCode;
+    }
+
+    public String getWorkAreaCode() {
+        return workAreaCode;
+    }
+
+    public void setWorkAreaCode(String workAreaCode) {
+        this.workAreaCode = workAreaCode;
+    }
+
+    public String getStationCode() {
+        return stationCode;
+    }
+
+    public void setStationCode(String stationCode) {
+        this.stationCode = stationCode;
     }
 }
