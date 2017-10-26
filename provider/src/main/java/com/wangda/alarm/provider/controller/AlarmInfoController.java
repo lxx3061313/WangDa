@@ -2,6 +2,8 @@ package com.wangda.alarm.provider.controller;
 
 import com.wangda.alarm.service.bean.biz.AlarmInfo;
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmLevel;
+import com.wangda.alarm.service.bean.vo.AlarmStatisticsVo;
+import com.wangda.alarm.service.bean.vo.RealTimeAlarmVo;
 import com.wangda.alarm.service.bean.vo.req.AlarmReq;
 import com.wangda.alarm.service.impl.AlarmInfoService;
 import com.wangda.alarm.service.common.springconfig.annotation.JsonBody;
@@ -27,6 +29,19 @@ public class AlarmInfoController {
     @JsonBody
     public List<AlarmInfo> queryAlarmList(@RequestBody AlarmReq req) {
         //return alarmInfoService.queryAlarmsBySegAndLev();
+        return null;
+    }
+
+
+    @RequestMapping("/statis")
+    @JsonBody
+    public AlarmStatisticsVo queryAlarmStatistics() {
+        return null;
+    }
+
+    @RequestMapping("/realAlarm")
+    @JsonBody
+    public RealTimeAlarmVo queryRealTimeAlarm() {
         return null;
     }
 }
