@@ -7,6 +7,10 @@ import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmLevel;
  * @version 2017-10-26
  */
 public class AlarmReq {
+
+    /**
+     * station是一个拼接变量
+     */
     private String station;
     private AlarmLevel level;
     private String alarmType;

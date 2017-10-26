@@ -16,6 +16,9 @@ import org.slf4j.LoggerFactory;
 public class WebUtil {
     public static Logger logger = LoggerFactory.getLogger(WebUtil.class);
 
+    private static final String enAlgorithmName = "MD5";
+    private static int hashIterations = 1024;
+
     public static void responseJson(Object value, ServletResponse response){
         response.setContentType("application/json; charset=UTF-8");
 
@@ -29,6 +32,6 @@ public class WebUtil {
 
     public static String md5(String password, String saltSource) {
         ByteSource salt = new Md5Hash(saltSource);
-        return new SimpleHash("MD5", password, salt, 1024).toString();
+        return new SimpleHash(enAlgorithmName, password, salt, hashIterations).toString();
     }
 }
