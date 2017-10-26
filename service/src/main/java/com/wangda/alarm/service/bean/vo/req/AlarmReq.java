@@ -9,10 +9,19 @@ import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmLevel;
 public class AlarmReq {
 
     /**
-     * station是一个拼接变量
+     * station是一个拼接变量,
+     * 段#车间#工区#车站
      */
     private String station;
+
+    /**
+     * 报警级别
+     */
     private AlarmLevel level;
+
+    /**
+     * 报警类型
+     */
     private String alarmType;
 
     public String getStation() {
