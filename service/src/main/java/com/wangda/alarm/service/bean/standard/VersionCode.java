@@ -2,15 +2,16 @@ package com.wangda.alarm.service.bean.standard;
 
 /**
  * @author lixiaoxiong
- * @version 2017-10-23
+ * @version 2017-10-28
  */
-public enum DataType {
-    DATA((byte)0, "数据"),
-    CMD((byte)1, "命令");
+public enum VersionCode {
+    E_ZERO((byte) 0xE0, "指服务器或终端向站机取数据"),
+    E_ONE((byte)0xE1, "终端向服务器取数据"),
+    E_TWO((byte)0xE2, "指服务器向站机发送的验证数据");
     private byte code;
     private String desc;
 
-    DataType(byte code, String desc) {
+    VersionCode(byte code, String desc) {
         this.code = code;
         this.desc = desc;
     }

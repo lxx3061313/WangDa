@@ -28,11 +28,6 @@ public class QueryAlarmBody {
      */
     private short alarmTypeNum;
 
-    /**
-     * 报警类型
-     */
-    private List<Byte> alarmTypes;
-
     public byte getDataname() {
         return dataname;
     }
@@ -63,13 +58,5 @@ public class QueryAlarmBody {
 
     public void setAlarmTypeNum(short alarmTypeNum) {
         this.alarmTypeNum = alarmTypeNum;
-    }
-
-    public List<Byte> getAlarmTypes() {
-        return alarmTypes;
-    }
-
-    public void setAlarmTypes(List<Byte> alarmTypes) {
-        this.alarmTypes = alarmTypes;
     }
 }

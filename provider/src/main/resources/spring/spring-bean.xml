@@ -20,8 +20,6 @@
         </property>
     </bean>
 
-    <bean id="serverHandler" class="com.wangda.alarm.service.tcplayer.TestHandler"/>
-
     <!-- executorFilter多线程处理 -->
     <bean id="executorFilter" class="org.apache.mina.filter.executor.ExecutorFilter" />
     <bean id="mdcInjectionFilter" class="org.apache.mina.filter.logging.MdcInjectionFilter">

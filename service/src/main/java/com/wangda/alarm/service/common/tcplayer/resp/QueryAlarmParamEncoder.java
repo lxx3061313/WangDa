@@ -61,11 +61,6 @@ public class QueryAlarmParamEncoder implements MessageEncoder<QueryAlarmParam> {
         buffer.put(ByteBufferUtil.dateToBytes(body.getEndTime()));
         //4.4 报警类型数
         buffer.put(ByteBufferUtil.shortToBytes(body.getAlarmTypeNum()));
-        //4.5 报警类型
-        List<Byte> alarmTypes = body.getAlarmTypes();
-        for (Byte b : alarmTypes) {
-            buffer.put(b);
-        }
         buffer.flip();
         out.write(buffer);
     }

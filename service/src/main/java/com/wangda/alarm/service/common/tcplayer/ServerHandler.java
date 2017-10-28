@@ -8,15 +8,18 @@ import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.springframework.stereotype.Service;
 
 /**
  * @author lixiaoxiong
  * @version 2017-10-23
  */
-public class TestHandler extends IoHandlerAdapter {
-    private final static Logger logger = LoggerFactory.getLogger(TestHandler.class);
+@Service("serverHandler")
+public class ServerHandler extends IoHandlerAdapter {
+    private final static Logger logger = LoggerFactory.getLogger(ServerHandler.class);
 
-    public static ConcurrentHashMap<Long, IoSession> sessionsConcurrentHashMap = new ConcurrentHashMap<Long, IoSession>();
+    public static ConcurrentHashMap<String, IoSession> sessionsConcurrentHashMap = new ConcurrentHashMap<>();
+    public static String sessionKey = "session_key";
 
     @Override
     public void messageReceived(IoSession session, Object message) throws Exception {
@@ -35,17 +38,15 @@ public class TestHandler extends IoHandlerAdapter {
     @Override
     public void sessionCreated(IoSession session) throws Exception {
         logger.warn("remote client [" + session.getRemoteAddress().toString() + "] connected.");
-        // my
         Long time = System.currentTimeMillis();
         session.setAttribute("id", time);
-        sessionsConcurrentHashMap.put(time, session);
+        sessionsConcurrentHashMap.put(sessionKey, session);
     }
     @Override
     public void sessionClosed(IoSession session) throws Exception {
         logger.warn("sessionClosed.");
         session.closeOnFlush();
-        // my
-        sessionsConcurrentHashMap.remove(session.getAttribute("id"));
+        sessionsConcurrentHashMap.remove(sessionKey);
     }
     @Override
     public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
@@ -56,12 +57,15 @@ public class TestHandler extends IoHandlerAdapter {
     @Override
     public void sessionOpened(IoSession session) throws Exception {
         logger.warn("sessionOpened.");
-        //  
         //session.getConfig().setIdleTime(IdleStatus.BOTH_IDLE, IDLE);
     }
     @Override
     public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
         session.closeOnFlush();
         logger.warn("session occured exception, so close it." + cause.getMessage());
+    }
+
+    public IoSession getSession() {
+        return sessionsConcurrentHashMap.get(sessionKey);
     }
 }
