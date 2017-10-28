@@ -18,7 +18,7 @@ public abstract class WangDaContextDecoder<T> implements MessageDecoder {
 
     @Override
     public MessageDecoderResult decodable(IoSession session, IoBuffer in) {
-        return null;
+        return intervalDecodeable(session, in);
     }
 
     @Override
@@ -30,7 +30,7 @@ public abstract class WangDaContextDecoder<T> implements MessageDecoder {
             buffer.put(b);
         }
         buffer.flip();
-        T data = decodeData(session, in);
+        T data = decodeData(session, buffer);
         out.write(data);
         return MessageDecoderResult.OK;
     }

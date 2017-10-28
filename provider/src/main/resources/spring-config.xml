@@ -11,17 +11,26 @@
             <!--location="classpath:*.properties"-->
             <!--ignore-unresolvable="true"/>-->
 
-    <bean id="propertyConfigurer"
-          class="com.wangda.alarm.service.springconfig.MConfigDriver">
-        <property name="locations"> <!-- 本地文件-->
+    <!--<bean id="propertyConfigurer"-->
+          <!--class="com.wangda.alarm.service.common.springconfig.MConfigDriver">-->
+        <!--<property name="locations"> &lt;!&ndash; 本地文件&ndash;&gt;-->
+            <!--<list>-->
+                <!--<value>classpath:*.properties</value>-->
+            <!--</list>-->
+        <!--</property>-->
+        <!--<property name="MConfigLocations">&lt;!&ndash; 远程文件&ndash;&gt;-->
+            <!--<set>-->
+                <!--<value>profile.properties</value>-->
+            <!--</set>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
             <list>
-                <value>classpath:*.properties</value>
+                <!-- 这里支持多种寻址方式：classpath和file -->
+                <value>classpath:profile.properties</value>
             </list>
-        </property>
-        <property name="MConfigLocations"><!-- 远程文件-->
-            <set>
-                <value>profile.properties</value>
-            </set>
         </property>
     </bean>
 

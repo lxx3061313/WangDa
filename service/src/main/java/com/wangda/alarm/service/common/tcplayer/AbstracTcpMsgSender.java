@@ -21,7 +21,7 @@ public abstract class AbstracTcpMsgSender<T> implements TcpMsgSender<T> {
         onSessionSucc(msg);
     }
 
-    public abstract IoSession getSession();
-    public abstract void onSessionError(T msg);
-    public abstract void onSessionSucc(T msg);
+    protected abstract IoSession getSession();
+    protected abstract void onSessionError(T msg);
+    protected abstract void onSessionSucc(T msg);
 }

@@ -27,7 +27,6 @@ public class UserAuthBiz {
     @Resource
     LoginSessionService loginSessionService;
 
-    @Resource
     public void auth(String userName, String password, HttpServletResponse response) {
         UserInfoPo auth = userAuthService.auth(userName, password);
 

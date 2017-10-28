@@ -47,7 +47,7 @@
                 <!--日志的filter-->
                 <entry key="loggingFilter" value-ref="loggingFilter" />
                 <!--心跳filter-->
-                <entry key="keepAliveFilter" value-ref="keepAliveFilter" />
+                <!--<entry key="keepAliveFilter" value-ref="keepAliveFilter" />-->
             </map>
         </property>
     </bean>

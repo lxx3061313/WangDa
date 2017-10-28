@@ -28,12 +28,14 @@
     </settings>
 
     <typeHandlers>
+        <typeHandler handler="com.wangda.alarm.service.common.util.mybatis.typehandler.JsonTypeHandler"
+            javaType="com.wangda.alarm.service.dao.po.AlarmExtInfoPo"/>
     </typeHandlers>
 
     <!-- RowBounds plugins-->
     <plugins>
-        <plugin interceptor="com.benmu.mts.root.support.interceptor.ResultSetHandlerInterceptor"/>
-        <plugin interceptor="com.benmu.mts.root.support.interceptor.StatementHandlerInterceptor"/>
+        <plugin interceptor="com.wangda.alarm.service.common.util.mybatis.interceptor.ResultSetHandlerInterceptor"/>
+        <plugin interceptor="com.wangda.alarm.service.common.util.mybatis.interceptor.StatementHandlerInterceptor"/>
     </plugins>
 
     <mappers>

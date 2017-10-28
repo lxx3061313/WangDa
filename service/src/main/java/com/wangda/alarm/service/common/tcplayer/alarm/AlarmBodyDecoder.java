@@ -118,18 +118,18 @@ public class AlarmBodyDecoder {
             body.setOverhaulType(OverhaulType.OTHER);
         }
         //4.16 预留长度
-        currentLimit = buffer.limit();
-        buffer.position(currentLimit);
-        buffer.limit(currentLimit + 1);
-        byte reserveLth = buffer.get();
-        body.setReservedCtxLth(reserveLth);
-        //4.17 预留内容
-        if (reserveLth != 0) {
-            currentLimit = buffer.limit();
-            buffer.position(currentLimit);
-            buffer.limit(currentLimit+reserveLth);
-            body.setReservedCtx(buffer.getString(cd));
-        }
+//        currentLimit = buffer.limit();
+//        buffer.position(currentLimit);
+//        buffer.limit(currentLimit + 1);
+//        byte reserveLth = buffer.get();
+//        body.setReservedCtxLth(reserveLth);
+//        //4.17 预留内容
+//        if (reserveLth != 0) {
+//            currentLimit = buffer.limit();
+//            buffer.position(currentLimit);
+//            buffer.limit(currentLimit+reserveLth);
+//            body.setReservedCtx(buffer.getString(cd));
+//        }
         return body;
     }
 }

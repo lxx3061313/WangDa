@@ -62,6 +62,16 @@
         <url-pattern>/wangda/mobile/*</url-pattern>
     </filter-mapping>
 
+    <filter>
+        <filter-name>accessLogFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <async-supported>true</async-supported>
+    </filter>
+    <filter-mapping>
+        <filter-name>accessLogFilter</filter-name>
+        <url-pattern>/wangda/*</url-pattern>
+    </filter-mapping>
+
     <!-- Druid,监控数据库,以及WEB访问连接信息 -->
     <!-- 参考: https://github.com/alibaba/druid/wiki/%E9%85%8D%E7%BD%AE_%E9%85%8D%E7%BD%AEWebStatFilter -->
     <filter>

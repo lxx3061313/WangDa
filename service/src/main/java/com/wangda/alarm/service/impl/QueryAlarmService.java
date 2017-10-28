@@ -21,17 +21,17 @@ public class QueryAlarmService extends AbstracTcpMsgSender<QueryAlarmParam>{
     ServerHandler serverHandler;
 
     @Override
-    public IoSession getSession() {
+    protected IoSession getSession() {
         return serverHandler.getSession();
     }
 
     @Override
-    public void onSessionError(QueryAlarmParam msg) {
+    protected void onSessionError(QueryAlarmParam msg) {
         logger.error("发送查询历史报警命令失败");
     }
 
     @Override
-    public void onSessionSucc(QueryAlarmParam msg) {
+    protected void onSessionSucc(QueryAlarmParam msg) {
 
     }
 }

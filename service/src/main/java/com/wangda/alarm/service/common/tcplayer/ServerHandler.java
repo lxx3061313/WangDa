@@ -1,8 +1,10 @@
 package com.wangda.alarm.service.common.tcplayer;
 
+import com.wangda.alarm.service.common.message.MessageDispatcher;
 import com.wangda.alarm.service.common.util.json.JsonUtil;
 import java.net.InetSocketAddress;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.annotation.Resource;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
@@ -21,14 +23,17 @@ public class ServerHandler extends IoHandlerAdapter {
     public static ConcurrentHashMap<String, IoSession> sessionsConcurrentHashMap = new ConcurrentHashMap<>();
     public static String sessionKey = "session_key";
 
+    @Resource
+    MessageDispatcher messageDispatcher;
+
     @Override
     public void messageReceived(IoSession session, Object message) throws Exception {
-        logger.warn("客户端" + ((InetSocketAddress) session.getRemoteAddress()).getAddress().getHostAddress() + "连接成功！");
-        session.setAttribute("type", message);
-        String remoteAddress = ((InetSocketAddress) session.getRemoteAddress()).getAddress().getHostAddress();
-        session.setAttribute("ip", remoteAddress);
+//        logger.warn("客户端" + ((InetSocketAddress) session.getRemoteAddress()).getAddress().getHostAddress() + "连接成功！");
+//        session.setAttribute("type", message);
+//        String remoteAddress = ((InetSocketAddress) session.getRemoteAddress()).getAddress().getHostAddress();
+//        session.setAttribute("ip", remoteAddress);
         logger.warn("服务器收到的消息是：" + JsonUtil.of(message));
-        //session.write("welcome by he");
+        messageDispatcher.dispatch(session, message);
     }
 
     @Override

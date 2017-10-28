@@ -50,7 +50,7 @@
     <tx:annotation-driven transaction-manager="transactionManagerMossad"/>
 
 
-    <bean id="sqlSessionFactoryMossad" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="mossad_dataSource"/>
         <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
         <property name="mapperLocations" value="classpath*:mappers/*.xml"/>
@@ -59,7 +59,7 @@
     </bean>
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.benmu.mts.mossad.dao"/>
-        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactoryMossad"/>
+        <property name="basePackage" value="com.wangda.alarm.service.dao"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
 </beans>

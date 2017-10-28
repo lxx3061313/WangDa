@@ -6,6 +6,7 @@ package com.wangda.alarm.service.bean.standard;
  */
 public enum DataTypeCode {
     QUERY_CMD((byte)0x1A, (byte)0xFF),
+    QUERY_RESP((byte)0x1A, (byte)0xFF),
     FAULT_NOC((byte)0x1A, (byte)0x06),
     ALARM_DATA((byte)0x40, (byte)0x07);
     private byte dataType;

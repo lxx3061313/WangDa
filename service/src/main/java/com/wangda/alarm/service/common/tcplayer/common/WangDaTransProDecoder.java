@@ -13,7 +13,7 @@ import org.apache.mina.core.buffer.IoBuffer;
  */
 public abstract class WangDaTransProDecoder<T> {
 
-    public static WangDaBizBean decoderProtocol(IoBuffer buffer, CharsetDecoder cd) {
+    public WangDaBizBean decoderProtocol(IoBuffer buffer, CharsetDecoder cd) {
         WangDaBizBean context = new WangDaBizBean();
         //1. data_len
         buffer.position(ProtocalFieldsDesc.PROTOCOL_DATA_LENGTH.getPosition());
@@ -29,7 +29,8 @@ public abstract class WangDaTransProDecoder<T> {
         } else if (i == 0x0f) {
             context.setBeanType(BizBeanType.HEART);
         }
-        context.setData(decoderProtocol(buffer, cd));
+        context.setData(decodeData(buffer, cd));
+        buffer.flip();
         return context;
     }
 

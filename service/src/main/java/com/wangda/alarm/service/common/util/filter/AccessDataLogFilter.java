@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
@@ -34,6 +35,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * 最后将该filter配置到Spring.
  * 
  */
+@Service
 public class AccessDataLogFilter extends OncePerRequestFilter {
     private static final int MAX_CACHE_LEN = 2 * 1024 * 1024;
     private static final int INIT_CACHE_LEN = 512 * 1024;

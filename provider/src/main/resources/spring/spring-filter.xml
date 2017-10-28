@@ -5,7 +5,7 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
     <!-- 下单日志记录过滤器 -->
-    <bean id="mossadAccessLogFilter" class="com.wangda.alarm.service.util.filter.AccessDataLogFilter">
+    <bean id="accessLogFilter" class="com.wangda.alarm.service.common.util.filter.AccessDataLogFilter">
         <property name="loggerName" value="accessDataLog"/>
     </bean>
 

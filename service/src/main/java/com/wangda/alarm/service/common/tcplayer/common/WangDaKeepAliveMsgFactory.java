@@ -11,15 +11,21 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class WangDaKeepAliveMsgFactory implements KeepAliveMessageFactory {
-
+    private final String BYTE_ARRAY_CLASS_NAME = "byte[]";
     @Override
     public boolean isRequest(IoSession session, Object message) {
+        if (!BYTE_ARRAY_CLASS_NAME.equals(message.getClass().getSimpleName())) {
+            return false;
+        }
         byte [] temp = (byte []) message;
         return KeepAliveMsg.isKeepAliveMsg(temp);
     }
 
     @Override
     public boolean isResponse(IoSession session, Object message) {
+        if (!BYTE_ARRAY_CLASS_NAME.equals(message.getClass().getSimpleName())) {
+            return false;
+        }
         byte [] temp = (byte []) message;
         return KeepAliveMsg.isKeepAliveMsg(temp);
     }

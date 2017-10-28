@@ -1,5 +1,7 @@
 package com.wangda.alarm.service.common.tcplayer.fault;
 
+import com.wangda.alarm.service.bean.standard.DataType;
+import com.wangda.alarm.service.bean.standard.DataTypeCode;
 import com.wangda.alarm.service.bean.standard.alarminfo.fault.FaultContext;
 import com.wangda.alarm.service.bean.standard.protocol.ProtocalFieldsDesc;
 import com.wangda.alarm.service.common.tcplayer.common.WangDaContextDecoder;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class FaultCtxDecoder extends WangDaContextDecoder<FaultContext> {
 
+    private static final byte FAULT_ZIP_FLAG = (byte)0x00;
     @Resource
     FaultDataDecoder faultDataDecoder;
 
@@ -30,35 +33,32 @@ public class FaultCtxDecoder extends WangDaContextDecoder<FaultContext> {
 
     @Override
     public MessageDecoderResult intervalDecodeable(IoSession session, IoBuffer in) {
-        in.position(ProtocalFieldsDesc.FAULT_HEADER_DATACMD_CODE.getPosition());
-        in.limit(ProtocalFieldsDesc.FAULT_HEADER_DATACMD_CODE.getLimit());
-        byte dataCmd = in.get();
         MessageDecoderResult result;
         //1. 判断是命令还是数据
-        if (dataCmd == 1) {
+        byte dataCmd = ByteBufferUtil.extractByte(in, ProtocalFieldsDesc.FAULT_HEADER_DATACMD_CODE);
+        if (dataCmd == DataType.CMD.getCode()) {
             in.flip();
             return MessageDecoderResult.NOT_OK;
         }
 
         //2. 判断压缩位
-        in.position(ProtocalFieldsDesc.FAULT_HEADER_ZIP_FLAG.getPosition());
-        in.limit(ProtocalFieldsDesc.FAULT_HEADER_ZIP_FLAG.getLimit());
-        byte zipFlag = in.get();
-        int iflag = ByteBufferUtil.byteToInt(zipFlag);
-        //2.1 有压缩位
-        if (iflag == 0 || iflag == 1) {
-            in.position(ProtocalFieldsDesc.FAULT_HEADER_VERSION.getPosition());
-            in.limit(ProtocalFieldsDesc.FAULT_HEADER_VERSION.getLimit());
-            byte version = in.get();
-            if (ByteBufferUtil.byteToInt(version) == 0xe0) {
-                result = MessageDecoderResult.OK;
-            } else {
-                result = MessageDecoderResult.NOT_OK;
-            }
+        byte zipFlag = ByteBufferUtil.extractByte(in, ProtocalFieldsDesc.FAULT_HEADER_ZIP_FLAG);
+        if (zipFlag != FAULT_ZIP_FLAG) {
+            in.flip();
+            return MessageDecoderResult.NOT_OK;
+        }
+
+
+        //3. 判断是数据类型
+        byte dataTypeCode = ByteBufferUtil.extractByte(in, ProtocalFieldsDesc.FAULT_HEADER_DATA_TYPE);
+        byte dataSubTypeCode = ByteBufferUtil.extractByte(in, ProtocalFieldsDesc.FAULT_HEADER_DATA_SUBTYPE);
+
+        if (DataTypeCode.FAULT_NOC.getDataType() == dataTypeCode &&
+                DataTypeCode.FAULT_NOC.getDataSubType() == dataSubTypeCode) {
+            result = MessageDecoderResult.OK;
         } else {
             result = MessageDecoderResult.NOT_OK;
         }
-
         in.flip();
         return result;
     }

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  * @version 2017-10-25
  */
 @Service
-public class AlarmInfoService {
+public class AlarmInfoService{
 
     @Resource
     AlarmInfoDao alarmInfoDao;

@@ -1,5 +1,6 @@
 package com.wangda.alarm.service.common.tcplayer.alarm;
 
+import com.wangda.alarm.service.bean.standard.DataTypeCode;
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmContext;
 import com.wangda.alarm.service.bean.standard.protocol.ProtocalFieldsDesc;
 import com.wangda.alarm.service.common.tcplayer.common.WangDaContextDecoder;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AlarmCtxDecoder extends WangDaContextDecoder<AlarmContext> {
-
+    private final static byte ALARM_VERSION_CODE = (byte)0xE0;
     @Resource
     AlarmDataDecoder alarmDataDecoder;
 
@@ -30,26 +31,30 @@ public class AlarmCtxDecoder extends WangDaContextDecoder<AlarmContext> {
 
     @Override
     public MessageDecoderResult intervalDecodeable(IoSession session, IoBuffer in) {
-        in.position(ProtocalFieldsDesc.ALARM_HEADER_DATACMD_CODE.getPosition());
-        in.limit(ProtocalFieldsDesc.ALARM_HEADER_DATACMD_CODE.getLimit());
         MessageDecoderResult result;
-        byte dataCmd = in.get();
+
         //1. 判断是命令还是数据
+        byte dataCmd = ByteBufferUtil.extractByte(in, ProtocalFieldsDesc.ALARM_HEADER_DATACMD_CODE);
         if (dataCmd == 1) {
             in.flip();
             return MessageDecoderResult.NOT_OK;
         }
 
-        //2. 判断是否有压缩位
-        in.position(ProtocalFieldsDesc.FAULT_HEADER_ZIP_FLAG.getPosition());
-        in.limit(ProtocalFieldsDesc.FAULT_HEADER_ZIP_FLAG.getLimit());
-        byte zipFlag = in.get();
-        int iflag = ByteBufferUtil.byteToInt(zipFlag);
-        //2.1 没有压缩位
-        if (iflag != 0 && iflag != 1 && iflag == 0xe0) {
-            result =   MessageDecoderResult.OK;
+        //2. 判断是否有压缩位(报警没有压缩标记)
+        byte version = ByteBufferUtil.extractByte(in, ProtocalFieldsDesc.ALARM_HEADER_VERSION);
+        if (version != ALARM_VERSION_CODE) {
+            in.flip();
+            return MessageDecoderResult.NOT_OK;
+        }
+
+        //3. 数据类型码
+        byte dataCode = ByteBufferUtil.extractByte(in, ProtocalFieldsDesc.ALARM_HEADER_DATA_TYPE_CODE);
+        byte subDataCode = ByteBufferUtil.extractByte(in, ProtocalFieldsDesc.ALARM_HEADER_DATA_SUBTYPE_CODE);
+        if (DataTypeCode.ALARM_DATA.getDataType() == dataCode &&
+                DataTypeCode.ALARM_DATA.getDataSubType() == subDataCode) {
+            result = MessageDecoderResult.OK;
         } else {
-            result =   MessageDecoderResult.NOT_OK;
+            result = MessageDecoderResult.NOT_OK;
         }
 
         in.flip();
