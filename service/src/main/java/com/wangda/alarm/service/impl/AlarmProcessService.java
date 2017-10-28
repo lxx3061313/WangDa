@@ -19,7 +19,7 @@ public class AlarmProcessService extends AbstractMessageProcessor<AlarmContext>{
     @Override
     public void processInterval(IoSession session, AlarmContext message) {
         //SAVE
-        logger.info("收到报警数据,{}", JsonUtil.of(message));
+        logger.info("receive alarm data,{}", JsonUtil.of(message));
     }
 
     @Override

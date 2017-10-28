@@ -18,7 +18,7 @@ public class FaultProcessService extends AbstractMessageProcessor<FaultContext> 
 
     @Override
     public void processInterval(IoSession session, FaultContext message) {
-        logger.info("收到故障报警数据, {}", JsonUtil.of(message));
+        logger.info("receive fault data, {}", JsonUtil.of(message));
     }
 
     @Override

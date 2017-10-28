@@ -17,7 +17,7 @@ public class RespProcessService extends AbstractMessageProcessor<RespContext> {
     private final static Logger logger = LoggerFactory.getLogger(RespProcessService.class);
     @Override
     public void processInterval(IoSession session, RespContext message) {
-        logger.info("收到回执数据, {}", JsonUtil.of(message));
+        logger.info("receive resp data, {}", JsonUtil.of(message));
     }
 
     @Override
