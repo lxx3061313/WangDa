@@ -69,11 +69,11 @@ public enum ProtocalFieldsDesc {
     RESP_BODY_DEVICE_NAME(0, 0, "设备名称", -1),
     RESP_BODY_ALARM_CTXLTH(0, 0, "报警内容长度", 1),
     RESP_BODY_ALARM_CTX(0, 0, "报警内容", -1),
-    RESP_BODY_RESERVE1(0, 0, "预留1", 2),
-    RESP_BODY_RESERVE2(0, 0, "预留2", 2),
-    RESP_BODY_ALARM_LEVEL(0, 0, "报警级别", 1),
+    RESP_BODY_RESERVE1(0, 0, "预留长度", 2),
+    /** 下面三个字段是预留内容 */
     RESP_BODY_DEVICE_TYPE(0, 0, "设备类型", 2),
-    RESP_BODY_DEVICE_NO(0, 0, "设备编号", 2);
+    RESP_BODY_DEVICE_NO(0, 0, "设备编号", 2),
+    RESP_BODY_ALARM_LEVEL(0, 0, "报警级别", 1);
     private int position;
     private int limit;
     private String desc;

@@ -1,5 +1,6 @@
 package com.wangda.alarm.service.common.tcplayer.alarm;
 
+import com.wangda.alarm.service.bean.standard.DataType;
 import com.wangda.alarm.service.bean.standard.DataTypeCode;
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmContext;
 import com.wangda.alarm.service.bean.standard.protocol.ProtocalFieldsDesc;
@@ -35,7 +36,7 @@ public class AlarmCtxDecoder extends WangDaContextDecoder<AlarmContext> {
 
         //1. 判断是命令还是数据
         byte dataCmd = ByteBufferUtil.extractByte(in, ProtocalFieldsDesc.ALARM_HEADER_DATACMD_CODE);
-        if (dataCmd == 1) {
+        if (dataCmd == DataType.CMD.getCode()) {
             in.flip();
             return MessageDecoderResult.NOT_OK;
         }
@@ -56,8 +57,6 @@ public class AlarmCtxDecoder extends WangDaContextDecoder<AlarmContext> {
         } else {
             result = MessageDecoderResult.NOT_OK;
         }
-
-        in.flip();
         return result;
     }
 }

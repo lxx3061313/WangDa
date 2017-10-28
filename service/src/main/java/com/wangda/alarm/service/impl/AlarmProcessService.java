@@ -2,6 +2,7 @@ package com.wangda.alarm.service.impl;
 
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmContext;
 import com.wangda.alarm.service.common.message.AbstractMessageProcessor;
+import com.wangda.alarm.service.common.util.json.JsonUtil;
 import org.apache.mina.core.session.IoSession;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -18,7 +19,7 @@ public class AlarmProcessService extends AbstractMessageProcessor<AlarmContext>{
     @Override
     public void processInterval(IoSession session, AlarmContext message) {
         //SAVE
-        logger.info("message save to the db");
+        logger.info("收到报警数据,{}", JsonUtil.of(message));
     }
 
     @Override

@@ -102,6 +102,10 @@ public class ByteBufferUtil {
         return value;
     }
 
+    public static short bytesToShort(byte[] ary) {
+        return bytesToShort(ary, 0);
+    }
+
     public static short byteToShort(IoBuffer buffer) {
         byte []temp = new byte[2];
         buffer.get(temp);
@@ -201,6 +205,7 @@ public class ByteBufferUtil {
         for (byte b : bytes) {
             buffer.put(b);
         }
+        buffer.flip();
         return buffer.getString(cd);
     }
 
@@ -241,6 +246,9 @@ public class ByteBufferUtil {
 
     public static Date byteToDate(byte [] bytes) {
         int ptimestamp = ByteBufferUtil.bytesToInt(bytes, 0);
+        if (ptimestamp ==0) {
+            return null;
+        }
         return new Date(ptimestamp * 1000L);
     }
 

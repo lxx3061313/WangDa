@@ -81,20 +81,10 @@ public class RespBodyDecoder {
                     }
                 }
 
-                //3.8 预留1
-                byte[] r1 = ByteBufferUtil
+                //3.8 预留长度
+                byte[] r = ByteBufferUtil
                         .forward(buffer, ProtocalFieldsDesc.RESP_BODY_RESERVE1.getByteLth());
-                record.setReserve1(r1);
-
-                //3.9 预留2
-                byte[] r2 = ByteBufferUtil
-                        .forward(buffer, ProtocalFieldsDesc.RESP_BODY_RESERVE2.getByteLth());
-                record.setReserve2(r2);
-
-                //3.10 报警级别
-                byte[] level = ByteBufferUtil
-                        .forward(buffer, ProtocalFieldsDesc.RESP_BODY_ALARM_LEVEL.getByteLth());
-                record.setLevel(AlarmLevel.codeOf(level[0]));
+                record.setReserve1(r);
 
                 //3.11 设备类型
                 byte[] dtype = ByteBufferUtil
@@ -106,6 +96,11 @@ public class RespBodyDecoder {
                         .forward(buffer, ProtocalFieldsDesc.RESP_BODY_DEVICE_NO.getByteLth());
                 record.setDeviceNo(dno);
                 respRecords.add(record);
+
+                //3.10 报警级别
+                byte[] level = ByteBufferUtil
+                        .forward(buffer, ProtocalFieldsDesc.RESP_BODY_ALARM_LEVEL.getByteLth());
+                record.setLevel(AlarmLevel.codeOf(level[0]));
             }
             body.setRespRecords(respRecords);
             return body;
