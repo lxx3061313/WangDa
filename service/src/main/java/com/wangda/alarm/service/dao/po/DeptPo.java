@@ -8,7 +8,7 @@ public class DeptPo {
     private int id;
     private int num;
     private int pid;
-    private int pids;
+    private String pids;
     private String simpleName;
     private String fullName;
     private String tips;
@@ -38,11 +38,11 @@ public class DeptPo {
         this.pid = pid;
     }
 
-    public int getPids() {
+    public String getPids() {
         return pids;
     }
 
-    public void setPids(int pids) {
+    public void setPids(String pids) {
         this.pids = pids;
     }
 

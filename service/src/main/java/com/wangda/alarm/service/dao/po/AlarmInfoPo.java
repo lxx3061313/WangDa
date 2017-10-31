@@ -28,11 +28,6 @@ public class AlarmInfoPo {
     private String workAreaCode;
 
     /**
-     * 车站code
-     */
-    private String stationCode;
-
-    /**
      * 目的电报码(服务器编码)
      */
     private String targetTeleCode;
@@ -92,10 +87,6 @@ public class AlarmInfoPo {
      */
     private OverhaulType overhaulFlag;
 
-    /**
-     * 收到重复报警次数
-     */
-    private int repeatCount;
 
     private Date createTime;
     private String remark;
@@ -198,14 +189,6 @@ public class AlarmInfoPo {
         this.overhaulFlag = overhaulFlag;
     }
 
-    public int getRepeatCount() {
-        return repeatCount;
-    }
-
-    public void setRepeatCount(int repeatCount) {
-        this.repeatCount = repeatCount;
-    }
-
     public Date getCreateTime() {
         return createTime;
     }
@@ -260,13 +243,5 @@ public class AlarmInfoPo {
 
     public void setWorkAreaCode(String workAreaCode) {
         this.workAreaCode = workAreaCode;
-    }
-
-    public String getStationCode() {
-        return stationCode;
-    }
-
-    public void setStationCode(String stationCode) {
-        this.stationCode = stationCode;
     }
 }

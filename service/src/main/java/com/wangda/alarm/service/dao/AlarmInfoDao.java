@@ -21,4 +21,6 @@ public interface AlarmInfoDao {
      */
     List<AlarmInfoPo> queryAlarmBySegAndLev(@Param("segment") String segment,
             @Param("level")AlarmLevel level);
+
+    int saveAlarmInfo(AlarmInfoPo po);
 }

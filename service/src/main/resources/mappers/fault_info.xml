@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wangda.alarm.service.dao.FaultInfoDao">
+
+    <sql id="fields">
+        id,
+        target_code,
+        source_code
+        noc_time,
+        process_time,
+        recover_time,
+        reserve_time,
+        fault_reason,
+        create_time
+    </sql>
+
+    <insert id="saveFaultInfo" parameterType="com.wangda.alarm.service.dao.po.FaultInfoPo">
+        INSERT INTO fault_info(
+        target_code,
+        source_code,
+        noc_time,
+        process_time,
+        recover_time,
+        reserve_time,
+        fault_reason,
+        create_time
+        ) VALUES (
+        #{targetTelecode},
+        #{sourceTelecode},
+        #{nocTime},
+        #{processtime},
+        #{recoverTime},
+        #{reserveTime},
+        #{faultReason},
+        #{creatTime}
+        )
+    </insert>
+</mapper>

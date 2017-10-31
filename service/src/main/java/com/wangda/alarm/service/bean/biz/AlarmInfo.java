@@ -9,15 +9,26 @@ import java.util.Date;
  * @version 2017-10-25
  */
 public class AlarmInfo {
+    private String serverCode;
     private String stationCode;
     private String stationName;
     private String segmentCode;
     private String segmentName;
+    /**
+     * 工作间code
+     */
+    private String workshopCode;
+
+    /**
+     * 工区code
+     */
+    private String workAreaCode;
     private AlarmLevel alarmLevel;
     private int deviceNo;
     private String deviceName;
     private String alarmContext;
     private Date alarmTime;
+    private int alarmType;
     private Date recoverTime;
     private int repeatCount;
     private AlarmStatus status;
@@ -116,5 +127,37 @@ public class AlarmInfo {
 
     public void setStatus(AlarmStatus status) {
         this.status = status;
+    }
+
+    public String getWorkshopCode() {
+        return workshopCode;
+    }
+
+    public void setWorkshopCode(String workshopCode) {
+        this.workshopCode = workshopCode;
+    }
+
+    public String getWorkAreaCode() {
+        return workAreaCode;
+    }
+
+    public void setWorkAreaCode(String workAreaCode) {
+        this.workAreaCode = workAreaCode;
+    }
+
+    public String getServerCode() {
+        return serverCode;
+    }
+
+    public void setServerCode(String serverCode) {
+        this.serverCode = serverCode;
+    }
+
+    public int getAlarmType() {
+        return alarmType;
+    }
+
+    public void setAlarmType(int alarmType) {
+        this.alarmType = alarmType;
     }
 }

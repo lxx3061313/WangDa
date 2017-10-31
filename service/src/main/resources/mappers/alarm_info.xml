@@ -20,7 +20,6 @@
         status,
         alarm_context AS alarmContext,
         overhaul_flag AS overhaulFlag,
-        repeat_count AS repeatCount,
         create_time AS createTime,
         remark,
         ext_info AS extInfo
@@ -44,7 +43,6 @@
         status,
         alarm_context,
         overhaul_flag,
-        repeat_count,
         create_time,
         remark,
         ext_info
@@ -62,7 +60,6 @@
         #{status},
         #{alarmContext},
         #{overhaulFlag},
-        #{repeatCount},
         #{createTime},
         #{remark},
         #{extInfo}

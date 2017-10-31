@@ -66,6 +66,7 @@ public class FaultBodyDecoder {
             }
             records.add(record);
         }
+        body.setRecords(records);
         return body;
     }
 }

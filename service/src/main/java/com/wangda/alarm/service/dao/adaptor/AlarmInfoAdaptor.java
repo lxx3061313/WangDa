@@ -1,8 +1,25 @@
 package com.wangda.alarm.service.dao.adaptor;
 
 import com.wangda.alarm.service.bean.biz.AlarmInfo;
+import com.wangda.alarm.service.bean.biz.DeptHierarchyInfo;
+import com.wangda.alarm.service.bean.standard.OverhaulType;
+import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmBody;
+import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmContext;
+import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmHeader;
+import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmStatus;
+import com.wangda.alarm.service.bean.standard.alarminfo.fault.FaultBody;
+import com.wangda.alarm.service.bean.standard.alarminfo.fault.FaultContext;
+import com.wangda.alarm.service.bean.standard.alarminfo.fault.FaultHeader;
+import com.wangda.alarm.service.bean.standard.alarminfo.resp.RespBody;
+import com.wangda.alarm.service.bean.standard.alarminfo.resp.RespContext;
+import com.wangda.alarm.service.bean.standard.alarminfo.resp.RespHeader;
+import com.wangda.alarm.service.bean.standard.alarminfo.resp.RespRecord;
+import com.wangda.alarm.service.common.util.ByteBufferUtil;
+import com.wangda.alarm.service.dao.po.AlarmExtInfoPo;
 import com.wangda.alarm.service.dao.po.AlarmInfoPo;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
@@ -24,14 +41,70 @@ public class AlarmInfoAdaptor {
         alarmInfo.setAlarmContext(po.getAlarmContext());
         alarmInfo.setAlarmTime(po.getAlarmTime());
         alarmInfo.setRecoverTime(po.getRecoverTime());
-        alarmInfo.setRepeatCount(po.getRepeatCount());
         alarmInfo.setStatus(po.getStatus());
         return alarmInfo;
     }
 
     public static List<AlarmInfo> adaptToAlarmInfos(List<AlarmInfoPo> pos) {
-        if (CollectionUtils.isEmpty(pos))
+        if (CollectionUtils.isEmpty(pos)) {
             return Collections.EMPTY_LIST;
+        }
         return pos.stream().map(AlarmInfoAdaptor::adaptoAlarmInfo).collect(Collectors.toList());
+    }
+
+    public static AlarmInfoPo adaptToAlarmPo(AlarmContext context, DeptHierarchyInfo hinfo) {
+        AlarmInfoPo po = new AlarmInfoPo();
+        po.setSegment(hinfo.getSegmentSimpleName());
+        po.setWorkshopCode(hinfo.getWorkShopSimpleName());
+        po.setWorkAreaCode(hinfo.getWorkAreaSimpleName());
+
+        AlarmHeader header = new AlarmHeader();
+        po.setTargetTeleCode(header.getTargetTeleCode());
+        po.setSourceTeleCode(header.getSourceTeleCode());
+
+        AlarmBody body = new AlarmBody();
+        po.setAlarmType(ByteBufferUtil.bytesToInt(body.getAlartType(), 0));
+        po.setAlarmLevel(body.getAlartLevel());
+        po.setDeviceType(ByteBufferUtil.bytesToInt(body.getDeviceType(), 0));
+        po.setDeviceNo(ByteBufferUtil.bytesToInt(body.getDeviceNo(), 0));
+        po.setDeviceName(body.getDeviceName());
+        po.setAlarmTime(body.getAlarmTime());
+        po.setRecoverTime(body.getRecoverTime());
+        po.setStatus(body.getStatus());
+        po.setAlarmContext(body.getAlarmCtx());
+        po.setOverhaulFlag(body.getOverhaulType());
+        po.setCreateTime(new Date());
+        po.setRemark("");
+        po.setExtInfo(new AlarmExtInfoPo());
+        return po;
+    }
+
+    public static List<AlarmInfoPo> adaptToAlarmPo(RespContext faultContext, DeptHierarchyInfo hinfo) {
+        RespHeader header = faultContext.getHeader();
+        RespBody body = faultContext.getBody();
+        List<AlarmInfoPo> result = new ArrayList<>();
+        List<RespRecord> respRecords = body.getRespRecords();
+        for (RespRecord respRecord : respRecords) {
+            AlarmInfoPo po = new AlarmInfoPo();
+            po.setSegment(hinfo.getSegmentSimpleName());
+            po.setWorkshopCode(hinfo.getWorkShopSimpleName());
+            po.setWorkAreaCode(hinfo.getWorkAreaSimpleName());
+            po.setTargetTeleCode(header.getTargetTeleCode());
+            po.setSourceTeleCode(header.getSourceTeleCode());
+            po.setAlarmType(0);
+            po.setAlarmLevel(respRecord.getLevel());
+            po.setDeviceType(ByteBufferUtil.bytesToInt(respRecord.getDeviceType(), 0));
+            po.setDeviceNo(ByteBufferUtil.bytesToInt(respRecord.getDeviceNo(), 0));
+            po.setDeviceName(respRecord.getDeviceName());
+            po.setAlarmTime(respRecord.getHappenTime());
+            po.setRecoverTime(respRecord.getRecoverTime());
+            po.setStatus(AlarmStatus.ALARM);
+            po.setAlarmContext(respRecord.getAlarmCtx());
+            po.setOverhaulFlag(OverhaulType.OTHER);
+            po.setCreateTime(new Date());
+            po.setRemark("");
+            result.add(po);
+        }
+        return result;
     }
 }
