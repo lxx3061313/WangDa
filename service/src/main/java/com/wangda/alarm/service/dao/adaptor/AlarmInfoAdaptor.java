@@ -58,15 +58,15 @@ public class AlarmInfoAdaptor {
         po.setWorkshopCode(hinfo.getWorkShopSimpleName());
         po.setWorkAreaCode(hinfo.getWorkAreaSimpleName());
 
-        AlarmHeader header = new AlarmHeader();
+        AlarmHeader header = context.getHeader();
         po.setTargetTeleCode(header.getTargetTeleCode());
         po.setSourceTeleCode(header.getSourceTeleCode());
 
-        AlarmBody body = new AlarmBody();
-        po.setAlarmType(ByteBufferUtil.bytesToInt(body.getAlartType(), 0));
+        AlarmBody body = context.getBody();
+        po.setAlarmType(ByteBufferUtil.bytesToShort(body.getAlartType()));
         po.setAlarmLevel(body.getAlartLevel());
-        po.setDeviceType(ByteBufferUtil.bytesToInt(body.getDeviceType(), 0));
-        po.setDeviceNo(ByteBufferUtil.bytesToInt(body.getDeviceNo(), 0));
+        po.setDeviceType(ByteBufferUtil.bytesToShort(body.getDeviceType()));
+        po.setDeviceNo(ByteBufferUtil.bytesToShort(body.getDeviceNo()));
         po.setDeviceName(body.getDeviceName());
         po.setAlarmTime(body.getAlarmTime());
         po.setRecoverTime(body.getRecoverTime());
@@ -93,9 +93,9 @@ public class AlarmInfoAdaptor {
             po.setSourceTeleCode(header.getSourceTeleCode());
             po.setAlarmType(0);
             po.setAlarmLevel(respRecord.getLevel());
-            po.setDeviceType(ByteBufferUtil.bytesToInt(respRecord.getDeviceType(), 0));
-            po.setDeviceNo(ByteBufferUtil.bytesToInt(respRecord.getDeviceNo(), 0));
-            po.setDeviceName(respRecord.getDeviceName());
+            po.setDeviceType(ByteBufferUtil.bytesToShort(respRecord.getDeviceType()));
+            po.setDeviceNo(ByteBufferUtil.bytesToShort(respRecord.getDeviceNo()));
+            po.setDeviceName(respRecord.getDeviceName() == null?"":respRecord.getDeviceName());
             po.setAlarmTime(respRecord.getHappenTime());
             po.setRecoverTime(respRecord.getRecoverTime());
             po.setStatus(AlarmStatus.ALARM);

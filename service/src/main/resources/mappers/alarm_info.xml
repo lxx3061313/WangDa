@@ -5,8 +5,8 @@
     <sql id="fields">
         id,
         segment,
-        wordshop_code AS workshopCode,
-        wordarea_code AS workAreaCode,
+        workshop_code AS workshopCode,
+        workdarea_code AS workAreaCode,
         station_code AS stationCode,
         target_telecode AS targetTeleCode,
         source_telecode AS sourceTeleCode,
@@ -28,9 +28,8 @@
     <insert id="saveAlarmInfo" parameterType="com.wangda.alarm.service.dao.po.AlarmInfoPo">
         INSERT INTO alarm_info(
         segment,
-        wordshop_code,
-        wordarea_code,
-        station_code,
+        workshop_code,
+        workarea_code,
         target_telecode,
         source_telecode,
         alarm_type,
@@ -40,7 +39,7 @@
         device_name,
         alarm_time,
         recover_time,
-        status,
+        alarm_status,
         alarm_context,
         overhaul_flag,
         create_time,
@@ -48,6 +47,8 @@
         ext_info
         ) VALUES (
         #{segment},
+        #{workshopCode},
+        #{workAreaCode},
         #{targetTeleCode},
         #{sourceTeleCode},
         #{alarmType},
@@ -64,6 +65,51 @@
         #{remark},
         #{extInfo}
         )
+    </insert>
+
+    <insert id="saveAlarmInfos" parameterType="java.util.List">
+        INSERT INTO alarm_info(
+        segment,
+        workshop_code,
+        workarea_code,
+        target_telecode,
+        source_telecode,
+        alarm_type,
+        alarm_level,
+        device_type,
+        device_no,
+        device_name,
+        alarm_time,
+        recover_time,
+        alarm_status,
+        alarm_context,
+        overhaul_flag,
+        create_time,
+        remark,
+        ext_info
+        ) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.segment},
+            #{item.workshopCode},
+            #{item.workAreaCode},
+            #{item.targetTeleCode},
+            #{item.sourceTeleCode},
+            #{item.alarmType},
+            #{item.alarmLevel},
+            #{item.deviceType},
+            #{item.deviceNo},
+            #{item.deviceName},
+            #{item.alarmTime},
+            #{item.recoverTime},
+            #{item.status},
+            #{item.alarmContext},
+            #{item.overhaulFlag},
+            #{item.createTime},
+            #{item.remark},
+            #{item.extInfo}
+            )
+        </foreach>
     </insert>
 
     <select id="queryAlarmBySegAndLev" parameterType="java.util.Map" resultType="com.wangda.alarm.service.dao.po.AlarmInfoPo">

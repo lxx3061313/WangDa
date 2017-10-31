@@ -5,6 +5,7 @@ import com.wangda.alarm.service.bean.biz.AlarmInfo;
 import com.wangda.alarm.service.bean.biz.DeptHierarchyInfo;
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmContext;
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmLevel;
+import com.wangda.alarm.service.bean.standard.alarminfo.resp.RespContext;
 import com.wangda.alarm.service.dao.AlarmInfoDao;
 import com.wangda.alarm.service.dao.DeptInfoDao;
 import com.wangda.alarm.service.dao.adaptor.AlarmInfoAdaptor;
@@ -40,5 +41,13 @@ public class AlarmInfoService{
                 .queryDeptHireraInfo(context.getHeader().getSourceTeleCode());
         AlarmInfoPo infoPo = AlarmInfoAdaptor.adaptToAlarmPo(context, deptHierarchyInfo);
         return alarmInfoDao.saveAlarmInfo(infoPo);
+    }
+
+    public int saveAlarmRespInfo(RespContext context) {
+        DeptHierarchyInfo deptHierarchyInfo = deptInfoService
+                .queryDeptHireraInfo(context.getHeader().getSourceTeleCode());
+        List<AlarmInfoPo> alarmInfoPos = AlarmInfoAdaptor
+                .adaptToAlarmPo(context, deptHierarchyInfo);
+        return alarmInfoDao.saveAlarmInfos(alarmInfoPos);
     }
 }

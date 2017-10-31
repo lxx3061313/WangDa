@@ -23,4 +23,6 @@ public interface AlarmInfoDao {
             @Param("level")AlarmLevel level);
 
     int saveAlarmInfo(AlarmInfoPo po);
+
+    int saveAlarmInfos(List<AlarmInfoPo> pos);
 }

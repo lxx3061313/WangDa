@@ -14,7 +14,7 @@ public interface DeptInfoDao {
      * @param sname simplename
      * @return 一个部分信息
      */
-    DeptPo queryDeptBySName(String sname);
+    List<DeptPo> queryDeptBySName(String sname);
 
     List<DeptPo> queryDeptsByIds(List<Integer> ids);
 }

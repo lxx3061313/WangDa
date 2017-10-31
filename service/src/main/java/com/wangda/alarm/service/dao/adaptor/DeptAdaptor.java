@@ -1,9 +1,11 @@
 package com.wangda.alarm.service.dao.adaptor;
 
 import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
 import com.wangda.alarm.service.bean.biz.DeptHierarchyInfo;
 import com.wangda.alarm.service.bean.biz.DeptInfo;
 import com.wangda.alarm.service.bean.standard.DeptType;
+import com.wangda.alarm.service.bean.standard.constant.BizConstant;
 import com.wangda.alarm.service.dao.po.DeptPo;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,18 +35,18 @@ public class DeptAdaptor {
      */
     public static DeptHierarchyInfo adaptToHireraInfo(DeptPo po, List<DeptPo> parents) {
         DeptHierarchyInfo info = new DeptHierarchyInfo();
-        info.setSectionId(parents.get(0).getId());
-        info.setSection(parents.get(0).getFullName());
-        info.setSectionSimpleName(parents.get(0).getSimpleName());
-        info.setSegmentId(parents.get(1).getId());
-        info.setSegment(parents.get(1).getFullName());
-        info.setSegmentSimpleName(parents.get(1).getSimpleName());
-        info.setWorkShopId(parents.get(2).getId());
-        info.setWorkShopName(parents.get(2).getFullName());
-        info.setWorkShopSimpleName(parents.get(2).getSimpleName());
-        info.setWorkAreaId(parents.get(3).getId());
-        info.setWorkAreaName(parents.get(3).getFullName());
-        info.setWorkAreaSimpleName(parents.get(3).getSimpleName());
+        info.setSectionId(0);
+        info.setSection(BizConstant.SECTION_NAME);
+        info.setSectionSimpleName(BizConstant.SECTION_NAME);
+        info.setSegmentId(parents.get(0).getId());
+        info.setSegment(parents.get(0).getFullName());
+        info.setSegmentSimpleName(parents.get(0).getSimpleName());
+        info.setWorkShopId(parents.get(1).getId());
+        info.setWorkShopName(parents.get(1).getFullName());
+        info.setWorkShopSimpleName(parents.get(1).getSimpleName());
+        info.setWorkAreaId(parents.get(2).getId());
+        info.setWorkAreaName(parents.get(2).getFullName());
+        info.setWorkAreaSimpleName(parents.get(2).getSimpleName());
         info.setStationId(po.getId());
         info.setStationName(po.getFullName());
         info.setStationSimpleName(po.getSimpleName());
@@ -60,6 +62,9 @@ public class DeptAdaptor {
         Iterable<String> split = commaSplitter.split(pids);
         List<String> result = new ArrayList<>();
         for (String id : split) {
+            if (Strings.isNullOrEmpty(id)) {
+                continue;
+            }
             result.add(id.replaceAll("\\[|\\]", ""));
         }
         return result;

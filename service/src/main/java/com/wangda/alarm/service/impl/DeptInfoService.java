@@ -1,5 +1,6 @@
 package com.wangda.alarm.service.impl;
 
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.wangda.alarm.service.bean.biz.DeptHierarchyInfo;
 import com.wangda.alarm.service.bean.biz.DeptInfo;
@@ -18,15 +19,12 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DeptInfoService {
-
+    private final static Splitter commaSpliter = Splitter.on(",");
     @Resource
     DeptInfoDao deptInfoDao;
 
     public DeptInfo queryDeptInfoByCode(String code) {
-        if (Strings.isNullOrEmpty(code)) {
-            return null;
-        }
-        DeptPo deptPo = deptInfoDao.queryDeptBySName(code);
+        DeptPo deptPo = queryDeptPoBySName(code);
         if (deptPo == null) {
             return null;
         }
@@ -34,10 +32,7 @@ public class DeptInfoService {
     }
 
     public DeptHierarchyInfo queryDeptHireraInfo(String code) {
-        if (Strings.isNullOrEmpty(code)) {
-            return null;
-        }
-        DeptPo deptPo = deptInfoDao.queryDeptBySName(code);
+        DeptPo deptPo = queryDeptPoBySName(code);
         if (deptPo == null) {
             return null;
         }
@@ -51,5 +46,23 @@ public class DeptInfoService {
         List<Integer> ids = list.stream().map(Integer::valueOf).collect(Collectors.toList());
         List<DeptPo> parents = deptInfoDao.queryDeptsByIds(ids);
         return DeptAdaptor.adaptToHireraInfo(deptPo, parents);
+    }
+
+    private DeptPo queryDeptPoBySName(String sname) {
+        if (Strings.isNullOrEmpty(sname)) {
+            return null;
+        }
+
+        List<DeptPo> deptPos = deptInfoDao.queryDeptBySName(sname);
+        for (DeptPo po : deptPos) {
+            String simpleName = po.getSimpleName();
+            Iterable<String> split = commaSpliter.split(simpleName);
+            for (String name : split) {
+                if (name.equals(sname)) {
+                    return po;
+                }
+            }
+        }
+        return null;
     }
 }
