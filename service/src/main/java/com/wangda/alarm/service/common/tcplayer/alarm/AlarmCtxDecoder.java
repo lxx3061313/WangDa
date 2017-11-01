@@ -6,6 +6,7 @@ import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmContext;
 import com.wangda.alarm.service.bean.standard.protocol.ProtocalFieldsDesc;
 import com.wangda.alarm.service.common.tcplayer.common.WangDaContextDecoder;
 import com.wangda.alarm.service.common.util.ByteBufferUtil;
+import java.util.function.Consumer;
 import javax.annotation.Resource;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
@@ -25,9 +26,13 @@ public class AlarmCtxDecoder extends WangDaContextDecoder<AlarmContext> {
     public AlarmCtxDecoder() {
     }
 
+
     @Override
-    public AlarmContext decodeData(IoSession session, IoBuffer in) {
-        return alarmDataDecoder.decodeData(in, cd);
+    public MessageDecoderResult decodeData(IoSession session, IoBuffer in,
+            Consumer<AlarmContext> callback) {
+        AlarmContext alarmContext = alarmDataDecoder.decodeData(in, cd);
+        callback.accept(alarmContext);
+        return MessageDecoderResult.OK;
     }
 
     @Override

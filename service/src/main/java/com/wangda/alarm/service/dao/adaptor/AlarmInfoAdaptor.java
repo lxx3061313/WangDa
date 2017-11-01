@@ -7,9 +7,6 @@ import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmBody;
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmContext;
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmHeader;
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmStatus;
-import com.wangda.alarm.service.bean.standard.alarminfo.fault.FaultBody;
-import com.wangda.alarm.service.bean.standard.alarminfo.fault.FaultContext;
-import com.wangda.alarm.service.bean.standard.alarminfo.fault.FaultHeader;
 import com.wangda.alarm.service.bean.standard.alarminfo.resp.RespBody;
 import com.wangda.alarm.service.bean.standard.alarminfo.resp.RespContext;
 import com.wangda.alarm.service.bean.standard.alarminfo.resp.RespHeader;
@@ -91,7 +88,6 @@ public class AlarmInfoAdaptor {
             po.setWorkAreaCode(hinfo.getWorkAreaSimpleName());
             po.setTargetTeleCode(header.getTargetTeleCode());
             po.setSourceTeleCode(header.getSourceTeleCode());
-            po.setAlarmType(0);
             po.setAlarmLevel(respRecord.getLevel());
             po.setDeviceType(ByteBufferUtil.bytesToShort(respRecord.getDeviceType()));
             po.setDeviceNo(ByteBufferUtil.bytesToShort(respRecord.getDeviceNo()));
@@ -103,6 +99,7 @@ public class AlarmInfoAdaptor {
             po.setOverhaulFlag(OverhaulType.OTHER);
             po.setCreateTime(new Date());
             po.setRemark("");
+            po.setAlarmType(ByteBufferUtil.bytesToShort(ByteBufferUtil.subBytes(respRecord.getReserveField(), (byte) 2)));
             result.add(po);
         }
         return result;

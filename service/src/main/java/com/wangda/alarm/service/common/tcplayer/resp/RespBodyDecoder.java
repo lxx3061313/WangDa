@@ -47,9 +47,10 @@ public class RespBodyDecoder {
                 byte[] rtime = ByteBufferUtil.forward(buffer, ProtocalFieldsDesc.RESP_BODY_RECOVER_TIME.getByteLth());
                 record.setRecoverTime(ByteBufferUtil.byteToDate(rtime));
 
-                //3.3 预留时间
-                byte[] retime = ByteBufferUtil.forward(buffer, ProtocalFieldsDesc.RESP_BODY_RESERVE_TIME.getByteLth());
-                record.setReserveTime(ByteBufferUtil.byteToDate(retime));
+                //3.3 预留字段
+                byte[] refield = ByteBufferUtil.forward(buffer, ProtocalFieldsDesc.RESP_BODY_RESERVE_FIELD
+                        .getByteLth());
+                record.setReserveField(refield);
 
                 //3.4 设备名长度
                 byte[] dviLth = ByteBufferUtil

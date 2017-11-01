@@ -1,13 +1,16 @@
 package com.wangda.alarm.service.common.tcplayer.resp;
 
+import com.sun.org.apache.regexp.internal.RE;
 import com.wangda.alarm.service.bean.standard.DataType;
 import com.wangda.alarm.service.bean.standard.DataTypeCode;
 import com.wangda.alarm.service.bean.standard.alarminfo.resp.RespContext;
 import com.wangda.alarm.service.bean.standard.protocol.ProtocalFieldsDesc;
 import com.wangda.alarm.service.common.tcplayer.common.WangDaContextDecoder;
 import com.wangda.alarm.service.common.util.ByteBufferUtil;
+import java.util.function.Consumer;
 import javax.annotation.Resource;
 import org.apache.mina.core.buffer.IoBuffer;
+import org.apache.mina.core.session.AttributeKey;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.demux.MessageDecoderResult;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class RespContextDecoder extends WangDaContextDecoder<RespContext> {
 
+
+    private final AttributeKey CONTEXT = new AttributeKey(getClass(), "conext");
+
     private static byte RESP_ZIP_FLAG = (byte)0;
     @Resource
     RespDataDecoder respDataDecoder;
@@ -27,8 +33,11 @@ public class RespContextDecoder extends WangDaContextDecoder<RespContext> {
     }
 
     @Override
-    public RespContext decodeData(IoSession session, IoBuffer in) {
-        return respDataDecoder.decodeData(in, cd);
+    public MessageDecoderResult decodeData(IoSession session, IoBuffer in,
+            Consumer<RespContext> callback) {
+        RespContext respContext = respDataDecoder.decodeData(in, cd);
+        callback.accept(respContext);
+        return MessageDecoderResult.OK;
     }
 
     @Override
@@ -57,7 +66,6 @@ public class RespContextDecoder extends WangDaContextDecoder<RespContext> {
         } else {
             result = MessageDecoderResult.NOT_OK;
         }
-        in.flip();
         return result;
     }
 }

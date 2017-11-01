@@ -64,7 +64,7 @@ public enum ProtocalFieldsDesc {
     RESP_BODY_RECORD_NUM(17, 19, "记录数", 2),
     RESP_BODY_HAPPEN_TIME(0, 0, "发生时间", 4),
     RESP_BODY_RECOVER_TIME(0, 0, "恢复时间", 4),
-    RESP_BODY_RESERVE_TIME(0, 0, "预留时间", 4),
+    RESP_BODY_RESERVE_FIELD(0, 0, "预留时间", 4),
     RESP_BODY_DEVICE_NAMELTH(0, 0, "设备名称长度", 1),
     RESP_BODY_DEVICE_NAME(0, 0, "设备名称", -1),
     RESP_BODY_ALARM_CTXLTH(0, 0, "报警内容长度", 1),

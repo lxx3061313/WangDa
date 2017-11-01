@@ -20,9 +20,9 @@ public class RespRecord {
     private Date recoverTime;
 
     /**
-     * 预留时间-4字节
+     * 预留字段-4字节
      */
-    private Date reserveTime;
+    private byte[] reserveField;
 
     /**
      * 设备名称长度-1字节
@@ -83,14 +83,6 @@ public class RespRecord {
 
     public void setRecoverTime(Date recoverTime) {
         this.recoverTime = recoverTime;
-    }
-
-    public Date getReserveTime() {
-        return reserveTime;
-    }
-
-    public void setReserveTime(Date reserveTime) {
-        this.reserveTime = reserveTime;
     }
 
     public byte getDeviceNameLth() {
@@ -163,5 +155,13 @@ public class RespRecord {
 
     public void setDeviceNo(byte[] deviceNo) {
         this.deviceNo = deviceNo;
+    }
+
+    public byte[] getReserveField() {
+        return reserveField;
+    }
+
+    public void setReserveField(byte[] reserveField) {
+        this.reserveField = reserveField;
     }
 }

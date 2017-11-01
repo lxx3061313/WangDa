@@ -291,4 +291,16 @@ public class ByteBufferUtil {
         return (byte) "0123456789ABCDEF".indexOf(c);
     }
 
+
+    public static byte[] subBytes(byte [] source, byte offset) {
+        if (offset <=  source.length) {
+            return source;
+        }
+
+        byte[] result = new byte[offset];
+        for (int i=0; i< offset; ++i) {
+            result[i] = source[i];
+        }
+        return result;
+    }
 }

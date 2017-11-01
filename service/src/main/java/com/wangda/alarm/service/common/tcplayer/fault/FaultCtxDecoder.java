@@ -6,6 +6,7 @@ import com.wangda.alarm.service.bean.standard.alarminfo.fault.FaultContext;
 import com.wangda.alarm.service.bean.standard.protocol.ProtocalFieldsDesc;
 import com.wangda.alarm.service.common.tcplayer.common.WangDaContextDecoder;
 import com.wangda.alarm.service.common.util.ByteBufferUtil;
+import java.util.function.Consumer;
 import javax.annotation.Resource;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
@@ -27,8 +28,11 @@ public class FaultCtxDecoder extends WangDaContextDecoder<FaultContext> {
     }
 
     @Override
-    public FaultContext decodeData(IoSession session, IoBuffer in) {
-        return faultDataDecoder.decodeData(in, cd);
+    public MessageDecoderResult decodeData(IoSession session, IoBuffer in,
+            Consumer<FaultContext> callback) {
+        FaultContext faultContext = faultDataDecoder.decodeData(in, cd);
+        callback.accept(faultContext);
+        return MessageDecoderResult.OK;
     }
 
     @Override
