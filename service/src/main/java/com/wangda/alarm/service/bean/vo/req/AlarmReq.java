@@ -24,6 +24,10 @@ public class AlarmReq {
      */
     private String alarmType;
 
+    private int pageSize = 10;
+
+    private int currentSize = 10;
+
     public String getStation() {
         return station;
     }
@@ -46,5 +50,21 @@ public class AlarmReq {
 
     public void setAlarmType(String alarmType) {
         this.alarmType = alarmType;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public int getCurrentSize() {
+        return currentSize;
+    }
+
+    public void setCurrentSize(int currentSize) {
+        this.currentSize = currentSize;
     }
 }

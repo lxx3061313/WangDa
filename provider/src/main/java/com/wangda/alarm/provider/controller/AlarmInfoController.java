@@ -29,8 +29,7 @@ public class AlarmInfoController {
     @RequestMapping("/list")
     @JsonBody
     public AlarmRespVo queryAlarmList(@RequestBody AlarmReq req) {
-        //return alarmInfoService.queryAlarmsBySegAndLev();
-        return null;
+        return alarmInfoService.queryAlarmsBySegAndLev();
     }
 
 

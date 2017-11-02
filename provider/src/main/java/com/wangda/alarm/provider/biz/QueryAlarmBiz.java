@@ -1,5 +1,6 @@
 package com.wangda.alarm.provider.biz;
 
+import com.wangda.alarm.service.bean.vo.req.AlarmReq;
 import com.wangda.alarm.service.impl.QueryAlarmParamBuilder;
 import com.wangda.alarm.service.impl.QueryAlarmService;
 import java.util.Date;
@@ -16,6 +17,12 @@ public class QueryAlarmBiz {
     @Resource
     QueryAlarmService queryAlarmService;
 
+    /**
+     * 向平台发送请求指令, 等待回调结果
+     * @param segmentCode 段code
+     * @param startTime 开始时间
+     * @param endTime 结束时间
+     */
     public void queryAlarm(String segmentCode, Date startTime, Date endTime) {
         queryAlarmService.send(QueryAlarmParamBuilder
                 .builder()
@@ -23,5 +30,10 @@ public class QueryAlarmBiz {
                 .addStartTime(startTime)
                 .addEndTime(endTime)
                 .build());
+    }
+
+
+    public void queryAlarmList(AlarmReq req) {
+
     }
 }
