@@ -5,26 +5,54 @@ package com.wangda.alarm.provider.bean;
  * @version 2017-11-01
  */
 public class AlarmDetailVo {
-    private String station;
-    private String alarmLeve;
+    private String segmentName;
+    private String workshopName;
+    private String workareaName;
+    private String stationName;
+    private String alarmLevel;
     private String alarmContext;
     private String alarmTime;
     private String recoverTime;
 
-    public String getStation() {
-        return station;
+
+    public String getSegmentName() {
+        return segmentName;
     }
 
-    public void setStation(String station) {
-        this.station = station;
+    public void setSegmentName(String segmentName) {
+        this.segmentName = segmentName;
     }
 
-    public String getAlarmLeve() {
-        return alarmLeve;
+    public String getWorkshopName() {
+        return workshopName;
     }
 
-    public void setAlarmLeve(String alarmLeve) {
-        this.alarmLeve = alarmLeve;
+    public void setWorkshopName(String workshopName) {
+        this.workshopName = workshopName;
+    }
+
+    public String getWorkareaName() {
+        return workareaName;
+    }
+
+    public void setWorkareaName(String workareaName) {
+        this.workareaName = workareaName;
+    }
+
+    public String getStationName() {
+        return stationName;
+    }
+
+    public void setStationName(String stationName) {
+        this.stationName = stationName;
+    }
+
+    public String getAlarmLevel() {
+        return alarmLevel;
+    }
+
+    public void setAlarmLevel(String alarmLevel) {
+        this.alarmLevel = alarmLevel;
     }
 
     public String getAlarmContext() {

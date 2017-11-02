@@ -14,9 +14,11 @@ import com.wangda.alarm.service.dao.DeptInfoDao;
 import com.wangda.alarm.service.dao.adaptor.AlarmInfoAdaptor;
 import com.wangda.alarm.service.dao.po.AlarmInfoPo;
 import com.wangda.alarm.service.dao.po.AlarmListPo;
+import com.wangda.alarm.service.dao.req.QueryAlarmDetailParam;
 import com.wangda.alarm.service.dao.req.QueryAlarmListParam;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.apache.ibatis.session.RowBounds;
@@ -35,14 +37,6 @@ public class AlarmInfoService{
     @Resource
     DeptInfoService deptInfoService;
 
-    public List<AlarmInfo> queryAlarmsBySegAndLev(String segmentCode, AlarmLevel level) {
-        if (Strings.isNullOrEmpty(segmentCode) && level == null) {
-            return Collections.EMPTY_LIST;
-        }
-        List<AlarmInfoPo> alarmInfoPos = alarmInfoDao.queryAlarmBySegAndLev(segmentCode, level);
-        return AlarmInfoAdaptor.adaptToAlarmInfos(alarmInfoPos);
-    }
-
     public List<AlarmListInfo> queryAlarmListByParam(String segmentCode, String workshopCode,
             String workareaCode, String sourceCode, AlarmLevel level,
             StandardAlarmType type, PageRequest request) {
@@ -52,17 +46,42 @@ public class AlarmInfoService{
         param.setWorkAreaCode(workareaCode);
         param.setStationCode(sourceCode);
         param.setLevel(level);
-        param.setAlarmType(type.getCode());
+        param.setAlarmType(type == StandardAlarmType.ALLTYPE? null:type.getCode());
         List<AlarmListPo> alarmListPos = alarmInfoDao
                 .queryAlarmByParam(param, new RowBounds(request.getOffset(), request.getLimit()));
 
-        List<String> stationIds = alarmListPos.stream().map(p -> p.getSourceTelecode())
+        List<String> stationIds = alarmListPos.stream().map(AlarmListPo::getSourceTelecode).distinct()
                 .collect(Collectors.toList());
         List<DeptHierarchyInfo> deptHierarchyInfos = deptInfoService
                 .queryDeptHireraInfos(stationIds);
+        Map<String, DeptHierarchyInfo> infoMap = deptHierarchyInfos.stream()
+                .collect(Collectors.toMap(DeptHierarchyInfo::getStationSimpleName, p -> p));
         return AlarmInfoAdaptor
-                .adaptToAlarmLists(alarmListPos, deptHierarchyInfos);
+                .adaptToAlarmLists(alarmListPos, infoMap);
     }
+
+    public List<AlarmInfo> queryAlarmDetailByParam(String segmentCode, String workshopCode,
+            String workareaCode, String sourceCode, AlarmLevel level,
+            StandardAlarmType type, String deviceName, PageRequest request) {
+        QueryAlarmDetailParam param = new QueryAlarmDetailParam();
+        param.setSegmentCode(segmentCode);
+        param.setWorkShopCode(workshopCode);
+        param.setWorkAreaCode(workareaCode);
+        param.setStationCode(sourceCode);
+        param.setAlarmType(type.getCode());
+        param.setLevel(level);
+        param.setDeviceName(deviceName);
+        List<AlarmInfoPo> infoPos = alarmInfoDao
+                .queryAlarmDetail(param, new RowBounds(request.getOffset(), request.getLimit()));
+        List<String> stationIds = infoPos.stream().map(AlarmInfoPo::getSourceTeleCode).distinct()
+                .collect(Collectors.toList());
+        List<DeptHierarchyInfo> deptHierarchyInfos = deptInfoService
+                .queryDeptHireraInfos(stationIds);
+        Map<String, DeptHierarchyInfo> infoMap = deptHierarchyInfos.stream()
+                .collect(Collectors.toMap(DeptHierarchyInfo::getStationSimpleName, p -> p));
+        return AlarmInfoAdaptor.adaptToAlarmInfos(infoPos, infoMap);
+    }
+
 
     public int saveAlarmInfo(AlarmContext context) {
         DeptHierarchyInfo deptHierarchyInfo = deptInfoService

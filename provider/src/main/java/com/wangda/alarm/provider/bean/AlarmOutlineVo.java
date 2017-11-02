@@ -17,6 +17,23 @@ public class AlarmOutlineVo {
     private String alarmContext;
     private int alarmCount;
     private String deviceName;
+    private String alarmType;
+
+    public String getAlarmType() {
+        return alarmType;
+    }
+
+    public void setAlarmType(String alarmType) {
+        this.alarmType = alarmType;
+    }
+
+    public String getWorkshopName() {
+        return workshopName;
+    }
+
+    public void setWorkshopName(String workshopName) {
+        this.workshopName = workshopName;
+    }
 
     public String getDeviceName() {
         return deviceName;
@@ -106,11 +123,5 @@ public class AlarmOutlineVo {
         this.stationName = stationName;
     }
 
-    public String getWorkshopName() {
-        return workshopName;
-    }
 
-    public void setWorkshopName(String workshopName) {
-        this.workshopName = workshopName;
-    }
 }

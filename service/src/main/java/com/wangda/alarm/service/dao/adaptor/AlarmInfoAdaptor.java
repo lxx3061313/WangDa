@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
 
@@ -28,12 +29,16 @@ import org.apache.commons.collections.CollectionUtils;
  * @version 2017-10-25
  */
 public class AlarmInfoAdaptor {
-    public static AlarmInfo adaptoAlarmInfo(AlarmInfoPo po)  {
+    public static AlarmInfo adaptoAlarmInfo(AlarmInfoPo po, DeptHierarchyInfo info)  {
         AlarmInfo alarmInfo = new AlarmInfo();
         alarmInfo.setStationCode(po.getSourceTeleCode());
-        alarmInfo.setStationName("");
+        alarmInfo.setStationName(info.getStationName());
         alarmInfo.setSegmentCode(po.getSegment());
-        alarmInfo.setSegmentName("");
+        alarmInfo.setSegmentName(info.getSegment());
+        alarmInfo.setWorkshopCode(po.getWorkshopCode());
+        alarmInfo.setWorkshopName(info.getWorkShopName());
+        alarmInfo.setWorkAreaCode(po.getWorkAreaCode());
+        alarmInfo.setWorkAreaName(info.getWorkAreaName());
         alarmInfo.setAlarmLevel(po.getAlarmLevel());
         alarmInfo.setDeviceNo(po.getDeviceNo());
         alarmInfo.setDeviceName(po.getDeviceName());
@@ -42,13 +47,6 @@ public class AlarmInfoAdaptor {
         alarmInfo.setRecoverTime(po.getRecoverTime());
         alarmInfo.setStatus(po.getStatus());
         return alarmInfo;
-    }
-
-    public static List<AlarmInfo> adaptToAlarmInfos(List<AlarmInfoPo> pos) {
-        if (CollectionUtils.isEmpty(pos)) {
-            return Collections.EMPTY_LIST;
-        }
-        return pos.stream().map(AlarmInfoAdaptor::adaptoAlarmInfo).collect(Collectors.toList());
     }
 
     public static AlarmInfoPo adaptToAlarmPo(AlarmContext context, DeptHierarchyInfo hinfo) {
@@ -80,12 +78,14 @@ public class AlarmInfoAdaptor {
 
     public static AlarmListInfo adaptToAlarmList(AlarmListPo po, DeptHierarchyInfo info) {
         AlarmListInfo listInfo = new AlarmListInfo();
-        listInfo.setSegment(po.getSourceTelecode());
+        listInfo.setSegment(info.getSegmentSimpleName());
         listInfo.setSegmentName(info.getSegment());
         listInfo.setWorkshopCode(info.getWorkShopSimpleName());
         listInfo.setWorkshopName(info.getWorkShopName());
         listInfo.setWorkareaCode(info.getWorkAreaSimpleName());
         listInfo.setWorkareaName(info.getWorkAreaName());
+        listInfo.setStationCode(info.getStationSimpleName());
+        listInfo.setStationName(info.getStationName());
         listInfo.setAlarmType(po.getAlarmType());
         listInfo.setAlarmLevel(po.getAlarmLevel());
         listInfo.setDeviceName(po.getDeviceName());
@@ -93,15 +93,21 @@ public class AlarmInfoAdaptor {
     }
 
 
-    public static List<AlarmListInfo> adaptToAlarmLists(List<AlarmListPo> pos, List<DeptHierarchyInfo> infos) {
+    public static List<AlarmListInfo> adaptToAlarmLists(List<AlarmListPo> pos, Map<String, DeptHierarchyInfo> infoMap) {
         List<AlarmListInfo> result = new ArrayList<>();
-        int index = 0;
         for (AlarmListPo po : pos) {
-            AlarmListInfo listInfo = adaptToAlarmList(po, infos.get(index));
-            ++index;
+            AlarmListInfo listInfo = adaptToAlarmList(po, infoMap.get(po.getSourceTelecode()));
             result.add(listInfo);
         }
         return result;
+    }
+
+    public static List<AlarmInfo> adaptToAlarmInfos(List<AlarmInfoPo> pos, Map<String, DeptHierarchyInfo> infoMap) {
+        List<AlarmInfo> infos = new ArrayList<>();
+        for (AlarmInfoPo po : pos) {
+            infos.add(adaptoAlarmInfo(po, infoMap.get(po.getSourceTeleCode())));
+        }
+        return infos;
     }
 
     public static List<AlarmInfoPo> adaptToAlarmPo(RespContext faultContext, DeptHierarchyInfo hinfo) {

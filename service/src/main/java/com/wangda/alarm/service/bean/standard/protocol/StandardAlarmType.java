@@ -73,7 +73,8 @@ public enum  StandardAlarmType {
     WDWSRDLDX(0xDE, "外电网输入单路断相/断电"),
     HJJCSCBJ(0xDF, "环境监测三级报警"),
     ZJWLTXDHZD(0xE0, "站机网络通信单环中断"),
-    DQTXDDEJBJ(0xE1, "电气特性断电二级报警");
+    DQTXDDEJBJ(0xE1, "电气特性断电二级报警"),
+    ALLTYPE(0xFF, "所有类型");
     private int code;
     private String desc;
 
@@ -100,8 +101,18 @@ public enum  StandardAlarmType {
 
     public static StandardAlarmType nameOf(String name) {
         for (StandardAlarmType type : values()) {
-            if (type.name().equals(name))
+            if (type.name().equals(name)) {
                 return type;
+            }
+        }
+        return null;
+    }
+
+    public static StandardAlarmType codeOf(int code) {
+        for (StandardAlarmType type : values()) {
+            if (type.getCode() == code) {
+                return type;
+            }
         }
         return null;
     }

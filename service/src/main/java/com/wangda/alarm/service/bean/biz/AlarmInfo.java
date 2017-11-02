@@ -9,7 +9,6 @@ import java.util.Date;
  * @version 2017-10-25
  */
 public class AlarmInfo {
-    private String serverCode;
     private String stationCode;
     private String stationName;
     private String segmentCode;
@@ -18,11 +17,13 @@ public class AlarmInfo {
      * 工作间code
      */
     private String workshopCode;
+    private String workshopName;
 
     /**
      * 工区code
      */
     private String workAreaCode;
+    private String workAreaName;
     private AlarmLevel alarmLevel;
     private int deviceNo;
     private String deviceName;
@@ -32,6 +33,22 @@ public class AlarmInfo {
     private Date recoverTime;
     private int repeatCount;
     private AlarmStatus status;
+
+    public String getWorkshopName() {
+        return workshopName;
+    }
+
+    public void setWorkshopName(String workshopName) {
+        this.workshopName = workshopName;
+    }
+
+    public String getWorkAreaName() {
+        return workAreaName;
+    }
+
+    public void setWorkAreaName(String workAreaName) {
+        this.workAreaName = workAreaName;
+    }
 
     public String getStationCode() {
         return stationCode;
@@ -143,14 +160,6 @@ public class AlarmInfo {
 
     public void setWorkAreaCode(String workAreaCode) {
         this.workAreaCode = workAreaCode;
-    }
-
-    public String getServerCode() {
-        return serverCode;
-    }
-
-    public void setServerCode(String serverCode) {
-        this.serverCode = serverCode;
     }
 
     public int getAlarmType() {

@@ -6,8 +6,7 @@
         id,
         segment,
         workshop_code AS workshopCode,
-        workdarea_code AS workAreaCode,
-        station_code AS stationCode,
+        workarea_code AS workAreaCode,
         target_telecode AS targetTeleCode,
         source_telecode AS sourceTeleCode,
         alarm_type AS alarmType,
@@ -17,7 +16,7 @@
         device_name AS deviceName,
         alarm_time AS alarmTime,
         recover_time AS recoverTime,
-        status,
+        alarm_status AS status,
         alarm_context AS alarmContext,
         overhaul_flag AS overhaulFlag,
         create_time AS createTime,
@@ -148,12 +147,21 @@
             <if test="stationCode != null and stationCode !=''">
                 AND source_telecode=#{stationCode}
             </if>
-            <if test="level != null and level !=''">
+            <if test="level != null">
                 AND alarm_level=#{level}
             </if>
-            <if test="alarmType != null and alarmType !=''">
+            <if test="alarmType != null">
                 AND alarm_type=#{alarmType}
             </if>
         </where>
+    </select>
+
+    <select id="queryAlarmDetail" parameterType="com.wangda.alarm.service.dao.req.QueryAlarmDetailParam"
+        resultType="com.wangda.alarm.service.dao.po.AlarmInfoPo">
+        SELECT
+        <include refid="fields"/>
+        FROM alarm_info
+        WHERE segment=#{segmentCode} AND workshop_code=#{workShopCode} AND workarea_code=#{workAreaCode} AND source_telecode=#{stationCode}
+        AND alarm_type=#{alarmType} AND alarm_level=#{level} AND device_name=#{deviceName}
     </select>
 </mapper>

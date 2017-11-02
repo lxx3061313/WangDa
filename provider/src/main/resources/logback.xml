@@ -6,7 +6,7 @@
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <!-- this is important, without this info level in thread will log out -->
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>INFO</level>
+            <level>DEBUG</level>
         </filter>
         <encoder>
             <pattern>[%d{yyyy-MM-dd HH:mm:ss} %X{QTRACER} %thread %-5p %c{36}:%L %X{rtxId} %X{ip}] %m%n</pattern>
@@ -37,7 +37,7 @@
         </encoder>
     </appender>
 
-    <root level="INFO">
+    <root level="DEBUG">
         <appender-ref ref="console" />
         <appender-ref ref="mtsAppender"/>
     </root>

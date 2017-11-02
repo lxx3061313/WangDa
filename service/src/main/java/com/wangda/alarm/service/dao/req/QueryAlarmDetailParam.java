@@ -4,15 +4,16 @@ import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmLevel;
 
 /**
  * @author lixiaoxiong
- * @version 2017-11-01
+ * @version 2017-11-03
  */
-public class QueryAlarmListParam {
+public class QueryAlarmDetailParam {
     private String segmentCode;
     private String workShopCode;
     private String workAreaCode;
     private String stationCode;
     private AlarmLevel level;
     private Integer alarmType;
+    private String deviceName;
 
     public String getSegmentCode() {
         return segmentCode;
@@ -60,5 +61,13 @@ public class QueryAlarmListParam {
 
     public void setAlarmType(Integer alarmType) {
         this.alarmType = alarmType;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
     }
 }

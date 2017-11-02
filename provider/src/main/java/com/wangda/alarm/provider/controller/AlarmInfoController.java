@@ -1,8 +1,11 @@
 package com.wangda.alarm.provider.controller;
 
+import com.wangda.alarm.provider.bean.AlarmDetailVo;
 import com.wangda.alarm.provider.bean.AlarmOutlineVo;
+import com.wangda.alarm.provider.biz.AlarmInfoBiz;
 import com.wangda.alarm.service.bean.vo.AlarmStatisticsVo;
 import com.wangda.alarm.service.bean.vo.RealTimeAlarmVo;
+import com.wangda.alarm.service.bean.vo.req.AlarmDetailReq;
 import com.wangda.alarm.service.bean.vo.req.AlarmListReq;
 import com.wangda.alarm.service.impl.AlarmInfoService;
 import com.wangda.alarm.service.common.springconfig.annotation.JsonBody;
@@ -21,13 +24,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AlarmInfoController {
 
     @Resource
-    AlarmInfoService alarmInfoService;
+    AlarmInfoBiz alarmInfoBiz;
 
     @RequestMapping("/list")
     @JsonBody
     public List<AlarmOutlineVo> queryAlarmList(@RequestBody AlarmListReq req) {
-        return alarmInfoService.queryAlarmsBySegAndLev();
+        return alarmInfoBiz.queryAlarmList(req);
     }
+
+    @RequestMapping("/detail")
+    @JsonBody
+    public List<AlarmDetailVo> queryAlarmDetail(@RequestBody AlarmDetailReq req) {
+        return alarmInfoBiz.queryAlarmDetail(req);
+    }
+
 
     @RequestMapping("/statis")
     @JsonBody
