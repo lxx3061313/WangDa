@@ -81,4 +81,28 @@ public enum  StandardAlarmType {
         this.code = code;
         this.desc = desc;
     }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public static StandardAlarmType nameOf(String name) {
+        for (StandardAlarmType type : values()) {
+            if (type.name().equals(name))
+                return type;
+        }
+        return null;
+    }
 }

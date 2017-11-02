@@ -6,13 +6,12 @@ import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmLevel;
  * @author lixiaoxiong
  * @version 2017-10-26
  */
-public class AlarmReq {
+public class AlarmListReq {
 
-    /**
-     * station是一个拼接变量,
-     * 段#车间#工区#车站
-     */
-    private String station;
+    private String segmentCode;
+    private String workshopCode;
+    private String workareaCode;
+    private String stationCode;
 
     /**
      * 报警级别
@@ -27,14 +26,6 @@ public class AlarmReq {
     private int pageSize = 10;
 
     private int currentSize = 10;
-
-    public String getStation() {
-        return station;
-    }
-
-    public void setStation(String station) {
-        this.station = station;
-    }
 
     public AlarmLevel getLevel() {
         return level;
@@ -66,5 +57,37 @@ public class AlarmReq {
 
     public void setCurrentSize(int currentSize) {
         this.currentSize = currentSize;
+    }
+
+    public String getSegmentCode() {
+        return segmentCode;
+    }
+
+    public void setSegmentCode(String segmentCode) {
+        this.segmentCode = segmentCode;
+    }
+
+    public String getWorkshopCode() {
+        return workshopCode;
+    }
+
+    public void setWorkshopCode(String workshopCode) {
+        this.workshopCode = workshopCode;
+    }
+
+    public String getWorkareaCode() {
+        return workareaCode;
+    }
+
+    public void setWorkareaCode(String workareaCode) {
+        this.workareaCode = workareaCode;
+    }
+
+    public String getStationCode() {
+        return stationCode;
+    }
+
+    public void setStationCode(String stationCode) {
+        this.stationCode = stationCode;
     }
 }

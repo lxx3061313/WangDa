@@ -1,6 +1,7 @@
 package com.wangda.alarm.service.dao.adaptor;
 
 import com.wangda.alarm.service.bean.biz.AlarmInfo;
+import com.wangda.alarm.service.bean.biz.AlarmListInfo;
 import com.wangda.alarm.service.bean.biz.DeptHierarchyInfo;
 import com.wangda.alarm.service.bean.standard.OverhaulType;
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmBody;
@@ -14,6 +15,7 @@ import com.wangda.alarm.service.bean.standard.alarminfo.resp.RespRecord;
 import com.wangda.alarm.service.common.util.ByteBufferUtil;
 import com.wangda.alarm.service.dao.po.AlarmExtInfoPo;
 import com.wangda.alarm.service.dao.po.AlarmInfoPo;
+import com.wangda.alarm.service.dao.po.AlarmListPo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -74,6 +76,32 @@ public class AlarmInfoAdaptor {
         po.setRemark("");
         po.setExtInfo(new AlarmExtInfoPo());
         return po;
+    }
+
+    public static AlarmListInfo adaptToAlarmList(AlarmListPo po, DeptHierarchyInfo info) {
+        AlarmListInfo listInfo = new AlarmListInfo();
+        listInfo.setSegment(po.getSourceTelecode());
+        listInfo.setSegmentName(info.getSegment());
+        listInfo.setWorkshopCode(info.getWorkShopSimpleName());
+        listInfo.setWorkshopName(info.getWorkShopName());
+        listInfo.setWorkareaCode(info.getWorkAreaSimpleName());
+        listInfo.setWorkareaName(info.getWorkAreaName());
+        listInfo.setAlarmType(po.getAlarmType());
+        listInfo.setAlarmLevel(po.getAlarmLevel());
+        listInfo.setDeviceName(po.getDeviceName());
+        return listInfo;
+    }
+
+
+    public static List<AlarmListInfo> adaptToAlarmLists(List<AlarmListPo> pos, List<DeptHierarchyInfo> infos) {
+        List<AlarmListInfo> result = new ArrayList<>();
+        int index = 0;
+        for (AlarmListPo po : pos) {
+            AlarmListInfo listInfo = adaptToAlarmList(po, infos.get(index));
+            ++index;
+            result.add(listInfo);
+        }
+        return result;
     }
 
     public static List<AlarmInfoPo> adaptToAlarmPo(RespContext faultContext, DeptHierarchyInfo hinfo) {

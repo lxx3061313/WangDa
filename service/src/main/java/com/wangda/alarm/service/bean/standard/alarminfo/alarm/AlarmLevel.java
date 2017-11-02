@@ -24,4 +24,20 @@ public enum  AlarmLevel {
         }
         return WARN;
     }
+
+    public byte getCode() {
+        return code;
+    }
+
+    public void setCode(byte code) {
+        this.code = code;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
 }

@@ -1,6 +1,6 @@
 package com.wangda.alarm.provider.biz;
 
-import com.wangda.alarm.service.bean.vo.req.AlarmReq;
+import com.wangda.alarm.service.bean.vo.req.AlarmListReq;
 import com.wangda.alarm.service.impl.QueryAlarmParamBuilder;
 import com.wangda.alarm.service.impl.QueryAlarmService;
 import java.util.Date;
@@ -33,7 +33,7 @@ public class QueryAlarmBiz {
     }
 
 
-    public void queryAlarmList(AlarmReq req) {
+    public void queryAlarmList(AlarmListReq req) {
 
     }
 }

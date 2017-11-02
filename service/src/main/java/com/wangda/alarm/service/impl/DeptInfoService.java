@@ -8,6 +8,7 @@ import com.wangda.alarm.service.bean.standard.DeptType;
 import com.wangda.alarm.service.dao.DeptInfoDao;
 import com.wangda.alarm.service.dao.adaptor.DeptAdaptor;
 import com.wangda.alarm.service.dao.po.DeptPo;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
@@ -46,6 +47,15 @@ public class DeptInfoService {
         List<Integer> ids = list.stream().map(Integer::valueOf).collect(Collectors.toList());
         List<DeptPo> parents = deptInfoDao.queryDeptsByIds(ids);
         return DeptAdaptor.adaptToHireraInfo(deptPo, parents);
+    }
+
+    public List<DeptHierarchyInfo> queryDeptHireraInfos(List<String> stationCodes) {
+        List<DeptHierarchyInfo> result = new ArrayList<>();
+        for (String scode : stationCodes) {
+            DeptHierarchyInfo deptHierarchyInfo = queryDeptHireraInfo(scode);
+            result.add(deptHierarchyInfo);
+        }
+        return result;
     }
 
     private DeptPo queryDeptPoBySName(String sname) {

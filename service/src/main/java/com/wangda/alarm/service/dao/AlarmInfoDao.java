@@ -2,9 +2,11 @@ package com.wangda.alarm.service.dao;
 
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmLevel;
 import com.wangda.alarm.service.dao.po.AlarmInfoPo;
+import com.wangda.alarm.service.dao.po.AlarmListPo;
 import com.wangda.alarm.service.dao.req.QueryAlarmListParam;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -23,7 +25,7 @@ public interface AlarmInfoDao {
     List<AlarmInfoPo> queryAlarmBySegAndLev(@Param("segment") String segment,
             @Param("level")AlarmLevel level);
 
-    List<AlarmInfoPo> queryAlarmByParam(QueryAlarmListParam param);
+    List<AlarmListPo> queryAlarmByParam(QueryAlarmListParam param, RowBounds rowBounds);
 
     int saveAlarmInfo(AlarmInfoPo po);
 

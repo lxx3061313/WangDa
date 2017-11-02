@@ -127,9 +127,13 @@
     </select>
 
     <select id="queryAlarmByParam" parameterType="com.wangda.alarm.service.dao.req.QueryAlarmListParam"
-      resultType="com.wangda.alarm.service.dao.po.AlarmInfoPo">
+      resultType="com.wangda.alarm.service.dao.po.AlarmListPo">
         SELECT
-        <include refid="fields"/>
+        DISTINCT
+        source_telecode AS sourceTelecode,
+        alarm_level AS alarmLevel,
+        alarm_type,
+        device_name
         FROM alarm_info
         <where>
             <if test="segmentCode != null and segmentCode !=''">
