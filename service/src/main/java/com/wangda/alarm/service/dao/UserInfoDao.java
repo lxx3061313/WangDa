@@ -10,5 +10,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserInfoDao {
-    UserInfoPo authUser(@Param("userName") String userName);
+    UserInfoPo authUser(String account);
+    UserInfoPo queryUserInfoByAccount(String account);
+    int updatePassword(@Param("password") String password,
+            @Param("account") String accout);
 }

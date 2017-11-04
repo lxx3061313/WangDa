@@ -16,4 +16,13 @@ public class TokenGenerator {
                 .putLong(System.currentTimeMillis()).hash()
                 .toString();
     }
+
+
+    public static String generateRandomPass(String userId) {
+        return Hashing.md5().newHasher()
+                .putString(userId, Charsets.UTF_8)
+                .putInt(ThreadLocalRandom.current().nextInt(1000))
+                .putLong(System.currentTimeMillis()).hash()
+                .toString().substring(0, 6);
+    }
 }

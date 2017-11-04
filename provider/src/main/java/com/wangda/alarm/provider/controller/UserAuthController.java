@@ -26,16 +26,16 @@ public class UserAuthController {
         userAuthBiz.auth(userName, password, response);
     }
 
-    @RequestMapping("/retrievePass")
+    @RequestMapping("/forgetPassword")
     @JsonBody
     public void retrievePassword(String userName) {
-
+        userAuthBiz.forgetPassword(userName);
     }
 
     @RequestMapping("/updatePassword")
     @JsonBody
     public void updatePassword(@RequestBody UpdatePassReq req) {
-
+        userAuthBiz.updatePassword(req);
     }
 
     @RequestMapping("/logout")

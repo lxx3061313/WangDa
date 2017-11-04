@@ -32,6 +32,15 @@ public class DeptInfoService {
         return DeptAdaptor.adaptToDeptInfo(deptPo);
     }
 
+    public DeptInfo queryDeptById(int id) {
+        DeptPo deptPo = deptInfoDao.queryDeptById(id);
+        if (deptPo == null) {
+            return null;
+        }
+
+        return DeptAdaptor.adaptToDeptInfo(deptPo);
+    }
+
     public DeptHierarchyInfo queryDeptHireraInfo(String code) {
         DeptPo deptPo = queryDeptPoBySName(code);
         if (deptPo == null) {

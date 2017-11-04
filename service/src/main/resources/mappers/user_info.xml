@@ -56,10 +56,23 @@
         )
     </insert>
 
-    <select id="authUser" parameterType="java.util.Map" resultType="com.wangda.alarm.service.dao.po.UserInfoPo">
+    <select id="authUser" parameterType="java.lang.String" resultType="com.wangda.alarm.service.dao.po.UserInfoPo">
         SELECT
         <include refid="fields"/>
         FROM user_info
-        WHERE user_name=#{userName}
+        WHERE account=#{account}
     </select>
+
+    <select id="queryUserInfoByAccount" parameterType="java.lang.String" resultType="com.wangda.alarm.service.dao.po.UserInfoPo">
+        SELECT
+        <include refid="fields"/>
+        FROM user_info
+        WHERE account=#{account}
+    </select>
+
+    <update id="updatePassword" parameterType="java.util.Map">
+        UPDATE user_info
+        SET password=#{password}
+        WHERE account=#{account}
+    </update>
 </mapper>

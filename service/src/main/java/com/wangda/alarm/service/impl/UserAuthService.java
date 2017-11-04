@@ -1,7 +1,11 @@
 package com.wangda.alarm.service.impl;
 
+import com.wangda.alarm.service.bean.biz.DeptInfo;
+import com.wangda.alarm.service.bean.biz.RoleInfo;
+import com.wangda.alarm.service.bean.biz.UserInfo;
 import com.wangda.alarm.service.common.util.WebUtil;
 import com.wangda.alarm.service.dao.UserInfoDao;
+import com.wangda.alarm.service.dao.adaptor.UserInfoAdaptor;
 import com.wangda.alarm.service.dao.po.UserInfoPo;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -16,7 +20,13 @@ public class UserAuthService {
     @Resource
     UserInfoDao userInfoDao;
 
-    public UserInfoPo auth(String userName, String password) {
+    @Resource
+    RoleInfoService roleInfoService;
+
+    @Resource
+    DeptInfoService deptInfoService;
+
+    public UserInfo auth(String userName, String password) {
         UserInfoPo userInfoPo = userInfoDao.authUser(userName);
         if (userInfoPo == null) {
             return null;
@@ -24,7 +34,9 @@ public class UserAuthService {
 
         String comparePass = WebUtil.md5(password, userInfoPo.getSalt());
         if (comparePass.equals(password)) {
-            return userInfoPo;
+            DeptInfo de = deptInfoService.queryDeptById(userInfoPo.getDeptId());
+            RoleInfo role = roleInfoService.queryRoleById(userInfoPo.getRoleId());
+            return UserInfoAdaptor.adaptToUserInfo(userInfoPo, role, de);
         }
         return null;
     }

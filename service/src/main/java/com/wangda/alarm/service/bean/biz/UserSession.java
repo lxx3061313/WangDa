@@ -11,6 +11,7 @@ public class UserSession {
     private String userName;
     private Date loginTime;
     private RoleInfo roleInfo;
+    private DeptInfo deptInfo;
 
     public static Builder createBuilder() {
         return new Builder();
@@ -21,6 +22,7 @@ public class UserSession {
         private String userName;
         private Date loginTime;
         private RoleInfo roleInfo;
+        private DeptInfo deptInfo;
         public Builder addToken(String token) {
             this.token = token;
             return this;
@@ -41,11 +43,16 @@ public class UserSession {
             return this;
         }
 
+        public Builder addDept(DeptInfo deptInfo) {
+            this.deptInfo = deptInfo;
+            return this;
+        }
+
         public UserSession build() {
             UserSession session = new UserSession();
             session.setLoginTime(loginTime);
             session.setRoleInfo(roleInfo);
-            session.setToken(token);
+            session.setDeptInfo(deptInfo);
             session.setToken(token);
             return session;
         }
@@ -81,5 +88,13 @@ public class UserSession {
 
     public void setRoleInfo(RoleInfo roleInfo) {
         this.roleInfo = roleInfo;
+    }
+
+    public DeptInfo getDeptInfo() {
+        return deptInfo;
+    }
+
+    public void setDeptInfo(DeptInfo deptInfo) {
+        this.deptInfo = deptInfo;
     }
 }

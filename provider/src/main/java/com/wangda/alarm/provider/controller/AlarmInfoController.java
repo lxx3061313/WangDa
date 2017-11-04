@@ -1,6 +1,7 @@
 package com.wangda.alarm.provider.controller;
 
 import com.wangda.alarm.provider.bean.AlarmDetailVo;
+import com.wangda.alarm.provider.bean.AlarmListResp;
 import com.wangda.alarm.provider.bean.AlarmOutlineVo;
 import com.wangda.alarm.provider.biz.AlarmInfoBiz;
 import com.wangda.alarm.service.bean.vo.AlarmStatisticsVo;
@@ -28,8 +29,9 @@ public class AlarmInfoController {
 
     @RequestMapping("/list")
     @JsonBody
-    public List<AlarmOutlineVo> queryAlarmList(@RequestBody AlarmListReq req) {
-        return alarmInfoBiz.queryAlarmList(req);
+    public AlarmListResp queryAlarmList(@RequestBody AlarmListReq req) {
+        List<AlarmOutlineVo> outlineVos = alarmInfoBiz.queryAlarmList(req);
+        return null;
     }
 
     @RequestMapping("/detail")

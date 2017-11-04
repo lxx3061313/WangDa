@@ -21,7 +21,7 @@
     </dependencies>
 
     <build>
-        <finalName>mossad.provider</finalName>
+        <finalName>wangda.provider</finalName>
         <plugins>
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>

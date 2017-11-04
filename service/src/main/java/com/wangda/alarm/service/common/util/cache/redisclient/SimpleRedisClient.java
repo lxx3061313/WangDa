@@ -26,12 +26,24 @@ public class SimpleRedisClient {
         redisClientFactory.getCLIENT().set(key, JsonUtil.of(value));
     }
 
+    public void setex(String key, Object value, long seconds) {
+        redisClientFactory.getCLIENT().setex(key, seconds, JsonUtil.of(value));
+    }
+
     public Object get(String key, Class clz) {
         String s = get(key);
         if (!Strings.isNullOrEmpty(s)) {
             return JsonUtil.of(s, clz);
         }
         return null;
+    }
+
+    public void incr(String key) {
+        redisClientFactory.getCLIENT().incr(key);
+    }
+
+    public void del(String key) {
+        redisClientFactory.getCLIENT().del(key);
     }
 
     public String get(String key) {
