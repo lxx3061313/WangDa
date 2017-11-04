@@ -19,7 +19,11 @@ public class UserInfoPo {
     private int sex;
     private String email;
     private String phone;
-    private int roleId;
+
+    /**
+     * 角色ids, 可能为多个所以用string类型
+     */
+    private String roleId;
     private int deptId;
     private int status;
     private Date createTime;
@@ -105,11 +109,11 @@ public class UserInfoPo {
         this.phone = phone;
     }
 
-    public int getRoleId() {
+    public String getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(int roleId) {
+    public void setRoleId(String roleId) {
         this.roleId = roleId;
     }
 

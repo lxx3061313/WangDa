@@ -1,5 +1,6 @@
 package com.wangda.alarm.service.impl;
 
+import com.google.common.base.Strings;
 import com.wangda.alarm.service.bean.biz.UserSession;
 import com.wangda.alarm.service.common.util.cache.redisclient.SimpleRedisClient;
 import com.wangda.alarm.service.common.util.json.JsonUtil;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class LoginSessionService {
     private final static int ERROR_COUNT = 3;
     private final static String LOGIN_ERR_KEY_PRE = "login_error_count_key_";
+    private final static String USER_SESSION_TOKEN_KEY = "token_key_";
 
     /**
      * 登录session10天过期
@@ -25,6 +27,13 @@ public class LoginSessionService {
 
     public void saveUserSession(UserSession session) {
         simpleRedisClient.setex(session.getToken(), JsonUtil.of(session), SESSION_EXPIRATION);
+        simpleRedisClient.set(USER_SESSION_TOKEN_KEY+session.getUserName(), session.getToken());
+    }
+
+    public boolean isUserOnline(String userName) {
+        String token = simpleRedisClient.get(USER_SESSION_TOKEN_KEY + userName);
+        String session = simpleRedisClient.get(token);
+        return session != null;
     }
 
     public void remoteUserSession(String token) {
@@ -41,7 +50,7 @@ public class LoginSessionService {
 
     public boolean isForbiddenLogin(String userName) {
         String s = simpleRedisClient.get(userName);
-        if (Integer.valueOf(s) > ERROR_COUNT) {
+        if (!Strings.isNullOrEmpty(s) && Integer.valueOf(s) > ERROR_COUNT) {
             return true;
         }
         return false;

@@ -15,7 +15,30 @@
     <select id="queryRoleById" parameterType="java.lang.Integer" resultType="com.wangda.alarm.service.dao.po.RolePo">
         SELECT
         <include refid="fields"/>
-        FROM dept
+        FROM role
         WHERE id=#{id}
+    </select>
+
+    <select id="queryRolesByids" parameterType="java.util.List" resultType="com.wangda.alarm.service.dao.po.RolePo">
+        SELECT
+        <include refid="fields"/>
+        FROM role
+        WHERE id IN
+        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="queryRoldsByPid" parameterType="java.lang.Integer" resultType="com.wangda.alarm.service.dao.po.RolePo">
+        SELECT
+        <include refid="fields"/>
+        FROM role
+        WHERE pid=#{pid}
+    </select>
+
+    <select id="queryAllRoles" resultType="com.wangda.alarm.service.dao.po.RolePo">
+        SELECT
+        <include refid="fields"/>
+        FROM role
     </select>
 </mapper>

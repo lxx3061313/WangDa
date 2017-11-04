@@ -8,7 +8,10 @@ import com.wangda.alarm.service.bean.standard.DeptType;
 import com.wangda.alarm.service.bean.standard.constant.BizConstant;
 import com.wangda.alarm.service.dao.po.DeptPo;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import org.apache.commons.collections.CollectionUtils;
 
 /**
  * @author lixiaoxiong
@@ -25,6 +28,13 @@ public class DeptAdaptor {
         info.setDeptFullname(po.getFullName());
         info.setDeptType(parseToDeptType(po.getPids()));
         return info;
+    }
+
+    public static List<DeptInfo> adaptToDeptInfos(List<DeptPo> pos) {
+        if (CollectionUtils.isEmpty(pos)) {
+            return Collections.EMPTY_LIST;
+        }
+        return pos.stream().map(DeptAdaptor::adaptToDeptInfo).collect(Collectors.toList());
     }
 
     /**

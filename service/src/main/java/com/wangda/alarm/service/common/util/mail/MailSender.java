@@ -10,6 +10,7 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMessage.RecipientType;
 import javax.mail.internet.MimeMultipart;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -64,6 +65,7 @@ public class MailSender {
             throws MessagingException {
         MimeMessage message = new MimeMessage(session);
         message.setFrom(new InternetAddress(fromMail));
+        message.setRecipient(RecipientType.CC, new InternetAddress(mailFrom));
         message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(toMail));
         message.setSubject(subject);
         message.setText(context);

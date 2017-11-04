@@ -1,5 +1,6 @@
 package com.wangda.alarm.provider.controller;
 
+import com.wangda.alarm.provider.bean.LoginReq;
 import com.wangda.alarm.provider.biz.UserAuthBiz;
 import com.wangda.alarm.service.bean.vo.req.UpdatePassReq;
 import com.wangda.alarm.service.common.springconfig.annotation.JsonBody;
@@ -22,8 +23,8 @@ public class UserAuthController {
 
     @RequestMapping("/login")
     @JsonBody
-    public void login(String userName, String password, HttpServletResponse response) {
-        userAuthBiz.auth(userName, password, response);
+    public void login(@RequestBody LoginReq req, HttpServletResponse response) {
+        userAuthBiz.auth(req.getUserName(), req.getPassword(), response);
     }
 
     @RequestMapping("/forgetPassword")
@@ -41,6 +42,6 @@ public class UserAuthController {
     @RequestMapping("/logout")
     @JsonBody
     public void logout() {
-
+        userAuthBiz.logout();
     }
 }

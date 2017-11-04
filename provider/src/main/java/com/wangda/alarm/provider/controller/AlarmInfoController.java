@@ -44,7 +44,7 @@ public class AlarmInfoController {
     @RequestMapping("/statis")
     @JsonBody
     public AlarmStatisticsVo queryAlarmStatistics() {
-        return null;
+        return alarmInfoBiz.queryAlarmStatic();
     }
 
     @RequestMapping("/realAlarm")

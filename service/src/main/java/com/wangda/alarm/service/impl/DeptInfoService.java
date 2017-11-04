@@ -41,6 +41,11 @@ public class DeptInfoService {
         return DeptAdaptor.adaptToDeptInfo(deptPo);
     }
 
+    public List<DeptInfo> queryAllDepts() {
+        List<DeptPo> deptPos = deptInfoDao.queryAllDepts();
+        return DeptAdaptor.adaptToDeptInfos(deptPos);
+    }
+
     public DeptHierarchyInfo queryDeptHireraInfo(String code) {
         DeptPo deptPo = queryDeptPoBySName(code);
         if (deptPo == null) {

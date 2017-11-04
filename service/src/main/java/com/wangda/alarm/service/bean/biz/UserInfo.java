@@ -2,6 +2,7 @@ package com.wangda.alarm.service.bean.biz;
 
 import com.wangda.alarm.service.common.util.pojo.Sex;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author lixiaoxiong
@@ -52,7 +53,7 @@ public class UserInfo {
     /**
      * 角色信息
      */
-    private RoleInfo roleInfo;
+    private List<RoleInfo> roleInfo;
 
     /**
      * 部门信息
@@ -120,11 +121,12 @@ public class UserInfo {
         this.phone = phone;
     }
 
-    public RoleInfo getRoleInfo() {
+
+    public List<RoleInfo> getRoleInfo() {
         return roleInfo;
     }
 
-    public void setRoleInfo(RoleInfo roleInfo) {
+    public void setRoleInfo(List<RoleInfo> roleInfo) {
         this.roleInfo = roleInfo;
     }
 

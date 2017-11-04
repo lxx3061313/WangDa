@@ -9,7 +9,7 @@ public class RolePo {
     private int num;
     private int pid;
     private String name;
-    private String deptid;
+    private int deptid;
     private String tips;
     private int version;
 
@@ -45,11 +45,11 @@ public class RolePo {
         this.name = name;
     }
 
-    public String getDeptid() {
+    public int getDeptid() {
         return deptid;
     }
 
-    public void setDeptid(String deptid) {
+    public void setDeptid(int deptid) {
         this.deptid = deptid;
     }
 

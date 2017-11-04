@@ -22,7 +22,7 @@ public class MailContextBuilder {
         sendInfo.setMailFrom(mailFrom);
         sendInfo.setMailTo(mailTo);
         sendInfo.setSubject(FORGET_PASS_MAILSUB);
-        sendInfo.setContext(MessageFormat.format("尊敬的 {0} 您好, 您重置后的密码为:{1}", account, newPss));
+        sendInfo.setContext(MessageFormat.format("尊敬的 {0} 您好, 您账户重置后为:{1}", account, newPss));
         return sendInfo;
     }
 }

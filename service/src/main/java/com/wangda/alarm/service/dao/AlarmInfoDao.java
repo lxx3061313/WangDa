@@ -5,6 +5,7 @@ import com.wangda.alarm.service.dao.po.AlarmInfoPo;
 import com.wangda.alarm.service.dao.po.AlarmListPo;
 import com.wangda.alarm.service.dao.req.QueryAlarmDetailParam;
 import com.wangda.alarm.service.dao.req.QueryAlarmListParam;
+import java.util.Date;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
@@ -33,4 +34,6 @@ public interface AlarmInfoDao {
     int saveAlarmInfo(AlarmInfoPo po);
 
     int saveAlarmInfos(List<AlarmInfoPo> pos);
+
+    List<AlarmInfoPo> queryAlarmByTimeRange(@Param("from")Date from, @Param("to") Date to);
 }

@@ -36,4 +36,10 @@
             #{item}
         </foreach>
     </select>
+
+    <select id="queryAllDepts" resultType="com.wangda.alarm.service.dao.po.DeptPo">
+        SELECT
+        <include refid="fields"/>
+        FROM dept
+    </select>
 </mapper>

@@ -17,6 +17,6 @@ public interface DeptInfoDao {
     List<DeptPo> queryDeptBySName(String sname);
 
     List<DeptPo> queryDeptsByIds(List<Integer> ids);
-
+    List<DeptPo> queryAllDepts();
     DeptPo queryDeptById(int id);
 }

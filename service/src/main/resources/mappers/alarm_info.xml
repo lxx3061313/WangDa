@@ -164,4 +164,12 @@
         WHERE segment=#{segmentCode} AND workshop_code=#{workShopCode} AND workarea_code=#{workAreaCode} AND source_telecode=#{stationCode}
         AND alarm_type=#{alarmType} AND alarm_level=#{level} AND device_name=#{deviceName}
     </select>
+
+    <select id="queryAlarmByTimeRange" parameterType="java.util.Map"
+      resultType="com.wangda.alarm.service.dao.po.AlarmInfoPo">
+        SELECT
+        <include refid="fields"/>
+        FROM alarm_info
+        WHERE create_time BETWEEN #{from} AND #{to}
+    </select>
 </mapper>

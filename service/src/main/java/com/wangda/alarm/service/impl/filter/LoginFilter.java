@@ -28,7 +28,8 @@ public class LoginFilter extends UFilter<UserSession> {
     public static List<String> excludUrls = new ArrayList<>();
 
     static {
-        excludUrls.add("/wangda/mobile/auth");
+        excludUrls.add("/wangda/mobile/auth/login");
+        excludUrls.add("/wangda/mobile/auth/forgetPassword");
     }
 
     @Resource

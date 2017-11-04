@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wangda.alarm.service.dao.BizOpLogDao">
+
+    <sql id="fields">
+        id,
+        biz_id AS bizId,
+        operator
+        op_desc AS opDesc,
+        op_label AS opLable,
+        create_time AS createTime
+    </sql>
+
+    <insert id="saveFaultInfo" parameterType="com.wangda.alarm.service.dao.po.BizOpLogPo">
+        INSERT INTO op_log(
+        biz_id,
+        operator
+        op_esc,
+        op_label,
+        create_time
+        ) VALUES (
+        #{bizId},
+        #{operator},
+        #{opDesc},
+        #{opLable},
+        #{creatTime}
+        )
+    </insert>
+
+    <select id="queryLogByOperator" parameterType="java.lang.String">
+        SELECT
+        <include refid="fields"/>
+        FROM op_log
+        WHERE operator=#{operator}
+    </select>
+</mapper>

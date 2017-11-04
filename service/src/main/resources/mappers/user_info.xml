@@ -21,7 +21,7 @@
     </sql>
 
     <insert id="saveAlarmInfo" parameterType="com.wangda.alarm.service.dao.po.UserInfoPo">
-        INSERT INTO user_info(
+        INSERT INTO user(
         avatar,
         account,
         password,
@@ -59,19 +59,35 @@
     <select id="authUser" parameterType="java.lang.String" resultType="com.wangda.alarm.service.dao.po.UserInfoPo">
         SELECT
         <include refid="fields"/>
-        FROM user_info
+        FROM user
         WHERE account=#{account}
+    </select>
+
+    <select id="queryAllUsers" resultType="com.wangda.alarm.service.dao.po.UserInfoPo">
+        SELECT
+        <include refid="fields"/>
+        FROM user
     </select>
 
     <select id="queryUserInfoByAccount" parameterType="java.lang.String" resultType="com.wangda.alarm.service.dao.po.UserInfoPo">
         SELECT
         <include refid="fields"/>
-        FROM user_info
+        FROM user
         WHERE account=#{account}
     </select>
 
+    <select id="queryUsersByIds" parameterType="java.util.List" resultType="com.wangda.alarm.service.dao.po.UserInfoPo">
+        SELECT
+        <include refid="fields"/>
+        FROM user
+        WHERE id IN
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
     <update id="updatePassword" parameterType="java.util.Map">
-        UPDATE user_info
+        UPDATE user
         SET password=#{password}
         WHERE account=#{account}
     </update>

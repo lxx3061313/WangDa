@@ -2,6 +2,10 @@ package com.wangda.alarm.service.dao.adaptor;
 
 import com.wangda.alarm.service.bean.biz.RoleInfo;
 import com.wangda.alarm.service.dao.po.RolePo;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.apache.commons.collections.CollectionUtils;
 
 /**
  * @author lixiaoxiong
@@ -18,5 +22,13 @@ public class RoleInfoAdaptor {
         info.setTips(po.getTips());
         info.setVersion(po.getVersion());
         return info;
+    }
+
+    public static List<RoleInfo> adaptToRoleInfos(List<RolePo> rolePos) {
+        if (CollectionUtils.isEmpty(rolePos)) {
+            return Collections.EMPTY_LIST;
+        }
+        return rolePos.stream().map(RoleInfoAdaptor::adaptToRoleInfo)
+                .collect(Collectors.toList());
     }
 }

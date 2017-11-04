@@ -9,117 +9,117 @@ public class AlarmStatisticsVo {
     /**
      * 一级报警数
      */
-    private int levelOneCount;
+    private long levelOneCount;
 
     /**
      * 二级报警数
      */
-    private int leveTowCount;
+    private long leveTowCount;
 
     /**
      * 三级报警数
      */
-    private int leveThreeCount;
+    private long leveThreeCount;
 
     /**
      * 预警数
      */
-    private int warnCount;
+    private long warnCount;
 
     /**
      * 达州电务段报警数
      */
-    private int dzCount;
+    private long dzCount;
 
     /**
      * 成都电务段报警数
      */
-    private int cdCount;
+    private long cdCount;
 
     /**
      * 重庆电务段报警数
      */
-    private int cqCount;
+    private long cqCount;
 
     /**
      * 贵阳电务段报警数
      */
-    private int gyCount;
+    private long gyCount;
 
     /**
      * 贵阳北电务段报警数
      */
-    private int gybCount;
+    private long gybCount;
 
-    public int getLevelOneCount() {
+    public long getLevelOneCount() {
         return levelOneCount;
     }
 
-    public void setLevelOneCount(int levelOneCount) {
+    public void setLevelOneCount(long levelOneCount) {
         this.levelOneCount = levelOneCount;
     }
 
-    public int getLeveTowCount() {
+    public long getLeveTowCount() {
         return leveTowCount;
     }
 
-    public void setLeveTowCount(int leveTowCount) {
+    public void setLeveTowCount(long leveTowCount) {
         this.leveTowCount = leveTowCount;
     }
 
-    public int getLeveThreeCount() {
+    public long getLeveThreeCount() {
         return leveThreeCount;
     }
 
-    public void setLeveThreeCount(int leveThreeCount) {
+    public void setLeveThreeCount(long leveThreeCount) {
         this.leveThreeCount = leveThreeCount;
     }
 
-    public int getWarnCount() {
+    public long getWarnCount() {
         return warnCount;
     }
 
-    public void setWarnCount(int warnCount) {
+    public void setWarnCount(long warnCount) {
         this.warnCount = warnCount;
     }
 
-    public int getDzCount() {
+    public long getDzCount() {
         return dzCount;
     }
 
-    public void setDzCount(int dzCount) {
+    public void setDzCount(long dzCount) {
         this.dzCount = dzCount;
     }
 
-    public int getCdCount() {
+    public long getCdCount() {
         return cdCount;
     }
 
-    public void setCdCount(int cdCount) {
+    public void setCdCount(long cdCount) {
         this.cdCount = cdCount;
     }
 
-    public int getCqCount() {
+    public long getCqCount() {
         return cqCount;
     }
 
-    public void setCqCount(int cqCount) {
+    public void setCqCount(long cqCount) {
         this.cqCount = cqCount;
     }
 
-    public int getGyCount() {
+    public long getGyCount() {
         return gyCount;
     }
 
-    public void setGyCount(int gyCount) {
+    public void setGyCount(long gyCount) {
         this.gyCount = gyCount;
     }
 
-    public int getGybCount() {
+    public long getGybCount() {
         return gybCount;
     }
 
-    public void setGybCount(int gybCount) {
+    public void setGybCount(long gybCount) {
         this.gybCount = gybCount;
     }
 }

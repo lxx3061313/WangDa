@@ -1,6 +1,7 @@
 package com.wangda.alarm.service.dao;
 
 import com.wangda.alarm.service.dao.po.RolePo;
+import java.util.List;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -10,4 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RoleInfoDao {
     RolePo queryRoleById(int id);
+    List<RolePo> queryRolesByids(List<Integer> ids);
+    List<RolePo> queryRoldsByPid(int pid);
+    List<RolePo> queryAllRoles();
 }

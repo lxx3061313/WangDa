@@ -17,6 +17,7 @@ import com.wangda.alarm.service.dao.po.AlarmListPo;
 import com.wangda.alarm.service.dao.req.QueryAlarmDetailParam;
 import com.wangda.alarm.service.dao.req.QueryAlarmListParam;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -63,6 +64,7 @@ public class AlarmInfoService{
     public List<AlarmInfo> queryAlarmDetailByParam(String segmentCode, String workshopCode,
             String workareaCode, String sourceCode, AlarmLevel level,
             StandardAlarmType type, String deviceName, PageRequest request) {
+        //1. 构建查询参数
         QueryAlarmDetailParam param = new QueryAlarmDetailParam();
         param.setSegmentCode(segmentCode);
         param.setWorkShopCode(workshopCode);
@@ -71,8 +73,32 @@ public class AlarmInfoService{
         param.setAlarmType(type.getCode());
         param.setLevel(level);
         param.setDeviceName(deviceName);
+
+        //2. 查询符合条件的参数
         List<AlarmInfoPo> infoPos = alarmInfoDao
                 .queryAlarmDetail(param, new RowBounds(request.getOffset(), request.getLimit()));
+
+        //3. 查询报警对应车站详情
+        List<String> stationIds = infoPos.stream().map(AlarmInfoPo::getSourceTeleCode).distinct()
+                .collect(Collectors.toList());
+        List<DeptHierarchyInfo> deptHierarchyInfos = deptInfoService
+                .queryDeptHireraInfos(stationIds);
+        Map<String, DeptHierarchyInfo> infoMap = deptHierarchyInfos.stream()
+                .collect(Collectors.toMap(DeptHierarchyInfo::getStationSimpleName, p -> p));
+
+        //4. 转换为报警详情。
+        return AlarmInfoAdaptor.adaptToAlarmInfos(infoPos, infoMap);
+    }
+
+    public int saveAlarmInfo(AlarmContext context) {
+        DeptHierarchyInfo deptHierarchyInfo = deptInfoService
+                .queryDeptHireraInfo(context.getHeader().getSourceTeleCode());
+        AlarmInfoPo infoPo = AlarmInfoAdaptor.adaptToAlarmPo(context, deptHierarchyInfo);
+        return alarmInfoDao.saveAlarmInfo(infoPo);
+    }
+
+    public List<AlarmInfo> queryAlarmByTimerange(Date from, Date to) {
+        List<AlarmInfoPo> infoPos = alarmInfoDao.queryAlarmByTimeRange(from, to);
         List<String> stationIds = infoPos.stream().map(AlarmInfoPo::getSourceTeleCode).distinct()
                 .collect(Collectors.toList());
         List<DeptHierarchyInfo> deptHierarchyInfos = deptInfoService
@@ -80,14 +106,6 @@ public class AlarmInfoService{
         Map<String, DeptHierarchyInfo> infoMap = deptHierarchyInfos.stream()
                 .collect(Collectors.toMap(DeptHierarchyInfo::getStationSimpleName, p -> p));
         return AlarmInfoAdaptor.adaptToAlarmInfos(infoPos, infoMap);
-    }
-
-
-    public int saveAlarmInfo(AlarmContext context) {
-        DeptHierarchyInfo deptHierarchyInfo = deptInfoService
-                .queryDeptHireraInfo(context.getHeader().getSourceTeleCode());
-        AlarmInfoPo infoPo = AlarmInfoAdaptor.adaptToAlarmPo(context, deptHierarchyInfo);
-        return alarmInfoDao.saveAlarmInfo(infoPo);
     }
 
     public int saveAlarmRespInfo(RespContext context) {

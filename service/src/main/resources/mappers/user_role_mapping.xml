@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wangda.alarm.service.dao.UserRoleMappingDao">
+
+    <sql id="fields">
+        id,
+        user_id AS userId,
+        role_id AS roleId,
+        create_time AS createTime
+    </sql>
+
+    <insert id="saveUserRoleMapping" parameterType="com.wangda.alarm.service.dao.po.UserRoleMappingPo">
+        INSERT INTO user_role_mapping(
+        user_id,
+        role_id,
+        create_time
+        ) VALUES (
+        #{userId},
+        #{roleId},
+        #{createTime}
+        ) ON DUPLICATE KEY UPDATE
+        create_time=#{create_time}
+    </insert>
+
+    <insert id="saveUserRoleMappings" parameterType="java.util.List">
+        INSERT INTO user_role_mapping(
+        user_id,
+        role_id,
+        create_time
+        ) VALUES
+        <foreach collection="list" index="index" item="item" separator=",">
+            (
+            #{item.userId},
+            #{item.roleId},
+            #{item.createTime}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        create_time=#{create_time}
+    </insert>
+
+    <select id="queryMappingByUserId" parameterType="java.lang.Integer" resultType="com.wangda.alarm.service.dao.po.UserRoleMappingPo">
+        SELECT
+        <include refid="fields"/>
+        FROM user_role_mapping
+        WHERE user_id=#{userId}
+    </select>
+
+    <select id="queryMappingByRoleId" parameterType="java.lang.Integer" resultType="com.wangda.alarm.service.dao.po.UserRoleMappingPo">
+        SELECT
+        <include refid="fields"/>
+        FROM user_role_mapping
+        WHERE role_id=#{roleId}
+    </select>
+
+    <select id="queryMappingsByRoleIds" parameterType="java.util.List" resultType="com.wangda.alarm.service.dao.po.UserRoleMappingPo">
+        SELECT
+        <include refid="fields"/>
+        FROM user_role_mapping
+        WHERE role_id IN
+        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="queryAllMappings" resultType="com.wangda.alarm.service.dao.po.UserRoleMappingPo">
+        SELECT
+        <include refid="fields"/>
+        FROM user_role_mapping
+    </select>
+</mapper>

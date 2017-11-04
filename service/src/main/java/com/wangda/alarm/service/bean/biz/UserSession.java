@@ -1,6 +1,7 @@
 package com.wangda.alarm.service.bean.biz;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author lixiaoxiong
@@ -10,7 +11,7 @@ public class UserSession {
     private String token;
     private String userName;
     private Date loginTime;
-    private RoleInfo roleInfo;
+    private List<RoleInfo> roleInfo;
     private DeptInfo deptInfo;
 
     public static Builder createBuilder() {
@@ -21,7 +22,7 @@ public class UserSession {
         private String token;
         private String userName;
         private Date loginTime;
-        private RoleInfo roleInfo;
+        private List<RoleInfo> roleInfo;
         private DeptInfo deptInfo;
         public Builder addToken(String token) {
             this.token = token;
@@ -38,7 +39,7 @@ public class UserSession {
             return this;
         }
 
-        public Builder addRole(RoleInfo roleInfo) {
+        public Builder addRole(List<RoleInfo> roleInfo) {
             this.roleInfo = roleInfo;
             return this;
         }
@@ -54,6 +55,7 @@ public class UserSession {
             session.setRoleInfo(roleInfo);
             session.setDeptInfo(deptInfo);
             session.setToken(token);
+            session.setUserName(this.userName);
             return session;
         }
     }
@@ -82,11 +84,11 @@ public class UserSession {
         this.loginTime = loginTime;
     }
 
-    public RoleInfo getRoleInfo() {
+    public List<RoleInfo> getRoleInfo() {
         return roleInfo;
     }
 
-    public void setRoleInfo(RoleInfo roleInfo) {
+    public void setRoleInfo(List<RoleInfo> roleInfo) {
         this.roleInfo = roleInfo;
     }
 
