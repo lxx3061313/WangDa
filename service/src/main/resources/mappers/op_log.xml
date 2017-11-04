@@ -11,7 +11,7 @@
         create_time AS createTime
     </sql>
 
-    <insert id="saveFaultInfo" parameterType="com.wangda.alarm.service.dao.po.BizOpLogPo">
+    <insert id="saveOpLog" parameterType="com.wangda.alarm.service.dao.po.BizOpLogPo">
         INSERT INTO op_log(
         biz_id,
         operator
@@ -27,7 +27,7 @@
         )
     </insert>
 
-    <select id="queryLogByOperator" parameterType="java.lang.String">
+    <select id="queryLogsByOperator" parameterType="java.lang.String" resultType="com.wangda.alarm.service.dao.po.BizOpLogPo">
         SELECT
         <include refid="fields"/>
         FROM op_log

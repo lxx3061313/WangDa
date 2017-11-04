@@ -10,6 +10,7 @@ import com.wangda.alarm.service.common.util.TokenGenerator;
 import com.wangda.alarm.service.common.util.pojo.BizException;
 import com.wangda.alarm.service.dao.po.UserInfoPo;
 import com.wangda.alarm.service.impl.LoginSessionService;
+import com.wangda.alarm.service.impl.OpLogService;
 import com.wangda.alarm.service.impl.ResetPassService;
 import com.wangda.alarm.service.impl.UserAuthService;
 import com.wangda.alarm.service.impl.UserInfoService;
@@ -38,6 +39,9 @@ public class UserAuthBiz {
     @Resource
     ResetPassService resetPassService;
 
+    @Resource
+    OpLogService opLogService;
+
     public void auth(String userName, String password, HttpServletResponse response) {
         //密码输入次数大于3次
         if (loginSessionService.isForbiddenLogin(userName)) {
@@ -50,6 +54,9 @@ public class UserAuthBiz {
         if (auth != null) {
             // 登录成功删除密码输入次数
             loginSessionService.delLogError(userName);
+
+            // 记录操作日志
+            opLogService.createLoginLog(userName);
 
             // 生成token
             String token = TokenGenerator.generate(auth.getAccount());
@@ -109,5 +116,6 @@ public class UserAuthBiz {
             throw new BizException("当前用户不在线");
         }
         loginSessionService.remoteUserSession(user.getToken());
+        opLogService.createLogoutLog(user.getUserName());
     }
 }

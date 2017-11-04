@@ -5,6 +5,7 @@ import com.wangda.alarm.provider.bean.AlarmOutlineVo;
 import com.wangda.alarm.provider.bean.adaptor.AlarmVoAdaptor;
 import com.wangda.alarm.service.bean.biz.AlarmInfo;
 import com.wangda.alarm.service.bean.biz.AlarmListInfo;
+import com.wangda.alarm.service.bean.biz.UserLoginContext;
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmLevel;
 import com.wangda.alarm.service.bean.standard.protocol.SegmentCode;
 import com.wangda.alarm.service.bean.standard.protocol.StandardAlarmType;
@@ -13,6 +14,7 @@ import com.wangda.alarm.service.bean.vo.req.AlarmDetailReq;
 import com.wangda.alarm.service.bean.vo.req.AlarmListReq;
 import com.wangda.alarm.service.common.util.PageRequest;
 import com.wangda.alarm.service.impl.AlarmInfoService;
+import com.wangda.alarm.service.impl.OpLogService;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
@@ -31,12 +33,19 @@ public class AlarmInfoBiz {
     @Resource
     AlarmInfoService alarmInfoService;
 
+    @Resource
+    OpLogService opLogService;
+
+
     public List<AlarmOutlineVo> queryAlarmList(AlarmListReq listReq) {
         List<AlarmListInfo> listInfos = alarmInfoService
                 .queryAlarmListByParam(listReq.getSegmentCode(), listReq.getWorkshopCode(),
                         listReq.getWorkareaCode(), listReq.getStationCode(), listReq.getLevel(),
                         StandardAlarmType.nameOf(listReq.getAlarmType()),
                         new PageRequest(listReq.getCurrentSize(), listReq.getPageSize()));
+
+        //todo
+        //opLogService.createWatchInfoLog(UserLoginContext.getUser().getUserName(), "查看报警");
         return AlarmVoAdaptor.adaptOutlineVos(listInfos);
     }
 
@@ -47,9 +56,11 @@ public class AlarmInfoBiz {
                         req.getAlarmType()
                         , req.getDeviceName(),
                         new PageRequest(req.getCurrentPage(), req.getPageSize()));
+
+        //todo
+        //opLogService.createWatchInfoLog(UserLoginContext.getUser().getUserName(), "查看报警");
         return AlarmVoAdaptor.adaptDetailVos(infos);
     }
-
 
     /**
      * 查询36小时内的报警数据
@@ -92,6 +103,7 @@ public class AlarmInfoBiz {
         // 贵阳北个数
         vo.setGybCount(infos.stream().filter(p->p.getSegmentCode()
                 .equals(SegmentCode.GYBD.getCode())).count());
+        opLogService.createWatchInfoLog(UserLoginContext.getUser().getUserName(), "查看报警统计信息");
         return vo;
     }
 
