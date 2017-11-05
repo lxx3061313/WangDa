@@ -32,7 +32,10 @@ public class AlarmInfoController {
     @JsonBody
     public AlarmListResp queryAlarmList(@RequestBody AlarmListReq req) {
         List<AlarmOutlineVo> outlineVos = alarmInfoBiz.queryAlarmList(req);
-        return null;
+        AlarmListResp resp = new AlarmListResp();
+        resp.setAlarms(outlineVos);
+        resp.setTotalCount(100);
+        return resp;
     }
 
     @RequestMapping("/detail")
@@ -50,7 +53,7 @@ public class AlarmInfoController {
 
     @RequestMapping("/realAlarm")
     @JsonBody
-    public RealTimeAlarmVo queryRealTimeAlarm(RealTimeAlarmReq req) {
+    public RealTimeAlarmVo queryRealTimeAlarm(@RequestBody RealTimeAlarmReq req) {
         return alarmInfoBiz.queryRealTimeAlarmVo(req);
     }
 }

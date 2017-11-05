@@ -101,6 +101,10 @@ public class AlarmInfoService{
 
     public List<AlarmInfo> queryAlarmByTimerange(Date from, Date to) {
         List<AlarmInfoPo> infoPos = alarmInfoDao.queryAlarmByTimeRange(from, to);
+        if (CollectionUtils.isEmpty(infoPos)) {
+            return Collections.EMPTY_LIST;
+        }
+
         List<String> stationIds = infoPos.stream().map(AlarmInfoPo::getSourceTeleCode).distinct()
                 .collect(Collectors.toList());
         List<DeptHierarchyInfo> deptHierarchyInfos = deptInfoService

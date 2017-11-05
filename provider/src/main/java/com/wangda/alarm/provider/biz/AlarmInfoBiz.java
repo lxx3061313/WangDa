@@ -36,7 +36,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AlarmInfoBiz {
 
-    private final static int ALARM_DATA_TIME_BEFORE = 36;
+    private final static int ALARM_DATA_TIME_BEFORE = 200;
 
     @Resource
     AlarmInfoService alarmInfoService;
@@ -114,7 +114,9 @@ public class AlarmInfoBiz {
         // 贵阳北个数
         vo.setGybCount(infos.stream().filter(p->p.getSegmentCode()
                 .equals(SegmentCode.GYBD.getCode())).count());
-        opLogService.createWatchInfoLog(UserLoginContext.getUser().getUserName(), "查看报警统计信息");
+
+        //todo
+        opLogService.createWatchInfoLog(/*UserLoginContext.getUser().getUserName()*/"lxx", "查看报警统计信息");
         return vo;
     }
 
@@ -124,7 +126,9 @@ public class AlarmInfoBiz {
         PageRequest request = new PageRequest(req.getCurrentPage(), req.getPageSize());
         int count = 0;
         // 没有部门信息
-        if (user.getDeptInfo() == null) {
+        //todo
+        //if (user.getDeptInfo() == null) {
+        if (false) {
             result = alarmInfoService.queryAlarmByDeptAndLevel(null, null, null,
                     Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO, AlarmLevel.LEVEL_THREE,
                             AlarmLevel.WARN), request);
@@ -134,7 +138,9 @@ public class AlarmInfoBiz {
         } else {
 
             // 处级接受 一级报警
-            if (user.getDeptInfo().getDeptType() == DeptType.SECTION) {
+            //todo
+            //if (user.getDeptInfo().getDeptType() == DeptType.SECTION) {
+            if (false) {
                 result = alarmInfoService.queryAlarmByDeptAndLevel(null, null, null,
                         Arrays.asList(AlarmLevel.LEVEL_ONE), request);
                 count = alarmInfoService.countAlarmByDeptAndLevel(null, null, null,
@@ -142,10 +148,15 @@ public class AlarmInfoBiz {
             }
 
             // 段级接受一级,二级报警
-            else if(user.getDeptInfo() != null && user.getDeptInfo().getDeptType() == DeptType.SEGMENT) {
-                result = alarmInfoService.queryAlarmByDeptAndLevel(user.getDeptInfo().getDeptSimplename()
+            //else if(user.getDeptInfo() != null && user.getDeptInfo().getDeptType() == DeptType.SEGMENT) {
+            else if(true) {
+//                result = alarmInfoService.queryAlarmByDeptAndLevel(user.getDeptInfo().getDeptSimplename()
+//                        ,null, null, Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO), request);
+//                count = alarmInfoService.countAlarmByDeptAndLevel(user.getDeptInfo().getDeptSimplename()
+//                        ,null, null, Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO));
+                result = alarmInfoService.queryAlarmByDeptAndLevel("CCa"
                         ,null, null, Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO), request);
-                count = alarmInfoService.countAlarmByDeptAndLevel(user.getDeptInfo().getDeptSimplename()
+                count = alarmInfoService.countAlarmByDeptAndLevel("CCa"
                         ,null, null, Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO));
             }
 
@@ -173,6 +184,6 @@ public class AlarmInfoBiz {
     }
 
     private Date beforeHoursFromNow(int beforeHours) {
-        return DateUtils.addHours(new Date(), beforeHours);
+        return DateUtils.addHours(new Date(), -beforeHours);
     }
 }

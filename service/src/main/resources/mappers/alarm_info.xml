@@ -182,10 +182,10 @@
             <if test="segmentCode != null and segmentCode !=''">
                 AND segment=#{segmentCode}
             </if>
-            <if test="workShopCode != null and workShopCode !=''">
+            <if test="workshopCode != null and workShopCode !=''">
                 AND workshop_code=#{workShopCode}
             </if>
-            <if test="workAreaCode != null and workAreaCode !=''">
+            <if test="workareaCode != null and workAreaCode !=''">
                 AND workarea_code=#{workAreaCode}
             </if>
             <if test="levels != null">
@@ -197,7 +197,7 @@
         </where>
     </select>
 
-    <select id="countAlarmByDeptAndLevel" parameterType="java.util.Map">
+    <select id="countAlarmByDeptAndLevel" parameterType="java.util.Map" resultType="java.lang.Integer">
         SELECT
         count(*)
         FROM alarm_info
@@ -205,10 +205,10 @@
             <if test="segmentCode != null and segmentCode !=''">
                 AND segment=#{segmentCode}
             </if>
-            <if test="workShopCode != null and workShopCode !=''">
+            <if test="workshopCode != null and workShopCode !=''">
                 AND workshop_code=#{workShopCode}
             </if>
-            <if test="workAreaCode != null and workAreaCode !=''">
+            <if test="workareaCode != null and workAreaCode !=''">
                 AND workarea_code=#{workAreaCode}
             </if>
             <if test="levels != null">
