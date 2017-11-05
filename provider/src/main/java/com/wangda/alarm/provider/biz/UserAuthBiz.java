@@ -1,6 +1,8 @@
 package com.wangda.alarm.provider.biz;
 
+import com.google.common.base.Strings;
 import com.wangda.alarm.service.bean.biz.RoleInfo;
+import com.wangda.alarm.service.bean.biz.UserCidMappingInfo;
 import com.wangda.alarm.service.bean.biz.UserInfo;
 import com.wangda.alarm.service.bean.biz.UserLoginContext;
 import com.wangda.alarm.service.bean.biz.UserSession;
@@ -13,6 +15,7 @@ import com.wangda.alarm.service.impl.LoginSessionService;
 import com.wangda.alarm.service.impl.OpLogService;
 import com.wangda.alarm.service.impl.ResetPassService;
 import com.wangda.alarm.service.impl.UserAuthService;
+import com.wangda.alarm.service.impl.UserCidMappingService;
 import com.wangda.alarm.service.impl.UserInfoService;
 import java.util.Date;
 import javax.annotation.Resource;
@@ -42,7 +45,10 @@ public class UserAuthBiz {
     @Resource
     OpLogService opLogService;
 
-    public void auth(String userName, String password, HttpServletResponse response) {
+    @Resource
+    UserCidMappingService userCidMappingService;
+
+    public void auth(String userName, String password, String cid, HttpServletResponse response) {
         //密码输入次数大于3次
         if (loginSessionService.isForbiddenLogin(userName)) {
             throw new BizException("密码输入次数大于3次,禁用6个小时");
@@ -54,6 +60,9 @@ public class UserAuthBiz {
         if (auth != null) {
             // 登录成功删除密码输入次数
             loginSessionService.delLogError(userName);
+
+            // 记录cid用于推送
+            saveCidForPushMsg(userName, cid);
 
             // 记录操作日志
             opLogService.createLoginLog(userName);
@@ -79,6 +88,17 @@ public class UserAuthBiz {
             loginSessionService.recordLogError(userName);
             throw new BizException("用户名或密码错误");
         }
+    }
+
+    private void saveCidForPushMsg(String userName, String cid) {
+        if (Strings.isNullOrEmpty(userName) || Strings.isNullOrEmpty(cid)) {
+            return;
+        }
+
+        UserCidMappingInfo info = UserCidMappingInfo.createBuilder()
+                .setAccount(userName)
+                .setCid(cid).build();
+        userCidMappingService.saveMapping(info);
     }
 
     public void updatePassword(UpdatePassReq req) {

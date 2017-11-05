@@ -13,6 +13,7 @@ import com.wangda.alarm.service.dao.UserInfoDao;
 import com.wangda.alarm.service.dao.adaptor.UserInfoAdaptor;
 import com.wangda.alarm.service.dao.po.UserInfoPo;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -53,13 +54,7 @@ public class UserInfoService {
             return null;
         }
 
-        // 所有的mapping信息
-        List<UserRoleMappingInfo> roleMappingInfos = userRoleMappingService.queryAllMappings();
-        Multimap<Integer, Integer> userRoleMaps = HashMultimap.create();
-        roleMappingInfos.stream().forEach(p->userRoleMaps.put(p.getUserId(), p.getRoleId()));
-
-        ArrayList<Integer> roleIds = Lists.newArrayList(userRoleMaps.get(infoPo.getId()));
-        List<RoleInfo> roleInfos = roleInfoService.queryRoleByIds(roleIds);
+        List<RoleInfo> roleInfos = queryRoleInfosByUserIds(Arrays.asList(infoPo.getId()));
         DeptInfo deptInfo = deptInfoService.queryDeptById(infoPo.getDeptId());
         return UserInfoAdaptor.adaptToUserInfo(infoPo, roleInfos, deptInfo);
     }
@@ -68,6 +63,25 @@ public class UserInfoService {
         String saltpass = WebUtil.md5(newPass, salt);
         userInfoDao.updatePassword(saltpass, accout);
     }
+
+    public List<String> queryAccountsByDeptIds(List<Integer> deptIds) {
+        List<UserInfoPo> infoPos = userInfoDao.queryUsersByDeptIds(deptIds);
+        return infoPos.stream().map(UserInfoPo::getAccount).collect(Collectors.toList());
+    }
+
+    public List<RoleInfo> queryRoleInfosByUserIds(List<Integer> userIds) {
+        List<UserRoleMappingInfo> roleMappingInfos = userRoleMappingService.queryAllMappings();
+        Multimap<Integer, Integer> userRoleMaps = HashMultimap.create();
+        roleMappingInfos.stream().forEach(p->userRoleMaps.put(p.getUserId(), p.getRoleId()));
+
+        ArrayList<Integer> roleIds = new ArrayList<>();
+        for (Integer userId : userIds) {
+            Collection<Integer> integers = userRoleMaps.get(userId);
+            roleIds.addAll(integers);
+        }
+        return roleInfoService.queryRoleByIds(roleIds);
+    }
+
 
     /**
      * 查询acount同级别一级下属级别的所有用户

@@ -86,6 +86,16 @@
         </foreach>
     </select>
 
+    <select id="queryUsersByDeptIds" parameterType="java.util.List" resultType="com.wangda.alarm.service.dao.po.UserInfoPo">
+        SELECT
+        <include refid="fields"/>
+        FROM user
+        WHERE deptId IN
+        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
     <update id="updatePassword" parameterType="java.util.Map">
         UPDATE user
         SET password=#{password}

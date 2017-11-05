@@ -7,6 +7,7 @@ package com.wangda.alarm.provider.bean;
 public class LoginReq {
     private String userName;
     private String password;
+    private String cid;
 
     public String getUserName() {
         return userName;
@@ -22,5 +23,13 @@ public class LoginReq {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getCid() {
+        return cid;
+    }
+
+    public void setCid(String cid) {
+        this.cid = cid;
     }
 }

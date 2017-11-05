@@ -15,6 +15,7 @@ public interface UserInfoDao {
     UserInfoPo queryUserInfoByAccount(String account);
     List<UserInfoPo> queryAllUsers();
     List<UserInfoPo> queryUsersByIds(List<Integer> ids);
+    List<UserInfoPo> queryUsersByDeptIds(List<Integer> deptIds);
     int updatePassword(@Param("password") String password,
             @Param("account") String accout);
 }

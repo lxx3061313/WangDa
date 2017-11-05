@@ -25,7 +25,7 @@ public class UserAuthController {
     @RequestMapping("/login")
     @JsonBody
     public APIResponse login(@RequestBody LoginReq req, HttpServletResponse response) {
-        userAuthBiz.auth(req.getUserName(), req.getPassword(), response);
+        userAuthBiz.auth(req.getUserName(), req.getPassword(), req.getCid(), response);
         return APIResponse.success();
     }
 

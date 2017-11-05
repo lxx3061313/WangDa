@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wangda.alarm.service.dao.UserCidMappingDao">
+
+    <sql id="fields">
+        id,
+        account,
+        cid,
+        create_time AS createTime,
+        update_time AS updateTime
+    </sql>
+
+    <insert id="saveUserCidMapping" parameterType="com.wangda.alarm.service.dao.po.UserCidMappingPo">
+        INSERT INTO user_cid_mapping(
+        account,
+        cid,
+        create_time,
+        update_time
+        ) VALUES (
+        #{account},
+        #{cid},
+        #{createTime},
+        #{updateTime}
+        ) ON DUPLICATE KEY UPDATE
+        cid=#{cid}
+    </insert>
+
+    <select id="queryCidByAccount" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT
+        <include refid="fields"/>
+        FROM user_cid_mapping
+        WHERE account=#{account}
+    </select>
+
+    <select id="queryCidsByAccounts" parameterType="java.util.List" resultType="java.lang.String">
+        SELECT
+        <include refid="fields"/>
+        FROM user_cid_mapping
+        WHERE account IN
+        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+</mapper>
