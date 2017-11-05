@@ -5,7 +5,7 @@
     <sql id="fields">
         id,
         biz_id AS bizId,
-        operator
+        operator,
         op_desc AS opDesc,
         op_label AS opLabel,
         create_time AS createTime

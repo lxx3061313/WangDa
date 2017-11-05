@@ -8,6 +8,7 @@ import com.wangda.alarm.service.common.springconfig.annotation.JsonBody;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -30,12 +31,12 @@ public class UserInfoController {
     @RequestMapping("/userinfo")
     @JsonBody
     public UserInfoVo queryUserInfo() {
-        return null;
+        return userInfoBiz.queryCurrentUser();
     }
 
     @RequestMapping("/oplogs")
     @JsonBody
-    public OpLogVo queryOplog(OpLogReq req) {
+    public OpLogVo queryOplog(@RequestBody OpLogReq req) {
         return userInfoBiz.queryOpLogsWhthinUser(req);
     }
 }

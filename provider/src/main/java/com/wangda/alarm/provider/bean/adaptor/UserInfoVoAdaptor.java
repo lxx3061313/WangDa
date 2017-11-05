@@ -3,6 +3,7 @@ package com.wangda.alarm.provider.bean.adaptor;
 import com.wangda.alarm.service.bean.biz.DeptInfo;
 import com.wangda.alarm.service.bean.biz.RoleInfo;
 import com.wangda.alarm.service.bean.biz.UserInfo;
+import com.wangda.alarm.service.bean.biz.UserSession;
 import com.wangda.alarm.service.bean.vo.UserInfoVo;
 import com.wangda.alarm.service.dao.adaptor.UserRoleMappingAdaptor;
 import java.util.Collections;
@@ -36,6 +37,26 @@ public class UserInfoVoAdaptor {
         }
 
         DeptInfo deptInfo = userInfo.getDeptInfo();
+        if (deptInfo != null) {
+            vo.setStation(deptInfo.getDeptFullname());
+        } else {
+            vo.setStation(WEIZHI);
+        }
+        return vo;
+    }
+
+    public static UserInfoVo adaptToUserInfoVo(UserSession session) {
+        UserInfoVo vo = new UserInfoVo();
+        vo.setUserName(session.getUserName());
+
+        List<RoleInfo> roleInfo = session.getRoleInfo();
+        if (CollectionUtils.isNotEmpty(roleInfo)) {
+            vo.setRoleName(roleInfo.get(0).getName());
+        } else {
+            vo.setRoleName(WEIZHI);
+        }
+
+        DeptInfo deptInfo = session.getDeptInfo();
         if (deptInfo != null) {
             vo.setStation(deptInfo.getDeptFullname());
         } else {

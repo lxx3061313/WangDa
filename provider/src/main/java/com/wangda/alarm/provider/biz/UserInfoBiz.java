@@ -41,6 +41,11 @@ public class UserInfoBiz {
         return UserInfoVoAdaptor.adaptToUserInfoVos(userInfos);
     }
 
+    public UserInfoVo queryCurrentUser() {
+        UserSession user = UserLoginContext.getUser();
+        return UserInfoVoAdaptor.adaptToUserInfoVo(user);
+    }
+
     public OpLogVo queryOpLogsWhthinUser(OpLogReq req) {
         //todo
         UserSession user = UserLoginContext.getUser();
