@@ -32,6 +32,9 @@ public class LoginSessionService {
 
     public boolean isUserOnline(String userName) {
         String token = simpleRedisClient.get(USER_SESSION_TOKEN_KEY + userName);
+        if (Strings.isNullOrEmpty(token)) {
+            return false;
+        }
         String session = simpleRedisClient.get(token);
         return session != null;
     }

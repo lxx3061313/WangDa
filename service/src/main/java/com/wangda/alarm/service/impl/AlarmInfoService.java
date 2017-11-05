@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 
@@ -106,6 +108,29 @@ public class AlarmInfoService{
         Map<String, DeptHierarchyInfo> infoMap = deptHierarchyInfos.stream()
                 .collect(Collectors.toMap(DeptHierarchyInfo::getStationSimpleName, p -> p));
         return AlarmInfoAdaptor.adaptToAlarmInfos(infoPos, infoMap);
+    }
+
+    public List<AlarmInfo> queryAlarmByDeptAndLevel(String segment, String workshopCode, String workareaCode,
+            List<AlarmLevel> levels, PageRequest pageRequest) {
+        List<AlarmInfoPo> alarmInfoPos = alarmInfoDao
+                .queryAlarmByDeptAndLevel(segment, workshopCode, workareaCode, levels,
+                        new RowBounds(pageRequest.getOffset(), pageRequest.getLimit()));
+        if (CollectionUtils.isEmpty(alarmInfoPos)) {
+            return Collections.EMPTY_LIST;
+        }
+
+        List<String> stationIds = alarmInfoPos.stream().map(AlarmInfoPo::getSourceTeleCode).distinct()
+                .collect(Collectors.toList());
+        List<DeptHierarchyInfo> deptHierarchyInfos = deptInfoService
+                .queryDeptHireraInfos(stationIds);
+        Map<String, DeptHierarchyInfo> infoMap = deptHierarchyInfos.stream()
+                .collect(Collectors.toMap(DeptHierarchyInfo::getStationSimpleName, p -> p));
+        return AlarmInfoAdaptor.adaptToAlarmInfos(alarmInfoPos, infoMap);
+    }
+
+    public int countAlarmByDeptAndLevel(String segment, String workshopCode, String workareaCode,
+            List<AlarmLevel> levels) {
+        return alarmInfoDao.countAlarmByDeptAndLevel(segment, workshopCode, workareaCode, levels);
     }
 
     public int saveAlarmRespInfo(RespContext context) {

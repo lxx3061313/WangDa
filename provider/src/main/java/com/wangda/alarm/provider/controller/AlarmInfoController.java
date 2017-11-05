@@ -3,6 +3,7 @@ package com.wangda.alarm.provider.controller;
 import com.wangda.alarm.provider.bean.AlarmDetailVo;
 import com.wangda.alarm.provider.bean.AlarmListResp;
 import com.wangda.alarm.provider.bean.AlarmOutlineVo;
+import com.wangda.alarm.provider.bean.RealTimeAlarmReq;
 import com.wangda.alarm.provider.biz.AlarmInfoBiz;
 import com.wangda.alarm.service.bean.vo.AlarmStatisticsVo;
 import com.wangda.alarm.service.bean.vo.RealTimeAlarmVo;
@@ -49,7 +50,7 @@ public class AlarmInfoController {
 
     @RequestMapping("/realAlarm")
     @JsonBody
-    public RealTimeAlarmVo queryRealTimeAlarm() {
-        return null;
+    public RealTimeAlarmVo queryRealTimeAlarm(RealTimeAlarmReq req) {
+        return alarmInfoBiz.queryRealTimeAlarmVo(req);
     }
 }

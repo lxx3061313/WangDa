@@ -7,23 +7,23 @@
         biz_id AS bizId,
         operator
         op_desc AS opDesc,
-        op_label AS opLable,
+        op_label AS opLabel,
         create_time AS createTime
     </sql>
 
     <insert id="saveOpLog" parameterType="com.wangda.alarm.service.dao.po.BizOpLogPo">
         INSERT INTO op_log(
         biz_id,
-        operator
-        op_esc,
+        operator,
+        op_desc,
         op_label,
         create_time
         ) VALUES (
         #{bizId},
         #{operator},
         #{opDesc},
-        #{opLable},
-        #{creatTime}
+        #{opLabel},
+        #{createTime}
         )
     </insert>
 
@@ -32,5 +32,15 @@
         <include refid="fields"/>
         FROM op_log
         WHERE operator=#{operator}
+    </select>
+
+    <select id="queryLogsByOperators" parameterType="java.util.List" resultType="com.wangda.alarm.service.dao.po.BizOpLogPo">
+        SELECT
+        <include refid="fields"/>
+        FROM op_log
+        WHERE operator IN
+        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
     </select>
 </mapper>

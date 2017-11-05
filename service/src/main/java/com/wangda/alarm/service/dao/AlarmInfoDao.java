@@ -27,6 +27,17 @@ public interface AlarmInfoDao {
     List<AlarmInfoPo> queryAlarmBySegAndLev(@Param("segment") String segment,
             @Param("level")AlarmLevel level);
 
+
+    List<AlarmInfoPo> queryAlarmByDeptAndLevel(@Param("segment") String segment,
+            @Param("workshopCode") String workshopCode,
+            @Param("workareaCode") String workareaCode,
+            @Param("levels") List<AlarmLevel> levels, RowBounds rowBounds);
+
+    int countAlarmByDeptAndLevel(@Param("segment") String segment,
+            @Param("workshopCode") String workshopCode,
+            @Param("workareaCode") String workareaCode,
+            @Param("levels") List<AlarmLevel> levels);
+
     List<AlarmInfoPo> queryAlarmDetail(QueryAlarmDetailParam param, RowBounds rowBounds);
 
     List<AlarmListPo> queryAlarmByParam(QueryAlarmListParam param, RowBounds rowBounds);

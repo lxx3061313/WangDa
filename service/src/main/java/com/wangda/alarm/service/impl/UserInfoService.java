@@ -8,7 +8,6 @@ import com.wangda.alarm.service.bean.biz.DeptInfo;
 import com.wangda.alarm.service.bean.biz.RoleInfo;
 import com.wangda.alarm.service.bean.biz.UserInfo;
 import com.wangda.alarm.service.bean.biz.UserRoleMappingInfo;
-import com.wangda.alarm.service.common.util.SplitterUtil;
 import com.wangda.alarm.service.common.util.WebUtil;
 import com.wangda.alarm.service.dao.UserInfoDao;
 import com.wangda.alarm.service.dao.adaptor.UserInfoAdaptor;
@@ -54,7 +53,13 @@ public class UserInfoService {
             return null;
         }
 
-        List<RoleInfo> roleInfos = roleInfoService.queryRoleByIds(SplitterUtil.splitByCommaToIntList(infoPo.getRoleId()));
+        // 所有的mapping信息
+        List<UserRoleMappingInfo> roleMappingInfos = userRoleMappingService.queryAllMappings();
+        Multimap<Integer, Integer> userRoleMaps = HashMultimap.create();
+        roleMappingInfos.stream().forEach(p->userRoleMaps.put(p.getUserId(), p.getRoleId()));
+
+        ArrayList<Integer> roleIds = Lists.newArrayList(userRoleMaps.get(infoPo.getId()));
+        List<RoleInfo> roleInfos = roleInfoService.queryRoleByIds(roleIds);
         DeptInfo deptInfo = deptInfoService.queryDeptById(infoPo.getDeptId());
         return UserInfoAdaptor.adaptToUserInfo(infoPo, roleInfos, deptInfo);
     }
@@ -64,6 +69,11 @@ public class UserInfoService {
         userInfoDao.updatePassword(saltpass, accout);
     }
 
+    /**
+     * 查询acount同级别一级下属级别的所有用户
+     * @param account 要查询的用户
+     * @return 返回所有下属级别的用户
+     */
     public List<UserInfo> queryUserInfosRecru(String account) {
         if (Strings.isNullOrEmpty(account)) {
             return Collections.EMPTY_LIST;
@@ -74,20 +84,13 @@ public class UserInfoService {
             return Collections.EMPTY_LIST;
         }
 
-        Map<String, UserInfo> result = new HashMap<>();
-
-        //采用栈代替递归操作
-        LinkedList<Integer> stackRole = new LinkedList<>();
-        List<Integer> roleids = SplitterUtil.splitByCommaToIntList(infoPo.getRoleId());
-        for (Integer i : roleids) {
-            stackRole.push(i);
-        }
-
         // 取出所有user-role映射,避免循环查询数据库
         List<UserRoleMappingInfo> roleMappingInfos = userRoleMappingService.queryAllMappings();
-        Multimap<Integer, UserRoleMappingInfo> roleUserMaps = HashMultimap.create();
+        Multimap<Integer, Integer> roleUserMaps = HashMultimap.create();
+        Multimap<Integer, Integer> userRoleMaps = HashMultimap.create();
         for (UserRoleMappingInfo info : roleMappingInfos) {
-            roleUserMaps.put(info.getRoleId(), info);
+            roleUserMaps.put(info.getRoleId(), info.getUserId());
+            userRoleMaps.put(info.getUserId(), info.getRoleId());
         }
 
         // 映射所有roleid为pid的关系
@@ -104,41 +107,64 @@ public class UserInfoService {
         Map<Integer, DeptInfo> deptInfoMap = deptInfos.stream().collect(
                 Collectors.toMap(DeptInfo::getDeptId, p->p));
 
+        //采用栈代替递归操作
+        LinkedList<Integer> stackRole = new LinkedList<>();
+        List<Integer> processedRole = new ArrayList<>();
+        List<Integer> roleids = Lists.newArrayList(userRoleMaps.get(infoPo.getId()));
+        roleids.stream().forEach(stackRole::push);
+
+        Map<String, UserInfo> result = new HashMap<>();
         while (!stackRole.isEmpty()) {
             Integer pid = stackRole.pop();
+            if (processedRole.contains(pid)) {
+                continue;
+            }
+
+            processedRole.add(pid);
             Collection<RoleInfo> croles = proleMaping.get(pid);
             if (CollectionUtils.isEmpty(croles)) {
                 continue;
             }
-
-            List<RoleInfo> infos = Lists.newArrayList(croles);
-            // 此用户对应角色的所有子角色
-            List<Integer> roleIds = infos.stream().map(RoleInfo::getId)
+            // 此用户对应角色的所有子角色, 子角色进栈
+            List<Integer> roleIds = croles.stream().map(RoleInfo::getId)
                     .collect(Collectors.toList());
+            roleIds.stream().forEach(stackRole::push);
 
             // 以及此用户对应的角色
             roleIds.add(pid);
-            List<UserRoleMappingInfo> mappingInfos = queryMappingsByRoles(roleUserMaps, roleIds);
-            List<Integer> userIds = mappingInfos.stream().map(UserRoleMappingInfo::getUserId)
-                    .collect(Collectors.toList());
+            List<Integer> userIds = queryUserIdsByRoles(roleUserMaps, roleIds);
+            if (CollectionUtils.isEmpty(userIds)) {
+                continue;
+            }
 
             List<UserInfoPo> infoPos = userInfoDao.queryUsersByIds(userIds);
             for (UserInfoPo po : infoPos) {
-                List<Integer> tempRoleIds = SplitterUtil.splitByCommaToIntList(po.getRoleId());
+                List<Integer> tempRoleIds = Lists.newArrayList(userRoleMaps.get(po.getId()));
+                tempRoleIds.stream().forEach(stackRole::push);
                 UserInfo userInfo = UserInfoAdaptor
                         .adaptToUserInfo(po, extractRoleByIds(tempRoleIds, roleInfos),
                                 deptInfoMap.get(po.getDeptId()));
 
-                //如果在线则加入结果集
-                if (loginSessionService.isUserOnline(po.getAccount())) {
+                //如果没有处理过
+                if (result.get(userInfo.getAccount()) == null) {
+                    // 在线则加入结果集
                     result.put(po.getAccount(), userInfo);
-                }
-                for (Integer i : tempRoleIds) {
-                    stackRole.push(i);
                 }
             }
         }
         return Lists.newArrayList(result.values());
+    }
+
+    /**
+     * 查询所有在线用户的
+     * @param account 要查询的用户
+     * @return 返回所有下属级别在线用户
+     */
+    public List<UserInfo> queryOnlineUsersInfosRecru(String account) {
+        List<UserInfo> userInfos = queryUserInfosRecru(account);
+        return userInfos.stream().filter(
+                userInfo -> loginSessionService.isUserOnline(userInfo.getAccount()))
+                .collect(Collectors.toList());
     }
 
     private List<RoleInfo> extractRoleByIds(List<Integer> ids, List<RoleInfo> roleInfos) {
@@ -159,9 +185,9 @@ public class UserInfoService {
         return result;
     }
 
-    private List<UserRoleMappingInfo> queryMappingsByRoles(Multimap<Integer,
-            UserRoleMappingInfo> roleUserMaps, List<Integer> roleIds) {
-        List<UserRoleMappingInfo> result = new ArrayList<>();
+    private List<Integer> queryUserIdsByRoles(Multimap<Integer,
+            Integer> roleUserMaps, List<Integer> roleIds) {
+        List<Integer> result = new ArrayList<>();
         for (Integer roleId : roleIds) {
             result.addAll(roleUserMaps.get(roleId));
         }

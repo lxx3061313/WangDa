@@ -7,7 +7,8 @@ import java.util.List;
  * @version 2017-10-27
  */
 public class RealTimeAlarmVo {
-    List<RealTimeAlarmItem> alarms;
+    private int totalCount;
+    private List<RealTimeAlarmItem> alarms;
 
     public List<RealTimeAlarmItem> getAlarms() {
         return alarms;
@@ -15,5 +16,13 @@ public class RealTimeAlarmVo {
 
     public void setAlarms(List<RealTimeAlarmItem> alarms) {
         this.alarms = alarms;
+    }
+
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
     }
 }

@@ -172,4 +172,81 @@
         FROM alarm_info
         WHERE create_time BETWEEN #{from} AND #{to}
     </select>
+
+
+    <select id="queryAlarmByDeptAndLevel" parameterType="java.util.Map" resultType="com.wangda.alarm.service.dao.po.AlarmInfoPo">
+        SELECT
+        <include refid="fields"/>
+        FROM alarm_info
+        <where>
+            <if test="segmentCode != null and segmentCode !=''">
+                AND segment=#{segmentCode}
+            </if>
+            <if test="workShopCode != null and workShopCode !=''">
+                AND workshop_code=#{workShopCode}
+            </if>
+            <if test="workAreaCode != null and workAreaCode !=''">
+                AND workarea_code=#{workAreaCode}
+            </if>
+            <if test="levels != null">
+                AND alarm_level IN
+                <foreach collection="levels" index="index" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="countAlarmByDeptAndLevel" parameterType="java.util.Map">
+        SELECT
+        count(*)
+        FROM alarm_info
+        <where>
+            <if test="segmentCode != null and segmentCode !=''">
+                AND segment=#{segmentCode}
+            </if>
+            <if test="workShopCode != null and workShopCode !=''">
+                AND workshop_code=#{workShopCode}
+            </if>
+            <if test="workAreaCode != null and workAreaCode !=''">
+                AND workarea_code=#{workAreaCode}
+            </if>
+            <if test="levels != null">
+                AND alarm_level IN
+                <foreach collection="levels" index="index" item="item" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="queryL1AlarmForSecion" parameterType="java.lang.String"  resultType="com.wangda.alarm.service.dao.po.AlarmInfoPo">
+        SELECT
+        <include refid="fields"/>
+        FROM alarm_info
+        WHERE alarm_level='LEVEL_ONE'
+    </select>
+
+    <select id="queryL12AlarmForSegment" parameterType="java.lang.String"  resultType="com.wangda.alarm.service.dao.po.AlarmInfoPo">
+        SELECT
+        <include refid="fields"/>
+        FROM alarm_info
+        WHERE segment=#{segment}
+        AND alarm_level IN ('LEVEL_ONE', 'LEVEL_TWO')
+    </select>
+
+    <select id="queryL123AlarmForWshop" parameterType="java.lang.String"  resultType="com.wangda.alarm.service.dao.po.AlarmInfoPo">
+        SELECT
+        <include refid="fields"/>
+        FROM alarm_info
+        WHERE workshop_code=#{workshopCode}
+        AND alarm_level IN ('LEVEL_ONE', 'LEVEL_TWO', 'LEVEL_THREE')
+    </select>
+
+    <select id="queryAllLevelAlarmForWarea" parameterType="java.lang.String"  resultType="com.wangda.alarm.service.dao.po.AlarmInfoPo">
+        SELECT
+        <include refid="fields"/>
+        FROM alarm_info
+        AND workarea_code=#{workareaCode}
+    </select>
 </mapper>

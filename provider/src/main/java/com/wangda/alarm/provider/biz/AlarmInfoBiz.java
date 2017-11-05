@@ -2,19 +2,27 @@ package com.wangda.alarm.provider.biz;
 
 import com.wangda.alarm.provider.bean.AlarmDetailVo;
 import com.wangda.alarm.provider.bean.AlarmOutlineVo;
+import com.wangda.alarm.provider.bean.RealTimeAlarmReq;
 import com.wangda.alarm.provider.bean.adaptor.AlarmVoAdaptor;
 import com.wangda.alarm.service.bean.biz.AlarmInfo;
 import com.wangda.alarm.service.bean.biz.AlarmListInfo;
+import com.wangda.alarm.service.bean.biz.DeptInfo;
 import com.wangda.alarm.service.bean.biz.UserLoginContext;
+import com.wangda.alarm.service.bean.biz.UserSession;
+import com.wangda.alarm.service.bean.standard.DeptType;
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmLevel;
 import com.wangda.alarm.service.bean.standard.protocol.SegmentCode;
 import com.wangda.alarm.service.bean.standard.protocol.StandardAlarmType;
 import com.wangda.alarm.service.bean.vo.AlarmStatisticsVo;
+import com.wangda.alarm.service.bean.vo.RealTimeAlarmVo;
 import com.wangda.alarm.service.bean.vo.req.AlarmDetailReq;
 import com.wangda.alarm.service.bean.vo.req.AlarmListReq;
 import com.wangda.alarm.service.common.util.PageRequest;
 import com.wangda.alarm.service.impl.AlarmInfoService;
+import com.wangda.alarm.service.impl.DeptInfoService;
 import com.wangda.alarm.service.impl.OpLogService;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
@@ -35,6 +43,9 @@ public class AlarmInfoBiz {
 
     @Resource
     OpLogService opLogService;
+
+    @Resource
+    DeptInfoService deptInfoService;
 
 
     public List<AlarmOutlineVo> queryAlarmList(AlarmListReq listReq) {
@@ -105,6 +116,60 @@ public class AlarmInfoBiz {
                 .equals(SegmentCode.GYBD.getCode())).count());
         opLogService.createWatchInfoLog(UserLoginContext.getUser().getUserName(), "查看报警统计信息");
         return vo;
+    }
+
+    public RealTimeAlarmVo queryRealTimeAlarmVo(RealTimeAlarmReq req) {
+        UserSession user = UserLoginContext.getUser();
+        List<AlarmInfo> result = new ArrayList<>();
+        PageRequest request = new PageRequest(req.getCurrentPage(), req.getPageSize());
+        int count = 0;
+        // 没有部门信息
+        if (user.getDeptInfo() == null) {
+            result = alarmInfoService.queryAlarmByDeptAndLevel(null, null, null,
+                    Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO, AlarmLevel.LEVEL_THREE,
+                            AlarmLevel.WARN), request);
+            count = alarmInfoService.countAlarmByDeptAndLevel(null, null, null,
+                    Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO, AlarmLevel.LEVEL_THREE,
+                            AlarmLevel.WARN));
+        } else {
+
+            // 处级接受 一级报警
+            if (user.getDeptInfo().getDeptType() == DeptType.SECTION) {
+                result = alarmInfoService.queryAlarmByDeptAndLevel(null, null, null,
+                        Arrays.asList(AlarmLevel.LEVEL_ONE), request);
+                count = alarmInfoService.countAlarmByDeptAndLevel(null, null, null,
+                        Arrays.asList(AlarmLevel.LEVEL_ONE));
+            }
+
+            // 段级接受一级,二级报警
+            else if(user.getDeptInfo() != null && user.getDeptInfo().getDeptType() == DeptType.SEGMENT) {
+                result = alarmInfoService.queryAlarmByDeptAndLevel(user.getDeptInfo().getDeptSimplename()
+                        ,null, null, Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO), request);
+                count = alarmInfoService.countAlarmByDeptAndLevel(user.getDeptInfo().getDeptSimplename()
+                        ,null, null, Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO));
+            }
+
+            // 车间接受一级,二级,三级报警
+            else if(user.getDeptInfo() != null && user.getDeptInfo().getDeptType() == DeptType.WORK_SHOP) {
+                result = alarmInfoService.queryAlarmByDeptAndLevel(null, user.getDeptInfo().getDeptSimplename(), null,
+                        Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO, AlarmLevel.LEVEL_THREE), request);
+                count = alarmInfoService.countAlarmByDeptAndLevel(null,user.getDeptInfo().getDeptSimplename(), null,
+                        Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO, AlarmLevel.LEVEL_THREE));
+            }
+
+            // 工区接受一级,二级,三级,预警报警
+            else if (user.getDeptInfo() != null){
+                result = alarmInfoService.queryAlarmByDeptAndLevel(null, null, user.getDeptInfo().getDeptSimplename(),
+                        Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO, AlarmLevel.LEVEL_THREE,
+                                AlarmLevel.WARN), request);
+                count = alarmInfoService.countAlarmByDeptAndLevel(null, null, user.getDeptInfo().getDeptSimplename(),
+                        Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO, AlarmLevel.LEVEL_THREE,
+                                AlarmLevel.WARN));
+            }
+        }
+
+        return AlarmVoAdaptor.adaptRealAlarmVo(result, count);
+
     }
 
     private Date beforeHoursFromNow(int beforeHours) {

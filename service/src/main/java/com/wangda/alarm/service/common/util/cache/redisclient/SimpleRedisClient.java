@@ -22,8 +22,8 @@ public class SimpleRedisClient {
     @Resource
     RedisClientFactory redisClientFactory;
 
-    public void set(String key, Object value) {
-        redisClientFactory.getCLIENT().set(key, JsonUtil.of(value));
+    public void set(String key, String value) {
+        redisClientFactory.getCLIENT().set(key, value);
     }
 
     public void setex(String key, Object value, long seconds) {

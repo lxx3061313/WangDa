@@ -16,6 +16,15 @@ public enum OpLogType {
         this.desc = desc;
     }
 
+    public static OpLogType nameOf(String name) {
+        for (OpLogType type : values()) {
+            if (type.name().equals(name)) {
+                return type;
+            }
+        }
+        return null;
+    }
+
     public int getCode() {
         return code;
     }

@@ -5,10 +5,16 @@ import com.wangda.alarm.service.bean.biz.BizOpLog;
 import com.wangda.alarm.service.bean.biz.OpLogType;
 import com.wangda.alarm.service.bean.biz.UserSession;
 import com.wangda.alarm.service.bean.biz.UserSession.Builder;
+import com.wangda.alarm.service.common.util.PageRequest;
 import com.wangda.alarm.service.dao.BizOpLogDao;
+import com.wangda.alarm.service.dao.adaptor.OpLogAdaptor;
 import com.wangda.alarm.service.dao.po.BizOpLogPo;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import javax.annotation.Resource;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 
 /**
@@ -61,6 +67,18 @@ public class OpLogService extends AbstractBizOpLogService<BizOpLog>{
         saveLog(opLog);
     }
 
+
+    public List<BizOpLog> queryOplogsByOperators(List<String> operators, PageRequest request) {
+        if (CollectionUtils.isEmpty(operators)) {
+            return Collections.EMPTY_LIST;
+        }
+
+        List<BizOpLogPo> opLogPos = bizOpLogDao.queryLogsByOperators(operators,
+                new RowBounds(request.getOffset(), request.getLimit()));
+        return OpLogAdaptor.adaptBizOplogs(opLogPos);
+    }
+
+
     public static Builder logBuilder() {
         return new Builder();
     }
@@ -72,6 +90,7 @@ public class OpLogService extends AbstractBizOpLogService<BizOpLog>{
         po.setOperator(bizOpLog.getOperator());
         po.setOpLabel(bizOpLog.getOpLabel().name());
         po.setCreateTime(bizOpLog.getCreateTime());
+        po.setOpDesc(bizOpLog.getOpDesc());
         return po;
     }
 
@@ -116,6 +135,7 @@ public class OpLogService extends AbstractBizOpLogService<BizOpLog>{
             opLog.setOpDesc(this.opDesc);
             opLog.setOperator(this.operator);
             opLog.setCreateTime(this.createTime);
+            opLog.setOpLabel(this.logType);
             return opLog;
         }
     }

@@ -2,6 +2,7 @@ package com.wangda.alarm.service.dao;
 
 import com.wangda.alarm.service.dao.po.BizOpLogPo;
 import java.util.List;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -12,4 +13,5 @@ import org.springframework.stereotype.Repository;
 public interface BizOpLogDao {
     int saveOpLog(BizOpLogPo po);
     List<BizOpLogPo> queryLogsByOperator(String operator);
+    List<BizOpLogPo> queryLogsByOperators(List<String> operators, RowBounds rowBounds);
 }

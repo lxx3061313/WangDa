@@ -5,6 +5,8 @@ import com.wangda.alarm.provider.bean.AlarmOutlineVo;
 import com.wangda.alarm.service.bean.biz.AlarmInfo;
 import com.wangda.alarm.service.bean.biz.AlarmListInfo;
 import com.wangda.alarm.service.bean.standard.protocol.StandardAlarmType;
+import com.wangda.alarm.service.bean.vo.RealTimeAlarmItem;
+import com.wangda.alarm.service.bean.vo.RealTimeAlarmVo;
 import com.wangda.alarm.service.common.util.DateFormatUtil;
 import java.util.Collections;
 import java.util.List;
@@ -61,5 +63,26 @@ public class AlarmVoAdaptor {
         if (CollectionUtils.isEmpty(infos))
             return Collections.EMPTY_LIST;
         return infos.stream().map(AlarmVoAdaptor::adaptOutlineVo).collect(Collectors.toList());
+    }
+
+    public static RealTimeAlarmItem adaptToRealTimeItem(AlarmInfo info) {
+        RealTimeAlarmItem item = new RealTimeAlarmItem();
+        item.setHeadInfo(info.getSegmentName()+"报警信息");
+        item.setContext(info.getStationName() + "->" + info.getDeviceName() + "->" +info.getAlarmContext());
+        return item;
+    }
+
+    public static RealTimeAlarmVo adaptRealAlarmVo(List<AlarmInfo> infos, int totalCount) {
+        RealTimeAlarmVo vo = new RealTimeAlarmVo();
+        vo.setTotalCount(totalCount);
+        if (CollectionUtils.isEmpty(infos)) {
+            vo.setAlarms(Collections.EMPTY_LIST);
+        } else {
+            List<RealTimeAlarmItem> collect = infos.stream()
+                    .map(AlarmVoAdaptor::adaptToRealTimeItem)
+                    .collect(Collectors.toList());
+            vo.setAlarms(collect);
+        }
+        return vo;
     }
 }
