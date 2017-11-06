@@ -22,7 +22,7 @@
         #{createTime},
         #{updateTime}
         ) ON DUPLICATE KEY UPDATE
-        cid=#{cid}
+        cid=VALUES(cid)
     </insert>
 
     <select id="queryCidByAccount" parameterType="java.lang.String" resultType="java.lang.String">

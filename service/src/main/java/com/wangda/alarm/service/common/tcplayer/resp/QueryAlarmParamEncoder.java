@@ -43,7 +43,7 @@ public class QueryAlarmParamEncoder implements MessageEncoder<QueryAlarmParam> {
         //3.3 数据命令码
         buffer.put(header.getDatacmd());
         //3.4 压缩标识
-        buffer.put(header.getZipflag());
+        //buffer.put(header.getZipflag());
         //3.5 版本码
         buffer.put(header.getVersion());
         //3.6 数据类型

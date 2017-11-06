@@ -19,7 +19,7 @@
         #{roleId},
         #{createTime}
         ) ON DUPLICATE KEY UPDATE
-        create_time=#{create_time}
+        create_time=VALUES(create_time)
     </insert>
 
     <insert id="saveUserRoleMappings" parameterType="java.util.List">
@@ -36,7 +36,7 @@
             )
         </foreach>
         ON DUPLICATE KEY UPDATE
-        create_time=#{create_time}
+        create_time=VALUES(create_time)
     </insert>
 
     <select id="queryMappingByUserId" parameterType="java.lang.Integer" resultType="com.wangda.alarm.service.dao.po.UserRoleMappingPo">
