@@ -64,6 +64,8 @@
         #{remark},
         #{extInfo}
         )
+        ON DUPLICATE KEY UPDATE
+        alarm_status=#{alarm_status}
     </insert>
 
     <insert id="saveAlarmInfos" parameterType="java.util.List">
@@ -109,6 +111,8 @@
             #{item.extInfo}
             )
         </foreach>
+        ON DUPLICATE KEY UPDATE
+        alarm_status=#{alarm_status}
     </insert>
 
     <select id="queryAlarmBySegAndLev" parameterType="java.util.Map" resultType="com.wangda.alarm.service.dao.po.AlarmInfoPo">
