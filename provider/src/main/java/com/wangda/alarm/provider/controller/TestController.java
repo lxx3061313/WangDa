@@ -1,7 +1,9 @@
 package com.wangda.alarm.provider.controller;
 
+import com.wangda.alarm.provider.biz.QueryAlarmBiz;
 import com.wangda.alarm.service.bean.biz.UserRoleMappingInfo;
 import com.wangda.alarm.service.common.springconfig.annotation.JsonBody;
+import com.wangda.alarm.service.common.util.DateFormatUtil;
 import com.wangda.alarm.service.common.util.SplitterUtil;
 import com.wangda.alarm.service.dao.UserInfoDao;
 import com.wangda.alarm.service.dao.po.UserInfoPo;
@@ -32,6 +34,9 @@ public class TestController {
     @Resource
     UserInfoDao userInfoDao;
 
+    @Resource
+    QueryAlarmBiz queryAlarmBiz;
+
 
     @RequestMapping("/initMapping")
     @JsonBody
@@ -50,5 +55,12 @@ public class TestController {
         }
         userRoleMappingService.saveUserRoleMappings(infos);
         return "succ";
+    }
+
+    @RequestMapping("/queryHisData")
+    @JsonBody
+    public void queryAlarmFromPt() {
+        queryAlarmBiz.queryAlarm("CCa", DateFormatUtil.parse4y2M2d2h2m2s("2017-10-20 00:00:00"),
+                DateFormatUtil.parse4y2M2d2h2m2s("2017-10-30 23:00:00"));
     }
 }
