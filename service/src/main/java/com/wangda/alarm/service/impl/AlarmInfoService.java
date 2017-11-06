@@ -4,10 +4,16 @@ import com.google.common.base.Strings;
 import com.wangda.alarm.service.bean.biz.AlarmInfo;
 import com.wangda.alarm.service.bean.biz.AlarmListInfo;
 import com.wangda.alarm.service.bean.biz.DeptHierarchyInfo;
+import com.wangda.alarm.service.bean.standard.OverhaulType;
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmContext;
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmLevel;
+import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmStatus;
+import com.wangda.alarm.service.bean.standard.alarminfo.resp.RespBody;
 import com.wangda.alarm.service.bean.standard.alarminfo.resp.RespContext;
+import com.wangda.alarm.service.bean.standard.alarminfo.resp.RespHeader;
+import com.wangda.alarm.service.bean.standard.alarminfo.resp.RespRecord;
 import com.wangda.alarm.service.bean.standard.protocol.StandardAlarmType;
+import com.wangda.alarm.service.common.util.ByteBufferUtil;
 import com.wangda.alarm.service.common.util.PageRequest;
 import com.wangda.alarm.service.dao.AlarmInfoDao;
 import com.wangda.alarm.service.dao.DeptInfoDao;
@@ -16,6 +22,7 @@ import com.wangda.alarm.service.dao.po.AlarmInfoPo;
 import com.wangda.alarm.service.dao.po.AlarmListPo;
 import com.wangda.alarm.service.dao.req.QueryAlarmDetailParam;
 import com.wangda.alarm.service.dao.req.QueryAlarmListParam;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -138,10 +145,38 @@ public class AlarmInfoService{
     }
 
     public int saveAlarmRespInfo(RespContext context) {
-        DeptHierarchyInfo deptHierarchyInfo = deptInfoService
-                .queryDeptHireraInfo(context.getHeader().getSourceTeleCode());
-        List<AlarmInfoPo> alarmInfoPos = AlarmInfoAdaptor
-                .adaptToAlarmPo(context, deptHierarchyInfo);
-        return alarmInfoDao.saveAlarmInfos(alarmInfoPos);
+//        DeptHierarchyInfo deptHierarchyInfo = deptInfoService
+//                .queryDeptHireraInfo(context.getHeader().getSourceTeleCode());
+//        List<AlarmInfoPo> alarmInfoPos = AlarmInfoAdaptor
+//                .adaptToAlarmPo(context, deptHierarchyInfo);
+//        return alarmInfoDao.saveAlarmInfos(alarmInfoPos);
+        RespHeader header = context.getHeader();
+        RespBody body = context.getBody();
+        List<AlarmInfoPo> result = new ArrayList<>();
+        List<RespRecord> respRecords = body.getRespRecords();
+        for (RespRecord respRecord : respRecords) {
+            DeptHierarchyInfo hinfo = deptInfoService
+                    .queryDeptHireraInfo(respRecord.getStationCode());
+            AlarmInfoPo po = new AlarmInfoPo();
+            po.setSegment(hinfo.getSegmentSimpleName());
+            po.setWorkshopCode(hinfo.getWorkShopSimpleName());
+            po.setWorkAreaCode(hinfo.getWorkAreaSimpleName());
+            po.setTargetTeleCode(header.getTargetTeleCode());
+            po.setSourceTeleCode(header.getSourceTeleCode());
+            po.setAlarmLevel(respRecord.getLevel());
+            po.setDeviceType(ByteBufferUtil.bytesToShort(respRecord.getDeviceType()));
+            po.setDeviceNo(ByteBufferUtil.bytesToShort(respRecord.getDeviceNo()));
+            po.setDeviceName(respRecord.getDeviceName() == null?"":respRecord.getDeviceName());
+            po.setAlarmTime(respRecord.getHappenTime());
+            po.setRecoverTime(respRecord.getRecoverTime());
+            po.setStatus(AlarmStatus.ALARM);
+            po.setAlarmContext(respRecord.getAlarmCtx());
+            po.setOverhaulFlag(OverhaulType.OTHER);
+            po.setCreateTime(new Date());
+            po.setRemark("");
+            po.setAlarmType(ByteBufferUtil.bytesToShort(ByteBufferUtil.subBytes(respRecord.getReserveField(), (byte) 2)));
+            result.add(po);
+        }
+        return alarmInfoDao.saveAlarmInfos(result);
     }
 }

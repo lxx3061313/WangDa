@@ -9,6 +9,8 @@ import java.util.Date;
  */
 public class RespRecord {
 
+    private String stationCode;
+
     /**
      * 发生时间-4字节
      */
@@ -163,5 +165,13 @@ public class RespRecord {
 
     public void setReserveField(byte[] reserveField) {
         this.reserveField = reserveField;
+    }
+
+    public String getStationCode() {
+        return stationCode;
+    }
+
+    public void setStationCode(String stationCode) {
+        this.stationCode = stationCode;
     }
 }

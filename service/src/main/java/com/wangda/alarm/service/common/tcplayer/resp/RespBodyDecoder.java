@@ -10,6 +10,8 @@ import java.nio.charset.CharsetDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.mina.core.buffer.IoBuffer;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class RespBodyDecoder {
+    private final static Logger logger  = LoggerFactory.getLogger(RespBodyDecoder.class);
+
     public RespBody bodyDecode(IoBuffer buffer, CharsetDecoder cd) {
         ByteBufferUtil.storeCtx(buffer);
         try {
@@ -102,12 +106,22 @@ public class RespBodyDecoder {
                 byte[] level = ByteBufferUtil
                         .forward(buffer, ProtocalFieldsDesc.RESP_BODY_ALARM_LEVEL.getByteLth());
                 record.setLevel(AlarmLevel.codeOf(level[0]));
+
+                //3.11 报警车站编码
+                byte[]  stateCode = ByteBufferUtil.forward(buffer, ProtocalFieldsDesc.RESP_BODY_ALARM_STATION_CODE.getByteLth());
+                try {
+                    String code = ByteBufferUtil.bytesToString(stateCode, cd);
+                    record.setStationCode(code);
+                } catch (CharacterCodingException e) {
+                    logger.error("车站编码解析异常");
+                    record.setStationCode("unknown");
+                }
+
             }
             body.setRespRecords(respRecords);
             return body;
         } finally {
             ByteBufferUtil.recoverCtx(buffer);
         }
-
     }
 }
