@@ -13,6 +13,8 @@ public class DeptInfo {
      */
     private int deptId;
 
+    private int pid;
+
     /**
      * 部门是simple name
      */
@@ -27,6 +29,14 @@ public class DeptInfo {
      * 部门类型
      */
     private DeptType deptType;
+
+    public int getPid() {
+        return pid;
+    }
+
+    public void setPid(int pid) {
+        this.pid = pid;
+    }
 
     public int getDeptId() {
         return deptId;

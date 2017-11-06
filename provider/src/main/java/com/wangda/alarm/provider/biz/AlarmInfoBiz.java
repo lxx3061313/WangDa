@@ -55,8 +55,7 @@ public class AlarmInfoBiz {
                         StandardAlarmType.nameOf(listReq.getAlarmType()),
                         new PageRequest(listReq.getCurrentSize(), listReq.getPageSize()));
 
-        //todo
-        //opLogService.createWatchInfoLog(UserLoginContext.getUser().getUserName(), "查看报警");
+        opLogService.createWatchInfoLog(UserLoginContext.getUser().getUserName(), "查看报警");
         return AlarmVoAdaptor.adaptOutlineVos(listInfos);
     }
 
@@ -68,8 +67,7 @@ public class AlarmInfoBiz {
                         , req.getDeviceName(),
                         new PageRequest(req.getCurrentPage(), req.getPageSize()));
 
-        //todo
-        //opLogService.createWatchInfoLog(UserLoginContext.getUser().getUserName(), "查看报警");
+        opLogService.createWatchInfoLog(UserLoginContext.getUser().getUserName(), "查看报警");
         return AlarmVoAdaptor.adaptDetailVos(infos);
     }
 
@@ -126,9 +124,7 @@ public class AlarmInfoBiz {
         PageRequest request = new PageRequest(req.getCurrentPage(), req.getPageSize());
         int count = 0;
         // 没有部门信息
-        //todo
-        //if (user.getDeptInfo() == null) {
-        if (false) {
+        if (user.getDeptInfo() == null) {
             result = alarmInfoService.queryAlarmByDeptAndLevel(null, null, null,
                     Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO, AlarmLevel.LEVEL_THREE,
                             AlarmLevel.WARN), request);
@@ -138,9 +134,7 @@ public class AlarmInfoBiz {
         } else {
 
             // 处级接受 一级报警
-            //todo
-            //if (user.getDeptInfo().getDeptType() == DeptType.SECTION) {
-            if (false) {
+            if (user.getDeptInfo().getDeptType() == DeptType.SECTION) {
                 result = alarmInfoService.queryAlarmByDeptAndLevel(null, null, null,
                         Arrays.asList(AlarmLevel.LEVEL_ONE), request);
                 count = alarmInfoService.countAlarmByDeptAndLevel(null, null, null,
@@ -148,15 +142,10 @@ public class AlarmInfoBiz {
             }
 
             // 段级接受一级,二级报警
-            //else if(user.getDeptInfo() != null && user.getDeptInfo().getDeptType() == DeptType.SEGMENT) {
-            else if(true) {
-//                result = alarmInfoService.queryAlarmByDeptAndLevel(user.getDeptInfo().getDeptSimplename()
-//                        ,null, null, Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO), request);
-//                count = alarmInfoService.countAlarmByDeptAndLevel(user.getDeptInfo().getDeptSimplename()
-//                        ,null, null, Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO));
-                result = alarmInfoService.queryAlarmByDeptAndLevel("CCa"
+            else if(user.getDeptInfo() != null && user.getDeptInfo().getDeptType() == DeptType.SEGMENT) {
+                result = alarmInfoService.queryAlarmByDeptAndLevel(user.getDeptInfo().getDeptSimplename()
                         ,null, null, Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO), request);
-                count = alarmInfoService.countAlarmByDeptAndLevel("CCa"
+                count = alarmInfoService.countAlarmByDeptAndLevel(user.getDeptInfo().getDeptSimplename()
                         ,null, null, Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO));
             }
 

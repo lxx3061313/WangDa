@@ -26,7 +26,7 @@ public class LoginSessionService {
     SimpleRedisClient simpleRedisClient;
 
     public void saveUserSession(UserSession session) {
-        simpleRedisClient.setex(session.getToken(), JsonUtil.of(session), SESSION_EXPIRATION);
+        simpleRedisClient.setex(session.getToken(), session, SESSION_EXPIRATION);
         simpleRedisClient.set(USER_SESSION_TOKEN_KEY+session.getUserName(), session.getToken());
     }
 

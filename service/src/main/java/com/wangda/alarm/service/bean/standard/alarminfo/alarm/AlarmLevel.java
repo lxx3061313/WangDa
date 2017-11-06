@@ -5,9 +5,9 @@ package com.wangda.alarm.service.bean.standard.alarminfo.alarm;
  * @version 2017-10-23
  */
 public enum  AlarmLevel {
-    LEVEL_ONE((byte) 1, "1级报警"),
-    LEVEL_TWO((byte)2, "2级报警"),
-    LEVEL_THREE((byte)3, "3级报警"),
+    LEVEL_ONE((byte) 1, "一级报警"),
+    LEVEL_TWO((byte)2, "二级报警"),
+    LEVEL_THREE((byte)3, "三级报警"),
     WARN((byte)4, "预警");
     private byte code;
     private String desc;

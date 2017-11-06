@@ -4,7 +4,10 @@ import com.wangda.alarm.provider.bean.AlarmDetailVo;
 import com.wangda.alarm.provider.bean.AlarmListResp;
 import com.wangda.alarm.provider.bean.AlarmOutlineVo;
 import com.wangda.alarm.provider.bean.RealTimeAlarmReq;
+import com.wangda.alarm.provider.bean.SectionVo;
+import com.wangda.alarm.provider.bean.SelectItemValuesVo;
 import com.wangda.alarm.provider.biz.AlarmInfoBiz;
+import com.wangda.alarm.provider.biz.CommonValuesBiz;
 import com.wangda.alarm.service.bean.vo.AlarmStatisticsVo;
 import com.wangda.alarm.service.bean.vo.RealTimeAlarmVo;
 import com.wangda.alarm.service.bean.vo.req.AlarmDetailReq;
@@ -27,6 +30,9 @@ public class AlarmInfoController {
 
     @Resource
     AlarmInfoBiz alarmInfoBiz;
+
+    @Resource
+    CommonValuesBiz commonValuesBiz;
 
     @RequestMapping("/list")
     @JsonBody
@@ -55,5 +61,11 @@ public class AlarmInfoController {
     @JsonBody
     public RealTimeAlarmVo queryRealTimeAlarm(@RequestBody RealTimeAlarmReq req) {
         return alarmInfoBiz.queryRealTimeAlarmVo(req);
+    }
+
+    @RequestMapping("/commons")
+    @JsonBody
+    public SelectItemValuesVo queryCommonsValues() {
+        return commonValuesBiz.queryCommonValues();
     }
 }

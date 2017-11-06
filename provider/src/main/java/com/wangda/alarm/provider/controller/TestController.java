@@ -59,8 +59,7 @@ public class TestController {
 
     @RequestMapping("/queryHisData")
     @JsonBody
-    public void queryAlarmFromPt() {
-        queryAlarmBiz.queryAlarm("CCa", DateFormatUtil.parse4y2M2d2h2m2s("2017-10-20 00:00:00"),
-                DateFormatUtil.parse4y2M2d2h2m2s("2017-10-30 23:00:00"));
+    public void queryAlarmFromPt(String code, Date from, Date to) {
+        queryAlarmBiz.queryAlarm(code, from, to);
     }
 }

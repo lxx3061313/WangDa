@@ -1,6 +1,5 @@
 package com.wangda.alarm.service.impl;
 
-import com.google.common.base.Strings;
 import com.wangda.alarm.service.bean.biz.AlarmInfo;
 import com.wangda.alarm.service.bean.biz.AlarmListInfo;
 import com.wangda.alarm.service.bean.biz.DeptHierarchyInfo;
@@ -30,8 +29,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 /**
@@ -40,6 +40,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AlarmInfoService{
+    private final static Logger logger = LoggerFactory.getLogger(AlarmInfoService.class);
 
     @Resource
     AlarmInfoDao alarmInfoDao;
@@ -145,11 +146,6 @@ public class AlarmInfoService{
     }
 
     public int saveAlarmRespInfo(RespContext context) {
-//        DeptHierarchyInfo deptHierarchyInfo = deptInfoService
-//                .queryDeptHireraInfo(context.getHeader().getSourceTeleCode());
-//        List<AlarmInfoPo> alarmInfoPos = AlarmInfoAdaptor
-//                .adaptToAlarmPo(context, deptHierarchyInfo);
-//        return alarmInfoDao.saveAlarmInfos(alarmInfoPos);
         RespHeader header = context.getHeader();
         RespBody body = context.getBody();
         List<AlarmInfoPo> result = new ArrayList<>();
@@ -157,12 +153,16 @@ public class AlarmInfoService{
         for (RespRecord respRecord : respRecords) {
             DeptHierarchyInfo hinfo = deptInfoService
                     .queryDeptHireraInfo(respRecord.getStationCode());
+            if (hinfo == null) {
+                logger.error("can not find dept{}", respRecord.getStationCode());
+                continue;
+            }
             AlarmInfoPo po = new AlarmInfoPo();
             po.setSegment(hinfo.getSegmentSimpleName());
             po.setWorkshopCode(hinfo.getWorkShopSimpleName());
             po.setWorkAreaCode(hinfo.getWorkAreaSimpleName());
             po.setTargetTeleCode(header.getTargetTeleCode());
-            po.setSourceTeleCode(header.getSourceTeleCode());
+            po.setSourceTeleCode(hinfo.getStationSimpleName());
             po.setAlarmLevel(respRecord.getLevel());
             po.setDeviceType(ByteBufferUtil.bytesToShort(respRecord.getDeviceType()));
             po.setDeviceNo(ByteBufferUtil.bytesToShort(respRecord.getDeviceNo()));

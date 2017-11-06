@@ -22,7 +22,7 @@ public class RespRecord {
     private Date recoverTime;
 
     /**
-     * 预留字段-4字节
+     * 预留字段-4字节(前2个字节是报警类型)
      */
     private byte[] reserveField;
 

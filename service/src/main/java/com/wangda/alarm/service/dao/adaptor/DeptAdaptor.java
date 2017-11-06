@@ -26,7 +26,8 @@ public class DeptAdaptor {
         info.setDeptId(po.getId());
         info.setDeptSimplename(po.getSimpleName());
         info.setDeptFullname(po.getFullName());
-        info.setDeptType(parseToDeptType(po.getPids()));
+        info.setDeptType(parseToDeptType(po.getPids(), po.getSimpleName()));
+        info.setPid(po.getPid());
         return info;
     }
 
@@ -80,9 +81,9 @@ public class DeptAdaptor {
         return result;
     }
 
-    public static DeptType parseToDeptType(String pids) {
+    public static DeptType parseToDeptType(String pids, String simpleName) {
         List<String> list = splitPids(pids);
-        if (list.size() == 1 && list.get(0).contains(SECTION_KEY_WORDS)) {
+        if (list.size() == 1 && simpleName.contains(SECTION_KEY_WORDS)) {
             return DeptType.SECTION;
         }
 

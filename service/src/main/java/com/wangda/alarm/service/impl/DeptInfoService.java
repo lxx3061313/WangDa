@@ -57,7 +57,7 @@ public class DeptInfoService {
             return null;
         }
 
-        DeptType deptType = DeptAdaptor.parseToDeptType(deptPo.getPids());
+        DeptType deptType = DeptAdaptor.parseToDeptType(deptPo.getPids(), deptPo.getSimpleName());
         if (deptType != DeptType.STATION) {
             throw new IllegalArgumentException("该操作仅支持查询车站级别");
         }
