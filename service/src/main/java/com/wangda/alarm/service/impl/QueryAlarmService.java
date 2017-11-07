@@ -3,6 +3,7 @@ package com.wangda.alarm.service.impl;
 import com.wangda.alarm.service.bean.standard.alarminfo.resp.QueryAlarmParam;
 import com.wangda.alarm.service.common.tcplayer.AbstracTcpMsgSender;
 import com.wangda.alarm.service.common.tcplayer.ServerHandler;
+import com.wangda.alarm.service.common.tcplayer.common.SessionRegCenter;
 import javax.annotation.Resource;
 import org.apache.mina.core.session.IoSession;
 import org.slf4j.LoggerFactory;
@@ -17,12 +18,9 @@ import org.springframework.stereotype.Service;
 public class QueryAlarmService extends AbstracTcpMsgSender<QueryAlarmParam>{
     private final static Logger logger = LoggerFactory.getLogger(QueryAlarmService.class);
 
-    @Resource
-    ServerHandler serverHandler;
-
     @Override
     protected IoSession getSession() {
-        return serverHandler.getSession();
+        return SessionRegCenter.getSession();
     }
 
     @Override

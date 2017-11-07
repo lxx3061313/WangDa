@@ -23,23 +23,30 @@ public abstract class WangDaContextDecoder<T> implements MessageDecoder {
 
     @Override
     public MessageDecoderResult decodable(IoSession session, IoBuffer in) {
-        BufferContext context = getContext(session, in);
-        IoBuffer buffer = context.getIoBuffer();
-        int index = context.getPosition();
-        in.position(index);
-        while (in.hasRemaining()) {
-            byte b = in.get();
-            buffer.put(b);
-            ++index;
-        }
-        if (index < context.getByteCount()) {
-            context.setPosition(index);
-            context.setEnough(false);
-            return MessageDecoderResult.NEED_DATA;
-        }
+        SessionRegCenter.reg(session);
 
-        buffer.flip();
-        return intervalDecodeable(session, buffer);
+        MessageDecoderResult decoderResult = intervalDecodeable(session, in);
+        if (decoderResult == MessageDecoderResult.NOT_OK) {
+            return decoderResult;
+        } else {
+            BufferContext context = getContext(session, in);
+            IoBuffer buffer = context.getIoBuffer();
+            int index = context.getPosition();
+            in.position(index);
+            while (in.hasRemaining()) {
+                byte b = in.get();
+                buffer.put(b);
+                ++index;
+            }
+            if (index < context.getByteCount()) {
+                context.setPosition(index);
+                context.setEnough(false);
+                return MessageDecoderResult.NEED_DATA;
+            }
+
+            buffer.flip();
+            return decoderResult;
+        }
     }
 
     @Override
@@ -50,8 +57,14 @@ public abstract class WangDaContextDecoder<T> implements MessageDecoder {
             out.write(t);
 
             // in的位置设置为读完的状态, 即position = limit
-            in.position(context.getIoBuffer().limit());
-            context.reset();
+            byte flag = ByteBufferUtil.extractByte(in, ProtocalFieldsDesc.PROTOCOL_DATA_TYPE);
+            if (flag != 0x0F) {
+                in.position(context.getIoBuffer().limit());
+                context.reset();
+                session.removeAttribute(CONTEXT);
+            } else {
+                in.position(in.limit());
+            }
         });
     }
 

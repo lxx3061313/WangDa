@@ -1,6 +1,7 @@
 package com.wangda.alarm.service.common.tcplayer;
 
 import com.wangda.alarm.service.common.message.MessageDispatcher;
+import com.wangda.alarm.service.common.tcplayer.common.SessionRegCenter;
 import com.wangda.alarm.service.common.util.json.JsonUtil;
 import java.net.InetSocketAddress;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,10 +29,6 @@ public class ServerHandler extends IoHandlerAdapter {
 
     @Override
     public void messageReceived(IoSession session, Object message) throws Exception {
-//        logger.warn("客户端" + ((InetSocketAddress) session.getRemoteAddress()).getAddress().getHostAddress() + "连接成功！");
-//        session.setAttribute("type", message);
-//        String remoteAddress = ((InetSocketAddress) session.getRemoteAddress()).getAddress().getHostAddress();
-//        session.setAttribute("ip", remoteAddress);
         logger.warn("服务器收到的消息是：" + JsonUtil.of(message));
         messageDispatcher.dispatch(session, message);
     }
@@ -45,13 +42,13 @@ public class ServerHandler extends IoHandlerAdapter {
         logger.warn("remote client [" + session.getRemoteAddress().toString() + "] connected.");
         Long time = System.currentTimeMillis();
         session.setAttribute("id", time);
-        sessionsConcurrentHashMap.put(sessionKey, session);
+        SessionRegCenter.reg(session);
     }
     @Override
     public void sessionClosed(IoSession session) throws Exception {
         logger.warn("sessionClosed.");
         session.closeOnFlush();
-        sessionsConcurrentHashMap.remove(sessionKey);
+        SessionRegCenter.remove();
     }
     @Override
     public void sessionIdle(IoSession session, IdleStatus status) throws Exception {

@@ -1,5 +1,6 @@
 package com.wangda.alarm.provider.controller;
 
+import com.wangda.alarm.provider.bean.QueryHisAlarmReq;
 import com.wangda.alarm.provider.biz.QueryAlarmBiz;
 import com.wangda.alarm.service.bean.biz.UserRoleMappingInfo;
 import com.wangda.alarm.service.common.springconfig.annotation.JsonBody;
@@ -17,6 +18,7 @@ import javax.annotation.Resource;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -59,7 +61,7 @@ public class TestController {
 
     @RequestMapping("/queryHisData")
     @JsonBody
-    public void queryAlarmFromPt(String code, Date from, Date to) {
-        queryAlarmBiz.queryAlarm(code, from, to);
+    public void queryAlarmFromPt(@RequestBody QueryHisAlarmReq req) {
+        queryAlarmBiz.queryAlarm(req.getCode(), req.getFrom(), req.getTo());
     }
 }
