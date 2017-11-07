@@ -4,6 +4,7 @@ import com.wangda.alarm.provider.bean.AlarmDetailVo;
 import com.wangda.alarm.provider.bean.AlarmOutlineVo;
 import com.wangda.alarm.provider.bean.RealTimeAlarmReq;
 import com.wangda.alarm.provider.bean.adaptor.AlarmVoAdaptor;
+import com.wangda.alarm.provider.bean.adaptor.QueryAlarmListAdaptor;
 import com.wangda.alarm.service.bean.biz.AlarmInfo;
 import com.wangda.alarm.service.bean.biz.AlarmListInfo;
 import com.wangda.alarm.service.bean.biz.DeptInfo;
@@ -18,6 +19,7 @@ import com.wangda.alarm.service.bean.vo.RealTimeAlarmVo;
 import com.wangda.alarm.service.bean.vo.req.AlarmDetailReq;
 import com.wangda.alarm.service.bean.vo.req.AlarmListReq;
 import com.wangda.alarm.service.common.util.PageRequest;
+import com.wangda.alarm.service.dao.req.QueryAlarmListParam;
 import com.wangda.alarm.service.impl.AlarmInfoService;
 import com.wangda.alarm.service.impl.DeptInfoService;
 import com.wangda.alarm.service.impl.OpLogService;
@@ -49,12 +51,9 @@ public class AlarmInfoBiz {
 
 
     public List<AlarmOutlineVo> queryAlarmList(AlarmListReq listReq) {
+        QueryAlarmListParam param = QueryAlarmListAdaptor.adaptToParam(listReq);
         List<AlarmListInfo> listInfos = alarmInfoService
-                .queryAlarmListByParam(listReq.getSegmentCode(), listReq.getWorkshopCode(),
-                        listReq.getWorkareaCode(), listReq.getStationCode(), listReq.getLevel(),
-                        StandardAlarmType.nameOf(listReq.getAlarmType()),
-                        new PageRequest(listReq.getCurrentSize(), listReq.getPageSize()));
-
+                .queryAlarmListByParam(param);
         opLogService.createWatchInfoLog(UserLoginContext.getUser().getUserName(), "查看报警");
         return AlarmVoAdaptor.adaptOutlineVos(listInfos);
     }

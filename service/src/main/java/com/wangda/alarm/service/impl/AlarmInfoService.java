@@ -15,7 +15,6 @@ import com.wangda.alarm.service.bean.standard.protocol.StandardAlarmType;
 import com.wangda.alarm.service.common.util.ByteBufferUtil;
 import com.wangda.alarm.service.common.util.PageRequest;
 import com.wangda.alarm.service.dao.AlarmInfoDao;
-import com.wangda.alarm.service.dao.DeptInfoDao;
 import com.wangda.alarm.service.dao.adaptor.AlarmInfoAdaptor;
 import com.wangda.alarm.service.dao.po.AlarmInfoPo;
 import com.wangda.alarm.service.dao.po.AlarmListPo;
@@ -48,19 +47,10 @@ public class AlarmInfoService{
     @Resource
     DeptInfoService deptInfoService;
 
-    public List<AlarmListInfo> queryAlarmListByParam(String segmentCode, String workshopCode,
-            String workareaCode, String sourceCode, AlarmLevel level,
-            StandardAlarmType type, PageRequest request) {
-        QueryAlarmListParam param = new QueryAlarmListParam();
-        param.setSegmentCode(segmentCode);
-        param.setWorkShopCode(workshopCode);
-        param.setWorkAreaCode(workareaCode);
-        param.setStationCode(sourceCode);
-        param.setLevel(level);
-        param.setAlarmType(type == StandardAlarmType.ALLTYPE? null:type.getCode());
+    public List<AlarmListInfo> queryAlarmListByParam(QueryAlarmListParam param) {
         List<AlarmListPo> alarmListPos = alarmInfoDao
-                .queryAlarmByParam(param, new RowBounds(request.getOffset(), request.getLimit()));
-
+                .queryAlarmByParam(param, new RowBounds(param.getRequest().getOffset(),
+                        param.getRequest().getLimit()));
         List<String> stationIds = alarmListPos.stream().map(AlarmListPo::getSourceTelecode).distinct()
                 .collect(Collectors.toList());
         List<DeptHierarchyInfo> deptHierarchyInfos = deptInfoService

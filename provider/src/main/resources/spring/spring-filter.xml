@@ -13,7 +13,7 @@
         <!--<property name="excludeUris">-->
             <!--<list>-->
                 <!--<value>/batman/auth/checkUser</value>-->
-                <!--<value>/batman/auth/getCode</value>-->
+                <!--<value>/batman/auth/getKey</value>-->
                 <!--<value>/batman/auth/login</value>-->
                 <!--<value>/batman/auth/logout</value>-->
             <!--</list>-->

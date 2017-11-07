@@ -1,6 +1,8 @@
 package com.wangda.alarm.service.dao.req;
 
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmLevel;
+import com.wangda.alarm.service.common.util.PageRequest;
+import java.util.Date;
 
 /**
  * @author lixiaoxiong
@@ -13,6 +15,34 @@ public class QueryAlarmListParam {
     private String stationCode;
     private AlarmLevel level;
     private Integer alarmType;
+    private Date startTime;
+    private Date endTime;
+
+    private PageRequest request;
+
+    public PageRequest getRequest() {
+        return request;
+    }
+
+    public void setRequest(PageRequest request) {
+        this.request = request;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
 
     public String getSegmentCode() {
         return segmentCode;

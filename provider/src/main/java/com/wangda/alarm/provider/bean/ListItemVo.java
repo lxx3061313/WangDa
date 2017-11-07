@@ -6,11 +6,11 @@ package com.wangda.alarm.provider.bean;
  */
 public class ListItemVo {
     private String value;
-    private String code;
+    private String key;
 
-    public ListItemVo(String value, String code) {
+    public ListItemVo(String value, String key) {
         this.value = value;
-        this.code = code;
+        this.key = key;
     }
 
     public ListItemVo() {
@@ -24,12 +24,12 @@ public class ListItemVo {
         this.value = value;
     }
 
-    public String getCode() {
-        return code;
+    public String getKey() {
+        return key;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     @Override
@@ -47,14 +47,14 @@ public class ListItemVo {
                 : itemVo.getValue() != null) {
             return false;
         }
-        return getCode() != null ? getCode().equals(itemVo.getCode()) : itemVo.getCode() == null;
+        return getKey() != null ? getKey().equals(itemVo.getKey()) : itemVo.getKey() == null;
 
     }
 
     @Override
     public int hashCode() {
         int result = getValue() != null ? getValue().hashCode() : 0;
-        result = 31 * result + (getCode() != null ? getCode().hashCode() : 0);
+        result = 31 * result + (getKey() != null ? getKey().hashCode() : 0);
         return result;
     }
 }

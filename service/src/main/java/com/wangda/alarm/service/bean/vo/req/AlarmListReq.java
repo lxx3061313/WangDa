@@ -1,6 +1,8 @@
 package com.wangda.alarm.service.bean.vo.req;
 
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmLevel;
+import com.wangda.alarm.service.bean.standard.protocol.StandardAlarmType;
+import java.util.Date;
 
 /**
  * @author lixiaoxiong
@@ -21,11 +23,30 @@ public class AlarmListReq {
     /**
      * 报警类型
      */
-    private String alarmType;
+    private StandardAlarmType alarmType;
+
+    private Date startTime;
+    private Date endTime;
 
     private int pageSize = 10;
 
-    private int currentSize = 10;
+    private int currentPage = 0;
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
 
     public AlarmLevel getLevel() {
         return level;
@@ -35,11 +56,11 @@ public class AlarmListReq {
         this.level = level;
     }
 
-    public String getAlarmType() {
+    public StandardAlarmType getAlarmType() {
         return alarmType;
     }
 
-    public void setAlarmType(String alarmType) {
+    public void setAlarmType(StandardAlarmType alarmType) {
         this.alarmType = alarmType;
     }
 
@@ -51,12 +72,12 @@ public class AlarmListReq {
         this.pageSize = pageSize;
     }
 
-    public int getCurrentSize() {
-        return currentSize;
+    public int getCurrentPage() {
+        return currentPage;
     }
 
-    public void setCurrentSize(int currentSize) {
-        this.currentSize = currentSize;
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
     }
 
     public String getSegmentCode() {

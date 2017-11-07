@@ -42,7 +42,7 @@ public class CommonValuesBiz {
         List<ListItemVo> levels = new ArrayList<>();
         for (AlarmLevel level : AlarmLevel.values()) {
             ListItemVo item = new ListItemVo();
-            item.setCode(level.name());
+            item.setKey(level.name());
             item.setValue(level.getDesc());
             levels.add(item);
         }
@@ -52,7 +52,7 @@ public class CommonValuesBiz {
         List<ListItemVo> types = new ArrayList<>();
         for (StandardAlarmType type : StandardAlarmType.values()) {
             ListItemVo itemVo = new ListItemVo();
-            itemVo.setCode(type.name());
+            itemVo.setKey(type.name());
             itemVo.setValue(type.getDesc());
             types.add(itemVo);
         }

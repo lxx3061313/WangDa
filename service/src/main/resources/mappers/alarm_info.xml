@@ -157,6 +157,7 @@
             <if test="alarmType != null">
                 AND alarm_type=#{alarmType}
             </if>
+            AND alarm_time BETWEEN #{startTime} AND #{endTime}
         </where>
     </select>
 
