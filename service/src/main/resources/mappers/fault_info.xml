@@ -30,7 +30,7 @@
         #{nocTime},
         #{processtime},
         #{recoverTime},
-        #{reserveField},
+        #{reserveTime},
         #{faultReason},
         #{creatTime}
         )

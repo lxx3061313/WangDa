@@ -63,7 +63,6 @@ public class FaultCtxDecoder extends WangDaContextDecoder<FaultContext> {
         } else {
             result = MessageDecoderResult.NOT_OK;
         }
-        in.flip();
         return result;
     }
 }
