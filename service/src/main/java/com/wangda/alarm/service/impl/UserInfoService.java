@@ -84,7 +84,7 @@ public class UserInfoService {
 
 
     /**
-     * 查询acount同级别一级下属级别的所有用户
+     * 查询acount同级别以及下属级别的所有用户
      * @param account 要查询的用户
      * @return 返回所有下属级别的用户
      */
@@ -116,7 +116,7 @@ public class UserInfoService {
             roleInfoMap.put(roleInfo.getId(), roleInfo);
         }
 
-        // 映射所有的科室信息
+        // 映射所有的部门信息
         List<DeptInfo> deptInfos = deptInfoService.queryAllDepts();
         Map<Integer, DeptInfo> deptInfoMap = deptInfos.stream().collect(
                 Collectors.toMap(DeptInfo::getDeptId, p->p));

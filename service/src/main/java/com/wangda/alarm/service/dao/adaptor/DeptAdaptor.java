@@ -19,7 +19,7 @@ import org.apache.commons.collections.CollectionUtils;
  */
 public class DeptAdaptor {
     private static final Splitter commaSplitter = Splitter.on(",");
-    private static final String SECTION_KEY_WORDS = "电务处";
+    private static final String SECTION_KEY_WORDS = "WCy";
 
     public static DeptInfo adaptToDeptInfo(DeptPo po) {
         DeptInfo info = new DeptInfo();

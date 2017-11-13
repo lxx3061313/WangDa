@@ -41,10 +41,10 @@ public class ResetPassService {
         }
 
         String newPass = TokenGenerator.generateRandomPass(account);
-        userInfoService.updatePassword(account, newPass, userInfo.getSalt());
         try {
             mailSender.sendMail(mailContextBuilder.buildForgetPssMail(
                     userInfo.getAccount(), userInfo.getEmail(), newPass));
+            userInfoService.updatePassword(account, newPass, userInfo.getSalt());
         } catch (MessagingException e) {
             logger.error("发送重置邮件错误", e);
             throw new BizException("发送重置邮件错误");

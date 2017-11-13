@@ -46,6 +46,7 @@ public class AlarmInfoAdaptor {
         alarmInfo.setAlarmTime(po.getAlarmTime());
         alarmInfo.setRecoverTime(po.getRecoverTime());
         alarmInfo.setStatus(po.getStatus());
+        alarmInfo.setAlarmType(po.getAlarmType());
         return alarmInfo;
     }
 

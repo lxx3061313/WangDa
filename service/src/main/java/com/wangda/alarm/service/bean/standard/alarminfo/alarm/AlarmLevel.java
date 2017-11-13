@@ -40,4 +40,13 @@ public enum  AlarmLevel {
     public void setDesc(String desc) {
         this.desc = desc;
     }
+
+    public static AlarmLevel nameOf(String name) {
+        for (AlarmLevel level : values()) {
+            if (level.name().equals(name)) {
+                return level;
+            }
+        }
+        return null;
+    }
 }

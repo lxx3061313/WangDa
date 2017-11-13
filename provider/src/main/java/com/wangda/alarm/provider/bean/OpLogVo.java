@@ -1,5 +1,6 @@
 package com.wangda.alarm.provider.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  */
 public class OpLogVo {
     private int totalCount;
-    private List<OpLogItemVo> logs;
+    private List<OpLogItemVo> logs = new ArrayList<>();
 
     public int getTotalCount() {
         return totalCount;

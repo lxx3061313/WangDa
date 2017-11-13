@@ -13,7 +13,7 @@ public class AlarmDetailReq {
     private String workareaCode;
     private String stationCode;
     private StandardAlarmType alarmType;
-    private AlarmLevel level;
+    private AlarmLevel alarmLevel;
     private String deviceName;
     private int pageSize;
     private int currentPage;
@@ -82,11 +82,11 @@ public class AlarmDetailReq {
         this.alarmType = alarmType;
     }
 
-    public AlarmLevel getLevel() {
-        return level;
+    public AlarmLevel getAlarmLevel() {
+        return alarmLevel;
     }
 
-    public void setLevel(AlarmLevel level) {
-        this.level = level;
+    public void setAlarmLevel(AlarmLevel alarmLevel) {
+        this.alarmLevel = alarmLevel;
     }
 }

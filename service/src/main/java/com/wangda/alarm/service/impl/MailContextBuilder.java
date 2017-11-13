@@ -12,14 +12,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class MailContextBuilder {
 
-    @Value("${mail.username}")
-    private String mailFrom;
+    @Value("${mail.auth.username}")
+    private String authUserName;
 
     private final static String FORGET_PASS_MAILSUB = "作业追踪系统用户密码重置";
 
     public MailSendInfo buildForgetPssMail (String account, String mailTo, String newPss) {
         MailSendInfo sendInfo = new MailSendInfo();
-        sendInfo.setMailFrom(mailFrom);
+        sendInfo.setMailFrom(authUserName);
         sendInfo.setMailTo(mailTo);
         sendInfo.setSubject(FORGET_PASS_MAILSUB);
         sendInfo.setContext(MessageFormat.format("尊敬的 {0} 您好, 您账户重置后为:{1}", account, newPss));

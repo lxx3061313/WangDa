@@ -69,6 +69,14 @@ public class AlarmVoAdaptor {
         RealTimeAlarmItem item = new RealTimeAlarmItem();
         item.setHeadInfo(info.getSegmentName()+"报警信息");
         item.setContext(info.getStationName() + "->" + info.getDeviceName() + "->" +info.getAlarmContext());
+        item.setSegmentCode(info.getSegmentCode());
+        item.setWorkshopCode(info.getWorkshopCode());
+        item.setWorkareaCode(info.getWorkAreaCode());
+        item.setStationCode(info.getStationCode());
+        StandardAlarmType alarmType = StandardAlarmType.codeOf(info.getAlarmType());
+        item.setAlarmType(alarmType.name());
+        item.setAlarmLevel(info.getAlarmLevel());
+        item.setDeviceName(info.getDeviceName());
         return item;
     }
 

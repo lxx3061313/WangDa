@@ -6,6 +6,7 @@ import com.wangda.alarm.service.bean.biz.UserRoleMappingInfo;
 import com.wangda.alarm.service.common.springconfig.annotation.JsonBody;
 import com.wangda.alarm.service.common.util.DateFormatUtil;
 import com.wangda.alarm.service.common.util.SplitterUtil;
+import com.wangda.alarm.service.common.util.mail.MailSender;
 import com.wangda.alarm.service.dao.UserInfoDao;
 import com.wangda.alarm.service.dao.po.UserInfoPo;
 import com.wangda.alarm.service.impl.UserInfoService;
@@ -15,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
+import javax.mail.MessagingException;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -39,6 +41,8 @@ public class TestController {
     @Resource
     QueryAlarmBiz queryAlarmBiz;
 
+    @Resource
+    MailSender mailSender;
 
     @RequestMapping("/initMapping")
     @JsonBody
@@ -63,5 +67,15 @@ public class TestController {
     @JsonBody
     public void queryAlarmFromPt(@RequestBody QueryHisAlarmReq req) {
         queryAlarmBiz.queryAlarm(req.getCode(), req.getFrom(), req.getTo());
+    }
+
+    @RequestMapping("/mail")
+    @JsonBody
+    public void testMail() {
+        try {
+            mailSender.sendMail("lxx3061313@163.com", "我要发邮件", "密码修改成功");
+        } catch (MessagingException e) {
+            logger.error("mail send error", e);
+        }
     }
 }

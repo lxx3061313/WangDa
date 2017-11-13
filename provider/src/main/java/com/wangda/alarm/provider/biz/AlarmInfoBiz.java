@@ -2,19 +2,18 @@ package com.wangda.alarm.provider.biz;
 
 import com.wangda.alarm.provider.bean.AlarmDetailVo;
 import com.wangda.alarm.provider.bean.AlarmOutlineVo;
+import com.wangda.alarm.provider.bean.AlarmStatisticsVo;
 import com.wangda.alarm.provider.bean.RealTimeAlarmReq;
+import com.wangda.alarm.provider.bean.StatisItemVo;
 import com.wangda.alarm.provider.bean.adaptor.AlarmVoAdaptor;
 import com.wangda.alarm.provider.bean.adaptor.QueryAlarmListAdaptor;
 import com.wangda.alarm.service.bean.biz.AlarmInfo;
 import com.wangda.alarm.service.bean.biz.AlarmListInfo;
-import com.wangda.alarm.service.bean.biz.DeptInfo;
 import com.wangda.alarm.service.bean.biz.UserLoginContext;
 import com.wangda.alarm.service.bean.biz.UserSession;
 import com.wangda.alarm.service.bean.standard.DeptType;
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmLevel;
 import com.wangda.alarm.service.bean.standard.protocol.SegmentCode;
-import com.wangda.alarm.service.bean.standard.protocol.StandardAlarmType;
-import com.wangda.alarm.service.bean.vo.AlarmStatisticsVo;
 import com.wangda.alarm.service.bean.vo.RealTimeAlarmVo;
 import com.wangda.alarm.service.bean.vo.req.AlarmDetailReq;
 import com.wangda.alarm.service.bean.vo.req.AlarmListReq;
@@ -61,7 +60,7 @@ public class AlarmInfoBiz {
     public List<AlarmDetailVo> queryAlarmDetail(AlarmDetailReq req) {
         List<AlarmInfo> infos = alarmInfoService
                 .queryAlarmDetailByParam(req.getSegmentCode(), req.getWorkshopCode(),
-                        req.getWorkareaCode(), req.getStationCode(), req.getLevel(),
+                        req.getWorkareaCode(), req.getStationCode(), req.getAlarmLevel(),
                         req.getAlarmType()
                         , req.getDeviceName(),
                         new PageRequest(req.getCurrentPage(), req.getPageSize()));
@@ -84,36 +83,56 @@ public class AlarmInfoBiz {
         vo.setLevelOneCount(infos.stream().filter(p->p.getAlarmLevel() == AlarmLevel.LEVEL_ONE).count());
 
         // 二级报警个数
-        vo.setLeveTowCount(infos.stream().filter(p->p.getAlarmLevel() == AlarmLevel.LEVEL_TWO).count());
+        vo.setLevelTwoCount(infos.stream().filter(p->p.getAlarmLevel() == AlarmLevel.LEVEL_TWO).count());
 
         // 三级报警个数
-        vo.setLeveThreeCount(infos.stream().filter(p->p.getAlarmLevel() == AlarmLevel.LEVEL_THREE).count());
+        vo.setLevelThreeCount(infos.stream().filter(p->p.getAlarmLevel() == AlarmLevel.LEVEL_THREE).count());
 
         // 预警个数
         vo.setWarnCount(infos.stream().filter(p->p.getAlarmLevel() == AlarmLevel.WARN).count());
 
-        // 成都个数
-        vo.setCdCount(infos.stream().filter(p->p.getSegmentCode()
+        List<StatisItemVo> itemVos = new ArrayList<>();
+        StatisItemVo cd = new StatisItemVo();
+        cd.setSegmentCode(SegmentCode.CDD.getCode());
+        cd.setSegmentName(SegmentCode.CDD.getDesc());
+        cd.setAlarmCount((int)infos.stream().filter(p->p.getSegmentCode()
                 .equals(SegmentCode.CDD.getCode())).count());
+        itemVos.add(cd);
 
-        // 重庆个数
-        vo.setCqCount(infos.stream().filter(p->p.getSegmentCode()
+
+        StatisItemVo cq = new StatisItemVo();
+        cq.setSegmentCode(SegmentCode.CQD.getCode());
+        cq.setSegmentName(SegmentCode.CQD.getDesc());
+        cq.setAlarmCount((int)infos.stream().filter(p->p.getSegmentCode()
                 .equals(SegmentCode.CQD.getCode())).count());
+        itemVos.add(cq);
 
-        // 贵阳个数
-        vo.setGyCount(infos.stream().filter(p->p.getSegmentCode()
+
+
+        StatisItemVo gy = new StatisItemVo();
+        gy.setSegmentCode(SegmentCode.GYD.getCode());
+        gy.setSegmentName(SegmentCode.GYD.getDesc());
+        gy.setAlarmCount((int)infos.stream().filter(p->p.getSegmentCode()
                 .equals(SegmentCode.GYD.getCode())).count());
+        itemVos.add(gy);
 
-        // 达州个数
-        vo.setDzCount(infos.stream().filter(p->p.getSegmentCode()
+        StatisItemVo dz = new StatisItemVo();
+        dz.setSegmentCode(SegmentCode.DZD.getCode());
+        dz.setSegmentName(SegmentCode.DZD.getDesc());
+        dz.setAlarmCount((int)infos.stream().filter(p->p.getSegmentCode()
                 .equals(SegmentCode.DZD.getCode())).count());
+        itemVos.add(dz);
 
-        // 贵阳北个数
-        vo.setGybCount(infos.stream().filter(p->p.getSegmentCode()
+        StatisItemVo gyb = new StatisItemVo();
+        gyb.setSegmentCode(SegmentCode.GYBD.getCode());
+        gyb.setSegmentName(SegmentCode.GYBD.getDesc());
+        gyb.setAlarmCount((int)infos.stream().filter(p->p.getSegmentCode()
                 .equals(SegmentCode.GYBD.getCode())).count());
+        itemVos.add(gyb);
 
-        //todo
-        opLogService.createWatchInfoLog(/*UserLoginContext.getUser().getUserName()*/"lxx", "查看报警统计信息");
+        vo.setSegmentCount(itemVos);
+
+        opLogService.createWatchInfoLog(UserLoginContext.getUser().getUserName(), "查看报警统计信息");
         return vo;
     }
 

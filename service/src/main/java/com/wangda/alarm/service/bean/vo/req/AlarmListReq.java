@@ -1,7 +1,5 @@
 package com.wangda.alarm.service.bean.vo.req;
 
-import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmLevel;
-import com.wangda.alarm.service.bean.standard.protocol.StandardAlarmType;
 import java.util.Date;
 
 /**
@@ -18,50 +16,42 @@ public class AlarmListReq {
     /**
      * 报警级别
      */
-    private AlarmLevel level;
+    private String level;
 
     /**
      * 报警类型
      */
-    private StandardAlarmType alarmType;
+    private String alarmType;
 
-    private Date startTime;
-    private Date endTime;
+    private Date beginDate;
+    private Date endDate;
 
     private int pageSize = 10;
 
     private int currentPage = 0;
 
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-    public AlarmLevel getLevel() {
-        return level;
-    }
-
-    public void setLevel(AlarmLevel level) {
-        this.level = level;
-    }
-
-    public StandardAlarmType getAlarmType() {
+    public String getAlarmType() {
         return alarmType;
     }
 
-    public void setAlarmType(StandardAlarmType alarmType) {
+    public void setAlarmType(String alarmType) {
         this.alarmType = alarmType;
+    }
+
+    public Date getBeginDate() {
+        return beginDate;
+    }
+
+    public void setBeginDate(Date beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public int getPageSize() {
@@ -110,5 +100,13 @@ public class AlarmListReq {
 
     public void setStationCode(String stationCode) {
         this.stationCode = stationCode;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 }

@@ -36,8 +36,7 @@ public class UserInfoBiz {
 
     public List<UserInfoVo> queryOnlineUsers() {
         UserSession user = UserLoginContext.getUser();
-        //List<UserInfo> userInfos = userInfoService.queryUserInfosRecru(user.getUserName());
-        List<UserInfo> userInfos = userInfoService.queryUserInfosRecru("lxx");
+        List<UserInfo> userInfos = userInfoService.queryUserInfosRecru(user.getUserName());
         return UserInfoVoAdaptor.adaptToUserInfoVos(userInfos);
     }
 
@@ -47,9 +46,8 @@ public class UserInfoBiz {
     }
 
     public OpLogVo queryOpLogsWhthinUser(OpLogReq req) {
-        //todo
         UserSession user = UserLoginContext.getUser();
-        List<UserInfo> userInfos = userInfoService.queryUserInfosRecru("lxx");
+        List<UserInfo> userInfos = userInfoService.queryUserInfosRecru(user.getUserName());
         if (CollectionUtils.isEmpty(userInfos)) {
             return new OpLogVo();
         }

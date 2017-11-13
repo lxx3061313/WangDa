@@ -261,6 +261,11 @@
             <artifactId>mail</artifactId>
             <version>1.4</version>
         </dependency>
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>dsn</artifactId>
+            <version>1.5.2</version>
+        </dependency>
     </dependencies>
 
     <repositories>
