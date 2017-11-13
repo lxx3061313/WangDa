@@ -66,7 +66,9 @@ public class UserAuthBiz {
             loginSessionService.delLogError(userName);
 
             // 记录cid用于推送
-            saveCidForPushMsg(userName, cid);
+            if (!Strings.isNullOrEmpty(cid)) {
+                saveCidForPushMsg(userName, cid);
+            }
 
             // 记录操作日志
             opLogService.createLoginLog(userName);

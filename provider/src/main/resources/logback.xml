@@ -37,12 +37,12 @@
         </encoder>
     </appender>
 
-    <root alarmLevel="INFO">
+    <root level="INFO">
         <appender-ref ref="console" />
         <appender-ref ref="mtsAppender"/>
     </root>
 
-    <logger name="accessDataLog" alarmLevel="INFO" additivity="false">
+    <logger name="accessDataLog" level="INFO" additivity="false">
         <appender-ref ref="accessAppender"/>
     </logger>
 </configuration>

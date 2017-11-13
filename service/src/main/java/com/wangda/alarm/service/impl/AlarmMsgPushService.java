@@ -2,7 +2,9 @@ package com.wangda.alarm.service.impl;
 
 import com.wangda.alarm.service.bean.biz.AlarmInfo;
 import com.wangda.alarm.service.bean.biz.DeptHierarchyInfo;
+import com.wangda.alarm.service.bean.biz.MsgPushContext;
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmLevel;
+import com.wangda.alarm.service.common.appmsg.GeTuiPusher;
 import com.wangda.alarm.service.common.util.json.JsonUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,9 @@ public class AlarmMsgPushService {
     @Resource
     UserCidMappingService userCidMappingService;
 
+    @Resource
+    GeTuiPusher geTuiPusher;
+
     public void push(DeptHierarchyInfo deptHierarchyInfo, AlarmInfo info) {
         List<Integer> deptIds = deptIdsForPush(deptHierarchyInfo, info);
         if (CollectionUtils.isEmpty(deptIds)) {
@@ -41,6 +46,40 @@ public class AlarmMsgPushService {
         List<String> cids = userCidMappingService.queryCidsByAccounts(accounts);
 
         //todo 发送消息
+        for (String cid : cids) {
+            MsgPushContext context = new MsgPushContext();
+            context.setCid(cid);
+            context.setTitle(alarmHeader(info));
+            context.setContent(alarmContext(info));
+            geTuiPusher.push(context);
+        }
+    }
+
+    private String alarmHeader(AlarmInfo info) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(info.getSegmentName()).append("->")
+                .append(info.getWorkshopName()).append("->")
+                .append(info.getWorkAreaName()).append("->")
+                .append(info.getStationName()).append("设备发生报警");
+        return builder.toString();
+    }
+
+    private String alarmStation(AlarmInfo info) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(info.getSegmentName()).append("->")
+                .append(info.getWorkshopName()).append("->")
+                .append(info.getWorkAreaName()).append("->")
+                .append(info.getStationName());
+        return builder.toString();
+    }
+
+    private String alarmContext(AlarmInfo info) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("报警车站:").append(alarmStation(info))
+                .append("  报警设备:").append(info.getDeviceName())
+                .append("  报警级别:").append(info.getAlarmLevel().getDesc())
+                .append("  报警内容:").append(info.getAlarmContext());
+        return builder.toString();
     }
 
     private List<Integer> deptIdsForPush(DeptHierarchyInfo deptHierarchyInfo, AlarmInfo info) {

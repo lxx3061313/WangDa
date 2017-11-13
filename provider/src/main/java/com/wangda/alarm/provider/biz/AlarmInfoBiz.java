@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 import org.apache.commons.lang3.time.DateUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,9 +37,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AlarmInfoBiz {
-
-    private final static int ALARM_DATA_TIME_BEFORE = 200;
-
     @Resource
     AlarmInfoService alarmInfoService;
 
@@ -47,6 +45,9 @@ public class AlarmInfoBiz {
 
     @Resource
     DeptInfoService deptInfoService;
+
+    @Value("${alarm_data_hours_befor}")
+    private int alarmDataHoursBefore;
 
 
     public List<AlarmOutlineVo> queryAlarmList(AlarmListReq listReq) {
@@ -75,7 +76,7 @@ public class AlarmInfoBiz {
      */
     public AlarmStatisticsVo queryAlarmStatic() {
         List<AlarmInfo> infos = alarmInfoService
-                .queryAlarmByTimerange(beforeHoursFromNow(ALARM_DATA_TIME_BEFORE),
+                .queryAlarmByTimerange(beforeHoursFromNow(alarmDataHoursBefore),
                         new Date());
 
         AlarmStatisticsVo vo = new AlarmStatisticsVo();

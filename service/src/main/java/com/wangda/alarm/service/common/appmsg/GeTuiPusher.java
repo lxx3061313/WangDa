@@ -24,12 +24,12 @@ import org.springframework.stereotype.Service;
 public class GeTuiPusher implements MsgPusher {
     private final static Logger logger = LoggerFactory.getLogger(GeTuiPusher.class);
 
-    @Value("gt.app.appId")
+    @Value("${gt.app.appId}")
     private String appId;
-    @Value("gt.app.appkey")
+    @Value("${gt.app.appkey}")
     private String appkey;
-    @Value("gt.app.master")
-    private static String master;
+    @Value("${gt.app.master}")
+    private String master;
 
     private Builder builder;
 
@@ -80,6 +80,6 @@ public class GeTuiPusher implements MsgPusher {
     public void init() {
         builder = TransmissionTemplateBuilder.createBuilder().setAppId(appId)
                 .setAppKey(appkey);
-        iGtPush = new IGtPush(appId, master);
+        iGtPush = new IGtPush(appkey, master);
     }
 }

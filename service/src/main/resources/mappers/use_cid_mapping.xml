@@ -27,14 +27,14 @@
 
     <select id="queryCidByAccount" parameterType="java.lang.String" resultType="java.lang.String">
         SELECT
-        <include refid="fields"/>
+        cid
         FROM user_cid_mapping
         WHERE account=#{account}
     </select>
 
     <select id="queryCidsByAccounts" parameterType="java.util.List" resultType="java.lang.String">
         SELECT
-        <include refid="fields"/>
+        cid
         FROM user_cid_mapping
         WHERE account IN
         <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
