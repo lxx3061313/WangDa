@@ -21,6 +21,7 @@ public class LoginSessionService {
      * 登录session10天过期
      */
     private final static long SESSION_EXPIRATION = 10 * 24 *60 * 60;
+    private final static long FORBIDDEN_EXPIRATION = 6 * 60 * 60;
 
     @Resource
     SimpleRedisClient simpleRedisClient;
@@ -45,6 +46,7 @@ public class LoginSessionService {
 
     public void recordLogError(String userName) {
         simpleRedisClient.incr(userName);
+        simpleRedisClient.setex(userName, simpleRedisClient.get(userName), FORBIDDEN_EXPIRATION);
     }
 
     public void delLogError(String userName) {

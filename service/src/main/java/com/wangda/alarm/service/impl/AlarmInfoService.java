@@ -47,6 +47,9 @@ public class AlarmInfoService{
     @Resource
     DeptInfoService deptInfoService;
 
+    @Resource
+    AlarmMsgPushService alarmMsgPushService;
+
     public List<AlarmListInfo> queryAlarmListByParam(QueryAlarmListParam param) {
         List<AlarmListPo> alarmListPos = alarmInfoDao
                 .queryAlarmByParam(param, new RowBounds(param.getRequest().getOffset(),
@@ -95,6 +98,14 @@ public class AlarmInfoService{
                 .queryDeptHireraInfo(context.getHeader().getSourceTeleCode());
         AlarmInfoPo infoPo = AlarmInfoAdaptor.adaptToAlarmPo(context, deptHierarchyInfo);
         return alarmInfoDao.saveAlarmInfo(infoPo);
+    }
+
+    public void pushAppAlarmMsg(AlarmContext context) {
+        DeptHierarchyInfo deptHierarchyInfo = deptInfoService
+                .queryDeptHireraInfo(context.getHeader().getSourceTeleCode());
+        AlarmInfoPo infoPo = AlarmInfoAdaptor.adaptToAlarmPo(context, deptHierarchyInfo);
+        AlarmInfo alarmInfo = AlarmInfoAdaptor.adaptoAlarmInfo(infoPo, deptHierarchyInfo);
+        alarmMsgPushService.push(deptHierarchyInfo, alarmInfo);
     }
 
     public List<AlarmInfo> queryAlarmByTimerange(Date from, Date to) {

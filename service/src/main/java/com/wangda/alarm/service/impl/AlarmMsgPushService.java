@@ -75,9 +75,9 @@ public class AlarmMsgPushService {
 
     private String alarmContext(AlarmInfo info) {
         StringBuilder builder = new StringBuilder();
-        builder.append("报警车站:").append(alarmStation(info))
-                .append("  报警设备:").append(info.getDeviceName())
-                .append("  报警级别:").append(info.getAlarmLevel().getDesc())
+        builder.append("报警车站:").append(alarmStation(info)).append("\n")
+                .append("  报警设备:").append(info.getDeviceName()).append("\n")
+                .append("  报警级别:").append(info.getAlarmLevel().getDesc()).append("\n")
                 .append("  报警内容:").append(info.getAlarmContext());
         return builder.toString();
     }

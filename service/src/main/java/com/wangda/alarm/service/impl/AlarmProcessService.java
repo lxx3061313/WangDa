@@ -24,6 +24,7 @@ public class AlarmProcessService extends AbstractMessageProcessor<AlarmContext>{
     public void processInterval(IoSession session, AlarmContext message) {
         logger.info("receive alarm data,{}", JsonUtil.of(message));
         alarmInfoService.saveAlarmInfo(message);
+        alarmInfoService.pushAppAlarmMsg(message);
     }
 
     @Override
