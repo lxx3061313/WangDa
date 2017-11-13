@@ -2,13 +2,16 @@ package com.wangda.alarm.provider.controller;
 
 import com.wangda.alarm.provider.bean.QueryHisAlarmReq;
 import com.wangda.alarm.provider.biz.QueryAlarmBiz;
+import com.wangda.alarm.service.bean.biz.MsgPushContext;
 import com.wangda.alarm.service.bean.biz.UserRoleMappingInfo;
+import com.wangda.alarm.service.common.appmsg.GeTuiPusher;
 import com.wangda.alarm.service.common.springconfig.annotation.JsonBody;
 import com.wangda.alarm.service.common.util.DateFormatUtil;
 import com.wangda.alarm.service.common.util.SplitterUtil;
 import com.wangda.alarm.service.common.util.mail.MailSender;
 import com.wangda.alarm.service.dao.UserInfoDao;
 import com.wangda.alarm.service.dao.po.UserInfoPo;
+import com.wangda.alarm.service.impl.UserCidMappingService;
 import com.wangda.alarm.service.impl.UserInfoService;
 import com.wangda.alarm.service.impl.UserRoleMappingService;
 import java.util.ArrayList;
@@ -44,6 +47,12 @@ public class TestController {
     @Resource
     MailSender mailSender;
 
+    @Resource
+    GeTuiPusher geTuiPusher;
+
+    @Resource
+    UserCidMappingService userCidMappingService;
+
     @RequestMapping("/initMapping")
     @JsonBody
     public String initMapping() {
@@ -77,5 +86,19 @@ public class TestController {
         } catch (MessagingException e) {
             logger.error("mail send error", e);
         }
+    }
+
+
+    @RequestMapping("/getui")
+    @JsonBody
+    public void testGeTui() {
+        MsgPushContext context = new MsgPushContext();
+        context.setTitle("我是推送消息的标题");
+        context.setContent("我是推送消息的内容");
+        context.setUsername("lxx");
+
+        String cid = userCidMappingService.queryCidByAccount("lxx");
+        context.setCid(cid);
+        geTuiPusher.push(context);
     }
 }
