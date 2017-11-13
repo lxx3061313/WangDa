@@ -6,7 +6,9 @@ import java.security.GeneralSecurityException;
 import java.util.Date;
 import java.util.Properties;
 import javax.annotation.PostConstruct;
+import javax.mail.Authenticator;
 import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
@@ -68,7 +70,7 @@ public class MailSender {
         MailSSLSocketFactory sf  = new MailSSLSocketFactory();
         sf.setTrustAllHosts(true);
         mailProperties.put("mail.smtp.ssl.socketFactory", sf);
-        return Session.getInstance(mailProperties);
+        return Session.getInstance(mailProperties, new SMTPAuthenticator(authUserName, authPassword));
     }
 
     public void sendMail(MailSendInfo sendInfo) throws MessagingException {
@@ -92,5 +94,20 @@ public class MailSender {
         message.setSentDate(new Date());
         message.saveChanges();
         return message;
+    }
+
+    class SMTPAuthenticator extends Authenticator {
+        private String username;
+        private String password;
+
+        public SMTPAuthenticator(String username, String password) {
+            this.username = username;
+            this.password = password;
+        }
+
+        @Override
+        protected PasswordAuthentication getPasswordAuthentication() {
+            return new PasswordAuthentication(username, password);
+        }
     }
 }

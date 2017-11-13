@@ -21,6 +21,7 @@ import java.util.Date;
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -47,6 +48,9 @@ public class UserAuthBiz {
 
     @Resource
     UserCidMappingService userCidMappingService;
+
+    @Value("${login.cookie.domain}")
+    private String cookieDomain;
 
     public void auth(String userName, String password, String cid, HttpServletResponse response) {
         //密码输入次数大于3次
@@ -80,7 +84,7 @@ public class UserAuthBiz {
             // 记录session
             loginSessionService.saveUserSession(session);
             Cookie cookie = new Cookie(CookieName.LOGIN_TOKEN, token);
-            cookie.setDomain("mobile.wangda.com");
+            cookie.setDomain(cookieDomain);
             cookie.setPath("/");
             response.addCookie(cookie);
         } else {
