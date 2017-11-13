@@ -89,8 +89,8 @@ public class MailSender {
         message.setFrom(new InternetAddress(fromMail));
         message.setRecipient(RecipientType.CC, new InternetAddress(authUserName));
         message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(toMail));
-        message.setSubject(subject);
-        message.setText(context);
+        message.setSubject(subject, "UTF-8");
+        message.setText(context, "UTF-8");
         message.setSentDate(new Date());
         message.saveChanges();
         return message;

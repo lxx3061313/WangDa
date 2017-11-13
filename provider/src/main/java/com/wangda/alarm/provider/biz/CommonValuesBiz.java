@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service;
 public class CommonValuesBiz {
     private final static List<String> EXCEPT_DEPT;
     static {
-        EXCEPT_DEPT = Arrays.asList("西南电务处", "调度室", "网管室", "应急大厅",
+        EXCEPT_DEPT = Arrays.asList("WCy", "调度室", "网管室", "应急大厅",
                 "CCk", "CCd", "CDc", "CCi", "CCj", "CCn", "CCo");
     }
 
