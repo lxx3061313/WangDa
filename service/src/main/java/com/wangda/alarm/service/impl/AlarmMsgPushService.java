@@ -45,14 +45,11 @@ public class AlarmMsgPushService {
         }
         List<String> cids = userCidMappingService.queryCidsByAccounts(accounts);
 
-        //todo 发送消息
-        for (String cid : cids) {
-            MsgPushContext context = new MsgPushContext();
-            context.setCid(cid);
-            context.setTitle(alarmHeader(info));
-            context.setContent(alarmContext(info));
-            geTuiPusher.push(context);
-        }
+        MsgPushContext context = new MsgPushContext();
+        context.setCids(cids);
+        context.setTitle(alarmHeader(info));
+        context.setContent(alarmContext(info));
+        geTuiPusher.push(context);
     }
 
     private String alarmHeader(AlarmInfo info) {

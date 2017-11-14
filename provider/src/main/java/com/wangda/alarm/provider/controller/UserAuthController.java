@@ -4,6 +4,7 @@ import com.wangda.alarm.provider.bean.LoginReq;
 import com.wangda.alarm.provider.biz.UserAuthBiz;
 import com.wangda.alarm.service.bean.biz.UserCidMappingInfo;
 import com.wangda.alarm.service.bean.biz.UserLoginContext;
+import com.wangda.alarm.service.bean.biz.UserSession;
 import com.wangda.alarm.service.bean.vo.req.UpdatePassReq;
 import com.wangda.alarm.service.common.springconfig.annotation.JsonBody;
 import com.wangda.alarm.service.common.util.pojo.APIResponse;
@@ -34,6 +35,18 @@ public class UserAuthController {
         userAuthBiz.auth(req.getUserName(), req.getPassword(), req.getCid(), response);
         return APIResponse.success();
     }
+
+    @RequestMapping("/checkLogin")
+    @JsonBody
+    public APIResponse checklogin() {
+        UserSession user = UserLoginContext.getUser();
+        if (user == null) {
+            return APIResponse.error(100, "未登录, 无权限操作");
+        }
+
+        return APIResponse.success();
+    }
+
 
     @RequestMapping("/saveCid")
     @JsonBody

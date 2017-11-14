@@ -1,16 +1,21 @@
 package com.wangda.alarm.service.common.appmsg;
 
 import com.gexin.rp.sdk.base.IPushResult;
+import com.gexin.rp.sdk.base.impl.ListMessage;
 import com.gexin.rp.sdk.base.impl.SingleMessage;
 import com.gexin.rp.sdk.base.impl.Target;
 import com.gexin.rp.sdk.exceptions.RequestException;
 import com.gexin.rp.sdk.http.IGtPush;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.wangda.alarm.service.bean.biz.MsgPushContext;
 import com.wangda.alarm.service.common.appmsg.TransmissionTemplateBuilder.Builder;
 import com.wangda.alarm.service.common.util.json.JsonUtil;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,6 +47,46 @@ public class GeTuiPusher implements MsgPusher {
 
     @Override
     public void push(MsgPushContext context) {
+        List<String> cids = context.getCids();
+        if (CollectionUtils.isEmpty(cids)) {
+            return;
+        }
+
+        IPushResult ret = null;
+
+        try {
+            if (cids.size() == 1) {
+                ret = pushSingle(cids.get(0), context.getContent());
+            } else {
+                ret = pushTargets(cids, context.getContent());
+            }
+            logger.info("app消息推送返回结果:{}", JsonUtil.of(ret));
+        } catch (RequestException e) {
+            logger.error("app推送消息出现异常:{}", ret, e);
+            //ret = iGtPush.pushMessageToSingle(message, target, e.getRequestId());
+        }
+        String result = ret.getResponse().get("result").toString();
+        Preconditions.checkArgument(result.equalsIgnoreCase("ok"), "发送失败");
+    }
+
+    public IPushResult pushTargets(List<String> cids, String content) {
+        List targets = new ArrayList();
+        for (String cid : cids) {
+            Target t = new Target();
+            t.setAppId(appId);
+            t.setClientId(cid);
+            targets.add(t);
+        }
+        ListMessage message = new ListMessage();
+        message.setOffline(true);
+        message.setOfflineExpireTime(TimeUnit.DAYS.toMillis(1));
+        message.setPushNetWorkType(0);
+        message.setData(builder.setContent(content).build());
+        String contentId = iGtPush.getContentId(message);
+        return iGtPush.pushMessageToList(contentId, targets);
+    }
+
+    public IPushResult pushSingle(String cid, String content) {
         SingleMessage message = new SingleMessage();
 
         //离线存储
@@ -54,21 +99,12 @@ public class GeTuiPusher implements MsgPusher {
         message.setPushNetWorkType(0);
 
         // 推送数据
-        message.setData(builder.setContent(context.getContent()).build());
+        message.setData(builder.setContent(content).build());
 
         Target target = new Target();
         target.setAppId(appId);
-        target.setClientId(context.getCid());
-        IPushResult ret = null;
-        try {
-            ret = iGtPush.pushMessageToSingle(message, target);
-            logger.info("app消息推送返回结果:{}", JsonUtil.of(ret));
-        } catch (RequestException e) {
-            logger.error("app推送消息出现异常:{}:{}", message, ret, e);
-            ret = iGtPush.pushMessageToSingle(message, target, e.getRequestId());
-        }
-        String result = ret.getResponse().get("result").toString();
-        Preconditions.checkArgument(result.equalsIgnoreCase("ok"), "发送失败");
+        target.setClientId(cid);
+        return iGtPush.pushMessageToSingle(message, target);
     }
 
     @Override

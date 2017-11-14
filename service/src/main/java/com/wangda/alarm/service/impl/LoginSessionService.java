@@ -46,7 +46,8 @@ public class LoginSessionService {
 
     public void recordLogError(String userName) {
         simpleRedisClient.incr(userName);
-        simpleRedisClient.setex(userName, simpleRedisClient.get(userName), FORBIDDEN_EXPIRATION);
+        String in = simpleRedisClient.get(userName);
+        simpleRedisClient.setex(userName, Integer.valueOf(in), FORBIDDEN_EXPIRATION);
     }
 
     public void delLogError(String userName) {

@@ -15,6 +15,7 @@ import com.wangda.alarm.service.impl.UserCidMappingService;
 import com.wangda.alarm.service.impl.UserInfoService;
 import com.wangda.alarm.service.impl.UserRoleMappingService;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -98,7 +99,7 @@ public class TestController {
         context.setUsername("lxx");
 
         String cid = userCidMappingService.queryCidByAccount("lxx");
-        context.setCid(cid);
+        context.setCids(Arrays.asList(cid));
         geTuiPusher.push(context);
     }
 }

@@ -1,5 +1,7 @@
 package com.wangda.alarm.service.bean.biz;
 
+import java.util.List;
+
 /**
  * @author lixiaoxiong
  * @version 2017-11-01
@@ -7,7 +9,7 @@ package com.wangda.alarm.service.bean.biz;
 public class MsgPushContext {
     private String title;
     private String content;
-    private String cid;
+    private List<String> cids;
     private String username;
 
     public String getUsername() {
@@ -34,11 +36,11 @@ public class MsgPushContext {
         this.content = content;
     }
 
-    public String getCid() {
-        return cid;
+    public List<String> getCids() {
+        return cids;
     }
 
-    public void setCid(String cid) {
-        this.cid = cid;
+    public void setCids(List<String> cids) {
+        this.cids = cids;
     }
 }
