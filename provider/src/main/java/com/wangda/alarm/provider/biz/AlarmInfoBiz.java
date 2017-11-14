@@ -1,6 +1,8 @@
 package com.wangda.alarm.provider.biz;
 
+import com.wangda.alarm.provider.bean.AlarmDetailResp;
 import com.wangda.alarm.provider.bean.AlarmDetailVo;
+import com.wangda.alarm.provider.bean.AlarmListResp;
 import com.wangda.alarm.provider.bean.AlarmOutlineVo;
 import com.wangda.alarm.provider.bean.AlarmStatisticsVo;
 import com.wangda.alarm.provider.bean.RealTimeAlarmReq;
@@ -50,15 +52,22 @@ public class AlarmInfoBiz {
     private int alarmDataHoursBefore;
 
 
-    public List<AlarmOutlineVo> queryAlarmList(AlarmListReq listReq) {
+    public AlarmListResp queryAlarmList(AlarmListReq listReq) {
+        AlarmListResp resp = new AlarmListResp();
         QueryAlarmListParam param = QueryAlarmListAdaptor.adaptToParam(listReq);
         List<AlarmListInfo> listInfos = alarmInfoService
                 .queryAlarmListByParam(param);
         opLogService.createWatchInfoLog(UserLoginContext.getUser().getUserName(), "查看报警");
-        return AlarmVoAdaptor.adaptOutlineVos(listInfos);
+        List<AlarmOutlineVo> outlineVos = AlarmVoAdaptor.adaptOutlineVos(listInfos);
+        resp.setAlarms(outlineVos);
+        resp.setTotalCount(alarmInfoService.countAlarmByParam(param));
+        return resp;
     }
 
-    public List<AlarmDetailVo> queryAlarmDetail(AlarmDetailReq req) {
+    public AlarmDetailResp queryAlarmDetail(AlarmDetailReq req) {
+        AlarmDetailResp resp = new AlarmDetailResp();
+
+        //1. 分页查询详情
         List<AlarmInfo> infos = alarmInfoService
                 .queryAlarmDetailByParam(req.getSegmentCode(), req.getWorkshopCode(),
                         req.getWorkareaCode(), req.getStationCode(), req.getAlarmLevel(),
@@ -67,7 +76,15 @@ public class AlarmInfoBiz {
                         new PageRequest(req.getCurrentPage(), req.getPageSize()));
 
         opLogService.createWatchInfoLog(UserLoginContext.getUser().getUserName(), "查看报警");
-        return AlarmVoAdaptor.adaptDetailVos(infos);
+        List<AlarmDetailVo> detailVos = AlarmVoAdaptor.adaptDetailVos(infos);
+        resp.setDetails(detailVos);
+
+        //2. 符合条件的记录数
+        resp.setTotalCount(alarmInfoService.countAlarmDetail(req.getSegmentCode(), req.getWorkshopCode(),
+                req.getWorkareaCode(), req.getStationCode(), req.getAlarmLevel(),
+                req.getAlarmType()
+                , req.getDeviceName()));
+        return resp;
     }
 
     /**

@@ -64,6 +64,10 @@ public class AlarmInfoService{
                 .adaptToAlarmLists(alarmListPos, infoMap);
     }
 
+    public int countAlarmByParam(QueryAlarmListParam param) {
+        return alarmInfoDao.countAlarmByParam(param);
+    }
+
     public List<AlarmInfo> queryAlarmDetailByParam(String segmentCode, String workshopCode,
             String workareaCode, String sourceCode, AlarmLevel level,
             StandardAlarmType type, String deviceName, PageRequest request) {
@@ -91,6 +95,22 @@ public class AlarmInfoService{
 
         //4. 转换为报警详情。
         return AlarmInfoAdaptor.adaptToAlarmInfos(infoPos, infoMap);
+    }
+
+    public int countAlarmDetail(String segmentCode, String workshopCode,
+            String workareaCode, String sourceCode, AlarmLevel level,
+            StandardAlarmType type, String deviceName) {
+        //1. 构建查询参数
+        QueryAlarmDetailParam param = new QueryAlarmDetailParam();
+        param.setSegmentCode(segmentCode);
+        param.setWorkShopCode(workshopCode);
+        param.setWorkAreaCode(workareaCode);
+        param.setStationCode(sourceCode);
+        param.setAlarmType(type.getCode());
+        param.setLevel(level);
+        param.setDeviceName(deviceName);
+
+        return alarmInfoDao.countAlarmDetail(param);
     }
 
     public int saveAlarmInfo(AlarmContext context) {

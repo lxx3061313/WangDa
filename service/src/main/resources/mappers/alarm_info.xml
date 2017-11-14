@@ -164,11 +164,7 @@
     <select id="countAlarmByParam" parameterType="com.wangda.alarm.service.dao.req.QueryAlarmListParam"
       resultType="java.lang.Integer">
         SELECT
-        DISTINCT
-        source_telecode AS sourceTelecode,
-        alarm_level AS alarmLevel,
-        alarm_type,
-        device_name
+        COUNT(DISTINCT source_telecode,alarm_level,alarm_type,device_name)
         FROM alarm_info
         <where>
             <if test="segmentCode != null and segmentCode !=''">
@@ -197,6 +193,13 @@
         resultType="com.wangda.alarm.service.dao.po.AlarmInfoPo">
         SELECT
         <include refid="fields"/>
+        FROM alarm_info
+        WHERE segment=#{segmentCode} AND workshop_code=#{workShopCode} AND workarea_code=#{workAreaCode} AND source_telecode=#{stationCode}
+        AND alarm_type=#{alarmType} AND alarm_level=#{level} AND device_name=#{deviceName}
+    </select>
+
+    <select id="countAlarmDetail" parameterType="com.wangda.alarm.service.dao.req.QueryAlarmDetailParam" resultType="java.lang.Integer">
+        SELECT count(*)
         FROM alarm_info
         WHERE segment=#{segmentCode} AND workshop_code=#{workShopCode} AND workarea_code=#{workAreaCode} AND source_telecode=#{stationCode}
         AND alarm_type=#{alarmType} AND alarm_level=#{level} AND device_name=#{deviceName}
