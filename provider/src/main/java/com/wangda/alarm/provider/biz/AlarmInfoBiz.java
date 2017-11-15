@@ -63,14 +63,13 @@ public class AlarmInfoBiz {
 
 
     public AlarmListResp queryAlarmList(AlarmListReq listReq) {
-        AlarmListResp resp = new AlarmListResp();
         QueryAlarmListParam param = QueryAlarmListAdaptor.adaptToParam(listReq);
         List<AlarmListInfo> listInfos = alarmInfoService
                 .queryAlarmListByParam(param);
-        opLogService.createWatchInfoLog(UserLoginContext.getUser().getUserName(), "查看报警");
-        List<AlarmOutlineVo> outlineVos = AlarmVoAdaptor.adaptOutlineVos(listInfos);
-        resp.setAlarms(outlineVos);
+        AlarmListResp resp = new AlarmListResp();
+        resp.setAlarms(AlarmVoAdaptor.adaptOutlineVos(listInfos));
         resp.setTotalCount(alarmInfoService.countAlarmByParam(param));
+        opLogService.createWatchInfoLog(UserLoginContext.getUser().getUserName(), "查看报警");
         return resp;
     }
 

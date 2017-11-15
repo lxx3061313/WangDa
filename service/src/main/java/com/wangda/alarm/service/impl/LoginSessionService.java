@@ -16,6 +16,7 @@ public class LoginSessionService {
     private final static int ERROR_COUNT = 3;
     private final static String LOGIN_ERR_KEY_PRE = "login_error_count_key_";
     private final static String USER_SESSION_TOKEN_KEY = "token_key_";
+    private final static String LOGIN_ERROR_RECORD_PRE = "login_error_record_";
 
     /**
      * 登录session10天过期
@@ -45,9 +46,9 @@ public class LoginSessionService {
     }
 
     public void recordLogError(String userName) {
-        simpleRedisClient.incr(userName);
-        String in = simpleRedisClient.get(userName);
-        simpleRedisClient.setex(userName, Integer.valueOf(in), FORBIDDEN_EXPIRATION);
+        simpleRedisClient.incr(loginErrorKey(userName));
+        String in = simpleRedisClient.get(loginErrorKey(userName));
+        simpleRedisClient.setex(loginErrorKey(userName), Integer.valueOf(in), FORBIDDEN_EXPIRATION);
     }
 
     public void delLogError(String userName) {
@@ -55,7 +56,7 @@ public class LoginSessionService {
     }
 
     public boolean isForbiddenLogin(String userName) {
-        String s = simpleRedisClient.get(userName);
+        String s = simpleRedisClient.get(loginErrorKey(userName));
         if (!Strings.isNullOrEmpty(s) && Integer.valueOf(s) > ERROR_COUNT) {
             return true;
         }
@@ -66,6 +67,10 @@ public class LoginSessionService {
         Object object = simpleRedisClient.get(token, UserSession.class);
         if (object != null) return (UserSession) object;
         return null;
+    }
+
+    private String loginErrorKey(String userName) {
+        return LOGIN_ERROR_RECORD_PRE + userName;
     }
 
     private String recoreErrorLoginKey(String userName) {
