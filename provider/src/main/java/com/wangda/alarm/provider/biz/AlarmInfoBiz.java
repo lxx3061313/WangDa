@@ -5,6 +5,7 @@ import com.wangda.alarm.provider.bean.AlarmDetailVo;
 import com.wangda.alarm.provider.bean.AlarmListResp;
 import com.wangda.alarm.provider.bean.AlarmOutlineVo;
 import com.wangda.alarm.provider.bean.AlarmStatisticsVo;
+import com.wangda.alarm.provider.bean.DeptAlarmItemVo;
 import com.wangda.alarm.provider.bean.RealTimeAlarmReq;
 import com.wangda.alarm.provider.bean.SegmentAlarmStaticsVo;
 import com.wangda.alarm.provider.bean.StatisItemVo;
@@ -12,11 +13,14 @@ import com.wangda.alarm.provider.bean.adaptor.AlarmVoAdaptor;
 import com.wangda.alarm.provider.bean.adaptor.QueryAlarmListAdaptor;
 import com.wangda.alarm.service.bean.biz.AlarmInfo;
 import com.wangda.alarm.service.bean.biz.AlarmListInfo;
+import com.wangda.alarm.service.bean.biz.DeptInfo;
 import com.wangda.alarm.service.bean.biz.RealTimeAlarmList;
+import com.wangda.alarm.service.bean.biz.ShopAlarmMappingStatics;
 import com.wangda.alarm.service.bean.biz.UserLoginContext;
 import com.wangda.alarm.service.bean.biz.UserSession;
 import com.wangda.alarm.service.bean.standard.DeptType;
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmLevel;
+import com.wangda.alarm.service.bean.standard.constant.BizConstant;
 import com.wangda.alarm.service.bean.standard.protocol.SegmentCode;
 import com.wangda.alarm.service.bean.standard.protocol.StandardAlarmType;
 import com.wangda.alarm.service.bean.vo.RealTimeAlarmVo;
@@ -101,15 +105,36 @@ public class AlarmInfoBiz {
 
 
     public SegmentAlarmStaticsVo querySegmentStatic(String segmentCode) {
-        Map<AlarmLevel, Integer> integerMap = alarmInfoService
+        ShopAlarmMappingStatics statics = alarmInfoService
                 .querySegmentAlarmCount(segmentCode, beforeHoursFromNow(alarmDataHoursBefore),
                         new Date());
 
         SegmentAlarmStaticsVo vo = new SegmentAlarmStaticsVo();
-        vo.setLevelOneCount(integerMap.get(AlarmLevel.LEVEL_ONE));
-        vo.setLevelTwoCount(integerMap.get(AlarmLevel.LEVEL_TWO));
-        vo.setLevelThreeCount(integerMap.get(AlarmLevel.LEVEL_THREE));
-        vo.setWarnCount(integerMap.get(AlarmLevel.WARN));
+
+        //1. 报警级别
+        Map<AlarmLevel, Integer> levelStatics = statics.getAlarmLevelStatics();
+        vo.setLevelOneCount(levelStatics.get(AlarmLevel.LEVEL_ONE));
+        vo.setLevelTwoCount(levelStatics.get(AlarmLevel.LEVEL_TWO));
+        vo.setLevelThreeCount(levelStatics.get(AlarmLevel.LEVEL_THREE));
+        vo.setWarnCount(levelStatics.get(AlarmLevel.WARN));
+
+        //2. 车间
+        List<DeptAlarmItemVo> workshopStatics = new ArrayList<>();
+        Map<String, DeptInfo> deptInfoMap = statics.getDeptInfoMap();
+        Map<String, Integer> shopStatics = statics.getAlarmShopStatics();
+        for (String shopcode : shopStatics.keySet()) {
+            DeptAlarmItemVo itemVo = new DeptAlarmItemVo();
+            itemVo.setCode(shopcode);
+            itemVo.setCount(shopStatics.get(shopcode) == null?0:shopStatics.get(shopcode));
+            DeptInfo info = deptInfoMap.get(shopcode);
+            if (info == null) {
+                itemVo.setName(BizConstant.UNKNOW_NAME);
+            } else {
+                itemVo.setName(info.getDeptFullname());
+            }
+            workshopStatics.add(itemVo);
+        }
+        vo.setWorkshopStatics(workshopStatics);
         return vo;
     }
 

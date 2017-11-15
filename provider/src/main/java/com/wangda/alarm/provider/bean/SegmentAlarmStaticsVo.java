@@ -1,5 +1,7 @@
 package com.wangda.alarm.provider.bean;
 
+import java.util.List;
+
 /**
  * @author lixiaoxiong
  * @version 2017-11-14
@@ -24,6 +26,17 @@ public class SegmentAlarmStaticsVo {
      * 预警数
      */
     private long warnCount;
+
+    List<DeptAlarmItemVo> workshopStatics;
+
+    public List<DeptAlarmItemVo> getWorkshopStatics() {
+        return workshopStatics;
+    }
+
+    public void setWorkshopStatics(
+            List<DeptAlarmItemVo> workshopStatics) {
+        this.workshopStatics = workshopStatics;
+    }
 
     public long getLevelOneCount() {
         return levelOneCount;

@@ -7,6 +7,7 @@ import com.wangda.alarm.service.bean.biz.AlarmListInfo;
 import com.wangda.alarm.service.bean.biz.DeptHierarchyInfo;
 import com.wangda.alarm.service.bean.biz.DeptInfo;
 import com.wangda.alarm.service.bean.biz.RealTimeAlarmList;
+import com.wangda.alarm.service.bean.biz.ShopAlarmMappingStatics;
 import com.wangda.alarm.service.bean.standard.OverhaulType;
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmContext;
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmLevel;
@@ -26,12 +27,14 @@ import com.wangda.alarm.service.dao.po.RealTimeAlarmListPo;
 import com.wangda.alarm.service.dao.req.QueryAlarmDetailParam;
 import com.wangda.alarm.service.dao.req.QueryAlarmListParam;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.annotation.Resource;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.session.RowBounds;
@@ -151,25 +154,53 @@ public class AlarmInfoService {
         return AlarmInfoAdaptor.adaptToAlarmInfos(infoPos, infoMap);
     }
 
-    public Map<AlarmLevel, Integer> querySegmentAlarmCount(String segmentCode, Date from, Date to) {
+    public ShopAlarmMappingStatics querySegmentAlarmCount(String segmentCode, Date from, Date to) {
         List<AlarmInfoPo> infoPos = alarmInfoDao
                 .queryAlarmBySegmentInTimeRange(segmentCode, from, to);
 
+        ShopAlarmMappingStatics statics = new ShopAlarmMappingStatics();
+        //1. 按级别&车间统计
         Multimap<AlarmLevel, AlarmInfoPo> levelMap = HashMultimap.create();
+        Multimap<String, AlarmInfoPo> shopMap = HashMultimap.create();
         for (AlarmInfoPo po : infoPos) {
             levelMap.put(po.getAlarmLevel(), po);
+            shopMap.put(po.getWorkshopCode(), po);
         }
 
-        Map<AlarmLevel, Integer> result = new HashMap<>();
-        result.put(AlarmLevel.LEVEL_ONE, levelMap.get(AlarmLevel.LEVEL_ONE) == null ?
+        //2. 统计报警级别数据
+        Map<AlarmLevel, Integer> levelIntegerMap = new HashMap<>();
+        levelIntegerMap.put(AlarmLevel.LEVEL_ONE, levelMap.get(AlarmLevel.LEVEL_ONE) == null ?
                 0 : levelMap.get(AlarmLevel.LEVEL_ONE).size());
-        result.put(AlarmLevel.LEVEL_TWO, levelMap.get(AlarmLevel.LEVEL_TWO) == null ?
+        levelIntegerMap.put(AlarmLevel.LEVEL_TWO, levelMap.get(AlarmLevel.LEVEL_TWO) == null ?
                 0 : levelMap.get(AlarmLevel.LEVEL_TWO).size());
-        result.put(AlarmLevel.LEVEL_THREE, levelMap.get(AlarmLevel.LEVEL_THREE) == null ?
+        levelIntegerMap.put(AlarmLevel.LEVEL_THREE, levelMap.get(AlarmLevel.LEVEL_THREE) == null ?
                 0 : levelMap.get(AlarmLevel.LEVEL_THREE).size());
-        result.put(AlarmLevel.WARN, levelMap.get(AlarmLevel.WARN) == null ?
+        levelIntegerMap.put(AlarmLevel.WARN, levelMap.get(AlarmLevel.WARN) == null ?
                 0 : levelMap.get(AlarmLevel.WARN).size());
-        return result;
+        statics.setAlarmLevelStatics(levelIntegerMap);
+
+
+        //3. 统计车间统计数据
+        List<String> shopsCode = shopMap.values().stream().map(AlarmInfoPo::getWorkshopCode)
+                .collect(Collectors.toList());
+        List<DeptInfo> shopsDeptInfo = deptInfoService.queryDeptInfosByCodes(shopsCode);
+        Map<String, DeptInfo> shotDeptMap = shopsDeptInfo.stream()
+                .collect(Collectors.toMap(DeptInfo::getDeptSimplename, p->p));
+        statics.setDeptInfoMap(shotDeptMap);
+
+
+        Map<String, Integer> shopAlarmCount = new HashMap<>();
+        for (String key : shopMap.keySet()) {
+            Collection<AlarmInfoPo> alarmInfoPos = shopMap.get(key);
+            int count = 0;
+            if (CollectionUtils.isNotEmpty(alarmInfoPos)) {
+                count = alarmInfoPos.size();
+            }
+            shopAlarmCount.put(key, count);
+        }
+        statics.setSegmentCode(segmentCode);
+        statics.setAlarmShopStatics(shopAlarmCount);
+        return statics;
     }
 
     public List<AlarmInfo> queryAlarmByDeptAndLevel(String segment, String workshopCode,

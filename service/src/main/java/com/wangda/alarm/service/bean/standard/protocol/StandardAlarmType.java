@@ -74,6 +74,17 @@ public enum  StandardAlarmType {
     HJJCSCBJ(0xDF, "环境监测三级报警"),
     ZJWLTXDHZD(0xE0, "站机网络通信单环中断"),
     DQTXDDEJBJ(0xE1, "电气特性断电二级报警"),
+    HJSPQKBJ(0xE2, "慧景视频缺口报警"),
+    ZZJDZQXCXBJ(0xE3, "转辙机动作曲线超限报警"),
+    WDWDYGD(0xE4, "外电网27.5KV电源供电"),
+    DCDZQXTBBJ(0xE5, "道岔动作（功率/电流）曲线突变报警"),
+    GDCSPBJ(0xE6, "轨道测试盘报警"),
+    WDWCXTJ(0xF5, "外电网超限统计"),
+    GDCQKXTJ(0xF6, "轨道长期空闲统计"),
+    DCZZJWBDTJ(0xF7, "道岔转辙机72小时未搬动统计"),
+    WBSQJZHJKXTBJ(0xF8, "WBS区间综合监控系统报警"),
+    ZJFWQTXZKBJ(0xF9, "站机与服务器通信中断报警"),
+    GDDYJDQZTBYZ(0xFA, "轨道电压与继电器状态不一致"),
     ALLTYPE(0xFF, "所有类型"),
     UNKNOW(0x00, "未知类型");
     private int code;
