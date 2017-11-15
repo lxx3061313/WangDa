@@ -6,6 +6,7 @@ import com.wangda.alarm.provider.bean.AlarmListResp;
 import com.wangda.alarm.provider.bean.AlarmOutlineVo;
 import com.wangda.alarm.provider.bean.AlarmStatisticsVo;
 import com.wangda.alarm.provider.bean.RealTimeAlarmReq;
+import com.wangda.alarm.provider.bean.SegmentAlarmStaticsVo;
 import com.wangda.alarm.provider.bean.SelectItemValuesVo;
 import com.wangda.alarm.provider.biz.AlarmInfoBiz;
 import com.wangda.alarm.provider.biz.CommonValuesBiz;
@@ -50,6 +51,12 @@ public class AlarmInfoController {
     @JsonBody
     public AlarmStatisticsVo queryAlarmStatistics() {
         return alarmInfoBiz.queryAlarmStatic();
+    }
+
+    @RequestMapping("/segmentStatis")
+    @JsonBody
+    public SegmentAlarmStaticsVo querySegmentStatistics(String segmentCode) {
+        return alarmInfoBiz.querySegmentStatic(segmentCode);
     }
 
     @RequestMapping("/realAlarm")

@@ -20,6 +20,17 @@
         WHERE simplename LIKE CONCAT('%', #{sname}, '%')
     </select>
 
+    <select id="queryDeptsBySimpleNames" parameterType="java.util.List" resultType="com.wangda.alarm.service.dao.po.DeptPo">
+        SELECT
+        <include refid="fields"/>
+        FROM dept
+        WHERE simplename
+        IN
+        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
     <select id="queryDeptById" parameterType="java.lang.Integer" resultType="com.wangda.alarm.service.dao.po.DeptPo">
         SELECT
         <include refid="fields"/>

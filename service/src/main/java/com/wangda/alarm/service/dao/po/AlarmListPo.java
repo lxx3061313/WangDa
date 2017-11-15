@@ -11,6 +11,7 @@ public class AlarmListPo {
     private AlarmLevel alarmLevel;
     private int alarmType;
     private String deviceName;
+    private int alarmCount;
     public String getSourceTelecode() {
         return sourceTelecode;
     }
@@ -41,5 +42,14 @@ public class AlarmListPo {
 
     public int getAlarmType() {
         return alarmType;
+    }
+
+
+    public int getAlarmCount() {
+        return alarmCount;
+    }
+
+    public void setAlarmCount(int alarmCount) {
+        this.alarmCount = alarmCount;
     }
 }

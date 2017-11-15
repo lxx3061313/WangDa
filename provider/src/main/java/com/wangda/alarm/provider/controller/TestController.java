@@ -1,6 +1,8 @@
 package com.wangda.alarm.provider.controller;
 
 import com.wangda.alarm.provider.bean.QueryHisAlarmReq;
+import com.wangda.alarm.provider.bean.SegmentAlarmStaticsVo;
+import com.wangda.alarm.provider.biz.AlarmInfoBiz;
 import com.wangda.alarm.provider.biz.QueryAlarmBiz;
 import com.wangda.alarm.service.bean.biz.MsgPushContext;
 import com.wangda.alarm.service.bean.biz.UserRoleMappingInfo;
@@ -52,6 +54,10 @@ public class TestController {
     GeTuiPusher geTuiPusher;
 
     @Resource
+    AlarmInfoBiz alarmInfoBiz;
+
+
+    @Resource
     UserCidMappingService userCidMappingService;
 
     @RequestMapping("/initMapping")
@@ -101,5 +107,11 @@ public class TestController {
         String cid = userCidMappingService.queryCidByAccount("lxx");
         context.setCids(Arrays.asList(cid));
         geTuiPusher.push(context);
+    }
+
+    @RequestMapping("/segmentStatis")
+    @JsonBody
+    public SegmentAlarmStaticsVo querySegmentStatistics(String segmentCode) {
+        return alarmInfoBiz.querySegmentStatic(segmentCode);
     }
 }

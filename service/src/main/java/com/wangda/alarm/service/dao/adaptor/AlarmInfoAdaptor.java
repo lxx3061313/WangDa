@@ -3,6 +3,7 @@ package com.wangda.alarm.service.dao.adaptor;
 import com.wangda.alarm.service.bean.biz.AlarmInfo;
 import com.wangda.alarm.service.bean.biz.AlarmListInfo;
 import com.wangda.alarm.service.bean.biz.DeptHierarchyInfo;
+import com.wangda.alarm.service.bean.biz.RealTimeAlarmList;
 import com.wangda.alarm.service.bean.standard.OverhaulType;
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmBody;
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmContext;
@@ -12,10 +13,12 @@ import com.wangda.alarm.service.bean.standard.alarminfo.resp.RespBody;
 import com.wangda.alarm.service.bean.standard.alarminfo.resp.RespContext;
 import com.wangda.alarm.service.bean.standard.alarminfo.resp.RespHeader;
 import com.wangda.alarm.service.bean.standard.alarminfo.resp.RespRecord;
+import com.wangda.alarm.service.bean.standard.protocol.StandardAlarmType;
 import com.wangda.alarm.service.common.util.ByteBufferUtil;
 import com.wangda.alarm.service.dao.po.AlarmExtInfoPo;
 import com.wangda.alarm.service.dao.po.AlarmInfoPo;
 import com.wangda.alarm.service.dao.po.AlarmListPo;
+import com.wangda.alarm.service.dao.po.RealTimeAlarmListPo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -47,6 +50,7 @@ public class AlarmInfoAdaptor {
         alarmInfo.setRecoverTime(po.getRecoverTime());
         alarmInfo.setStatus(po.getStatus());
         alarmInfo.setAlarmType(po.getAlarmType());
+        alarmInfo.setRepeatCount(0);
         return alarmInfo;
     }
 
@@ -90,6 +94,7 @@ public class AlarmInfoAdaptor {
         listInfo.setAlarmType(po.getAlarmType());
         listInfo.setAlarmLevel(po.getAlarmLevel());
         listInfo.setDeviceName(po.getDeviceName());
+        listInfo.setAlarmCount(po.getAlarmCount());
         return listInfo;
     }
 
@@ -109,6 +114,29 @@ public class AlarmInfoAdaptor {
             infos.add(adaptoAlarmInfo(po, infoMap.get(po.getSourceTeleCode())));
         }
         return infos;
+    }
+
+    public static List<RealTimeAlarmList> adaptToRealTimeAlarm(List<RealTimeAlarmListPo> pos, Map<String, String> stationNameMap) {
+        if (CollectionUtils.isEmpty(pos)) {
+            return Collections.EMPTY_LIST;
+        }
+
+        List<RealTimeAlarmList> result = new ArrayList<>();
+        for (RealTimeAlarmListPo po : pos) {
+            RealTimeAlarmList listitem = new RealTimeAlarmList();
+            listitem.setSegmentCode(po.getSegmentCode());
+            listitem.setWorkshopCode(po.getWorkshopCode());
+            listitem.setWorkareaCode(po.getWorkareaCode());
+            listitem.setStationCode(po.getStationCode());
+            listitem.setStationName(stationNameMap.get(po.getStationCode()));
+            listitem.setAlarmLevel(po.getAlarmLevel());
+            listitem.setAlarmType(StandardAlarmType.codeOf(po.getAlarmType()));
+            listitem.setAlarmContext(po.getAlarmContext());
+            listitem.setDeviceName(po.getDeviceName());
+            listitem.setAlarmCount(po.getAlarmCount());
+            result.add(listitem);
+        }
+        return result;
     }
 
     public static List<AlarmInfoPo> adaptToAlarmPo(RespContext faultContext, DeptHierarchyInfo hinfo) {

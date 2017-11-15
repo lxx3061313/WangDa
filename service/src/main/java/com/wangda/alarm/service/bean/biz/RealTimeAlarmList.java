@@ -1,39 +1,30 @@
 package com.wangda.alarm.service.bean.biz;
 
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmLevel;
+import com.wangda.alarm.service.bean.standard.protocol.StandardAlarmType;
 
 /**
  * @author lixiaoxiong
- * @version 2017-11-02
+ * @version 2017-11-14
  */
-public class AlarmListInfo {
-    private String segment;
-    private String segmentName;
+public class RealTimeAlarmList {
+    private String segmentCode;
     private String workshopCode;
-    private String workshopName;
     private String workareaCode;
-    private String workareaName;
     private String stationCode;
     private String stationName;
     private AlarmLevel alarmLevel;
-    private int alarmType;
+    private StandardAlarmType alarmType;
     private String deviceName;
+    private String alarmContext;
     private int alarmCount;
 
-    public String getSegment() {
-        return segment;
+    public String getSegmentCode() {
+        return segmentCode;
     }
 
-    public void setSegment(String segment) {
-        this.segment = segment;
-    }
-
-    public String getSegmentName() {
-        return segmentName;
-    }
-
-    public void setSegmentName(String segmentName) {
-        this.segmentName = segmentName;
+    public void setSegmentCode(String segmentCode) {
+        this.segmentCode = segmentCode;
     }
 
     public String getWorkshopCode() {
@@ -44,28 +35,12 @@ public class AlarmListInfo {
         this.workshopCode = workshopCode;
     }
 
-    public String getWorkshopName() {
-        return workshopName;
-    }
-
-    public void setWorkshopName(String workshopName) {
-        this.workshopName = workshopName;
-    }
-
     public String getWorkareaCode() {
         return workareaCode;
     }
 
     public void setWorkareaCode(String workareaCode) {
         this.workareaCode = workareaCode;
-    }
-
-    public String getWorkareaName() {
-        return workareaName;
-    }
-
-    public void setWorkareaName(String workareaName) {
-        this.workareaName = workareaName;
     }
 
     public String getStationCode() {
@@ -92,11 +67,11 @@ public class AlarmListInfo {
         this.alarmLevel = alarmLevel;
     }
 
-    public int getAlarmType() {
+    public StandardAlarmType getAlarmType() {
         return alarmType;
     }
 
-    public void setAlarmType(int alarmType) {
+    public void setAlarmType(StandardAlarmType alarmType) {
         this.alarmType = alarmType;
     }
 
@@ -106,6 +81,14 @@ public class AlarmListInfo {
 
     public void setDeviceName(String deviceName) {
         this.deviceName = deviceName;
+    }
+
+    public String getAlarmContext() {
+        return alarmContext;
+    }
+
+    public void setAlarmContext(String alarmContext) {
+        this.alarmContext = alarmContext;
     }
 
     public int getAlarmCount() {

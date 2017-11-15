@@ -14,7 +14,6 @@ public class AlarmOutlineVo {
     private String stationCode;
     private String stationName;
     private String alarmLevel;
-    private String alarmContext;
     private int alarmCount;
     private String deviceName;
     private String alarmType;
@@ -49,14 +48,6 @@ public class AlarmOutlineVo {
 
     public void setAlarmLevel(String alarmLevel) {
         this.alarmLevel = alarmLevel;
-    }
-
-    public String getAlarmContext() {
-        return alarmContext;
-    }
-
-    public void setAlarmContext(String alarmContext) {
-        this.alarmContext = alarmContext;
     }
 
     public int getAlarmCount() {

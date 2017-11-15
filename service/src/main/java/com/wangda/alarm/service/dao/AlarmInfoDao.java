@@ -3,6 +3,7 @@ package com.wangda.alarm.service.dao;
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmLevel;
 import com.wangda.alarm.service.dao.po.AlarmInfoPo;
 import com.wangda.alarm.service.dao.po.AlarmListPo;
+import com.wangda.alarm.service.dao.po.RealTimeAlarmListPo;
 import com.wangda.alarm.service.dao.req.QueryAlarmDetailParam;
 import com.wangda.alarm.service.dao.req.QueryAlarmListParam;
 import java.util.Date;
@@ -50,4 +51,18 @@ public interface AlarmInfoDao {
     int saveAlarmInfos(List<AlarmInfoPo> pos);
 
     List<AlarmInfoPo> queryAlarmByTimeRange(@Param("from")Date from, @Param("to") Date to);
+    List<AlarmInfoPo> queryAlarmBySegmentInTimeRange(@Param("segmentCode") String segmentCode,
+            @Param("from")Date from, @Param("to") Date to);
+
+    List<RealTimeAlarmListPo> queryRealtimeAlarmList(@Param("segmentCode") String segment,
+            @Param("workshopCode") String workshopCode,
+            @Param("workareaCode") String workareaCode,
+            @Param("stationCode") String stationCode,
+            @Param("levels") List<AlarmLevel> levels, RowBounds rowBounds);
+
+    int countRealtimeAlarmList(@Param("segmentCode") String segment,
+            @Param("workshopCode") String workshopCode,
+            @Param("workareaCode") String workareaCode,
+            @Param("stationCode") String stationCode,
+            @Param("levels") List<AlarmLevel> levels);
 }

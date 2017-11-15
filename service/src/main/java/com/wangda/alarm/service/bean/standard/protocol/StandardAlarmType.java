@@ -74,7 +74,8 @@ public enum  StandardAlarmType {
     HJJCSCBJ(0xDF, "环境监测三级报警"),
     ZJWLTXDHZD(0xE0, "站机网络通信单环中断"),
     DQTXDDEJBJ(0xE1, "电气特性断电二级报警"),
-    ALLTYPE(0xFF, "所有类型");
+    ALLTYPE(0xFF, "所有类型"),
+    UNKNOW(0x00, "未知类型");
     private int code;
     private String desc;
 

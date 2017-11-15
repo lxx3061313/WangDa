@@ -1,8 +1,12 @@
 package com.wangda.alarm.service.impl;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import com.wangda.alarm.service.bean.biz.AlarmInfo;
 import com.wangda.alarm.service.bean.biz.AlarmListInfo;
 import com.wangda.alarm.service.bean.biz.DeptHierarchyInfo;
+import com.wangda.alarm.service.bean.biz.DeptInfo;
+import com.wangda.alarm.service.bean.biz.RealTimeAlarmList;
 import com.wangda.alarm.service.bean.standard.OverhaulType;
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmContext;
 import com.wangda.alarm.service.bean.standard.alarminfo.alarm.AlarmLevel;
@@ -18,11 +22,13 @@ import com.wangda.alarm.service.dao.AlarmInfoDao;
 import com.wangda.alarm.service.dao.adaptor.AlarmInfoAdaptor;
 import com.wangda.alarm.service.dao.po.AlarmInfoPo;
 import com.wangda.alarm.service.dao.po.AlarmListPo;
+import com.wangda.alarm.service.dao.po.RealTimeAlarmListPo;
 import com.wangda.alarm.service.dao.req.QueryAlarmDetailParam;
 import com.wangda.alarm.service.dao.req.QueryAlarmListParam;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -38,7 +44,8 @@ import org.springframework.stereotype.Service;
  * @version 2017-10-25
  */
 @Service
-public class AlarmInfoService{
+public class AlarmInfoService {
+
     private final static Logger logger = LoggerFactory.getLogger(AlarmInfoService.class);
 
     @Resource
@@ -54,7 +61,8 @@ public class AlarmInfoService{
         List<AlarmListPo> alarmListPos = alarmInfoDao
                 .queryAlarmByParam(param, new RowBounds(param.getRequest().getOffset(),
                         param.getRequest().getLimit()));
-        List<String> stationIds = alarmListPos.stream().map(AlarmListPo::getSourceTelecode).distinct()
+        List<String> stationIds = alarmListPos.stream().map(AlarmListPo::getSourceTelecode)
+                .distinct()
                 .collect(Collectors.toList());
         List<DeptHierarchyInfo> deptHierarchyInfos = deptInfoService
                 .queryDeptHireraInfos(stationIds);
@@ -143,7 +151,29 @@ public class AlarmInfoService{
         return AlarmInfoAdaptor.adaptToAlarmInfos(infoPos, infoMap);
     }
 
-    public List<AlarmInfo> queryAlarmByDeptAndLevel(String segment, String workshopCode, String workareaCode,
+    public Map<AlarmLevel, Integer> querySegmentAlarmCount(String segmentCode, Date from, Date to) {
+        List<AlarmInfoPo> infoPos = alarmInfoDao
+                .queryAlarmBySegmentInTimeRange(segmentCode, from, to);
+
+        Multimap<AlarmLevel, AlarmInfoPo> levelMap = HashMultimap.create();
+        for (AlarmInfoPo po : infoPos) {
+            levelMap.put(po.getAlarmLevel(), po);
+        }
+
+        Map<AlarmLevel, Integer> result = new HashMap<>();
+        result.put(AlarmLevel.LEVEL_ONE, levelMap.get(AlarmLevel.LEVEL_ONE) == null ?
+                0 : levelMap.get(AlarmLevel.LEVEL_ONE).size());
+        result.put(AlarmLevel.LEVEL_TWO, levelMap.get(AlarmLevel.LEVEL_TWO) == null ?
+                0 : levelMap.get(AlarmLevel.LEVEL_TWO).size());
+        result.put(AlarmLevel.LEVEL_THREE, levelMap.get(AlarmLevel.LEVEL_THREE) == null ?
+                0 : levelMap.get(AlarmLevel.LEVEL_THREE).size());
+        result.put(AlarmLevel.WARN, levelMap.get(AlarmLevel.WARN) == null ?
+                0 : levelMap.get(AlarmLevel.WARN).size());
+        return result;
+    }
+
+    public List<AlarmInfo> queryAlarmByDeptAndLevel(String segment, String workshopCode,
+            String workareaCode,
             List<AlarmLevel> levels, PageRequest pageRequest) {
         List<AlarmInfoPo> alarmInfoPos = alarmInfoDao
                 .queryAlarmByDeptAndLevel(segment, workshopCode, workareaCode, levels,
@@ -152,13 +182,43 @@ public class AlarmInfoService{
             return Collections.EMPTY_LIST;
         }
 
-        List<String> stationIds = alarmInfoPos.stream().map(AlarmInfoPo::getSourceTeleCode).distinct()
+        List<String> stationIds = alarmInfoPos.stream().map(AlarmInfoPo::getSourceTeleCode)
+                .distinct()
                 .collect(Collectors.toList());
         List<DeptHierarchyInfo> deptHierarchyInfos = deptInfoService
                 .queryDeptHireraInfos(stationIds);
         Map<String, DeptHierarchyInfo> infoMap = deptHierarchyInfos.stream()
                 .collect(Collectors.toMap(DeptHierarchyInfo::getStationSimpleName, p -> p));
         return AlarmInfoAdaptor.adaptToAlarmInfos(alarmInfoPos, infoMap);
+    }
+
+    public List<RealTimeAlarmList> queryAlarmByDeptAndLevel(String segment, String workshopCode,
+            String workareaCode, String stationCode,
+            List<AlarmLevel> levels, PageRequest pageRequest) {
+
+        // 1.报警信息
+        List<RealTimeAlarmListPo> alarmListPos = alarmInfoDao.queryRealtimeAlarmList(segment,
+                workshopCode, workareaCode, stationCode, levels,
+                new RowBounds(pageRequest.getOffset(), pageRequest.getLimit()));
+        if (CollectionUtils.isEmpty(alarmListPos)) {
+            return Collections.EMPTY_LIST;
+        }
+
+        //2. 车站信息
+        List<String> stationCodes = alarmListPos.stream().map(RealTimeAlarmListPo::getStationCode)
+                .collect(Collectors.toList());
+        List<DeptInfo> deptInfos = deptInfoService.queryDeptInfosByCodes(stationCodes);
+        Map<String, String> stationNameMap = deptInfos.stream()
+                .collect(Collectors.toMap(DeptInfo::getDeptSimplename,
+                        DeptInfo::getDeptFullname));
+        return AlarmInfoAdaptor.adaptToRealTimeAlarm(alarmListPos, stationNameMap);
+    }
+
+    public int countRealTimeAlarmList(String segment, String workshopCode, String workareaCode,
+            String stationCode,
+            List<AlarmLevel> levels) {
+        return alarmInfoDao
+                .countRealtimeAlarmList(segment, workshopCode, workareaCode, stationCode, levels);
     }
 
     public int countAlarmByDeptAndLevel(String segment, String workshopCode, String workareaCode,
@@ -187,7 +247,7 @@ public class AlarmInfoService{
             po.setAlarmLevel(respRecord.getLevel());
             po.setDeviceType(ByteBufferUtil.bytesToShort(respRecord.getDeviceType()));
             po.setDeviceNo(ByteBufferUtil.bytesToShort(respRecord.getDeviceNo()));
-            po.setDeviceName(respRecord.getDeviceName() == null?"":respRecord.getDeviceName());
+            po.setDeviceName(respRecord.getDeviceName() == null ? "" : respRecord.getDeviceName());
             po.setAlarmTime(respRecord.getHappenTime());
             po.setRecoverTime(respRecord.getRecoverTime());
             po.setStatus(AlarmStatus.ALARM);
@@ -195,7 +255,8 @@ public class AlarmInfoService{
             po.setOverhaulFlag(OverhaulType.OTHER);
             po.setCreateTime(new Date());
             po.setRemark("");
-            po.setAlarmType(ByteBufferUtil.bytesToShort(ByteBufferUtil.subBytes(respRecord.getReserveField(), (byte) 2)));
+            po.setAlarmType(ByteBufferUtil
+                    .bytesToShort(ByteBufferUtil.subBytes(respRecord.getReserveField(), (byte) 2)));
             result.add(po);
         }
         return alarmInfoDao.saveAlarmInfos(result);

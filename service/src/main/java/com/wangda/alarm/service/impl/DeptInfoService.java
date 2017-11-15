@@ -9,9 +9,11 @@ import com.wangda.alarm.service.dao.DeptInfoDao;
 import com.wangda.alarm.service.dao.adaptor.DeptAdaptor;
 import com.wangda.alarm.service.dao.po.DeptPo;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -30,6 +32,17 @@ public class DeptInfoService {
             return null;
         }
         return DeptAdaptor.adaptToDeptInfo(deptPo);
+    }
+
+    public List<DeptInfo> queryDeptInfosByCodes(List<String> simpleNames) {
+        if (CollectionUtils.isEmpty(simpleNames)) {
+            return Collections.EMPTY_LIST;
+        }
+        List<DeptPo> deptPos = deptInfoDao.queryDeptsBySimpleNames(simpleNames);
+        if (CollectionUtils.isEmpty(deptPos)) {
+            return Collections.EMPTY_LIST;
+        }
+        return DeptAdaptor.adaptToDeptInfos(deptPos);
     }
 
     public List<DeptInfo> queryDeptInfosByIds(List<Integer> deptIds) {
