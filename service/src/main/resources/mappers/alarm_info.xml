@@ -115,20 +115,6 @@
         alarm_status=VALUES(alarm_status)
     </insert>
 
-    <select id="queryAlarmBySegAndLev" parameterType="java.util.Map" resultType="com.wangda.alarm.service.dao.po.AlarmInfoPo">
-        SELECT
-        <include refid="fields"/>
-        FROM alarm_info
-        <where>
-            <if test="segment != null">
-                AND segment=#{segment}
-            </if>
-            <if test="alarmLevel != null">
-                AND alarm_level = #{alarmLevel}
-            </if>
-        </where>
-    </select>
-
     <select id="queryAlarmByParam" parameterType="com.wangda.alarm.service.dao.req.QueryAlarmListParam"
       resultType="com.wangda.alarm.service.dao.po.AlarmListPo">
         SELECT
@@ -180,11 +166,11 @@
             <if test="stationCode != null and stationCode !=''">
                 AND source_telecode=#{stationCode}
             </if>
-            <if test="level != null">
-                AND alarm_level=#{level}
-            </if>
             <if test="alarmType != null">
                 AND alarm_type=#{alarmType}
+            </if>
+            <if test="level != null">
+                AND alarm_level=#{level}
             </if>
             AND alarm_time BETWEEN #{startTime} AND #{endTime}
         </where>
@@ -195,15 +181,26 @@
         SELECT
         <include refid="fields"/>
         FROM alarm_info
-        WHERE segment=#{segmentCode} AND workshop_code=#{workShopCode} AND workarea_code=#{workAreaCode} AND source_telecode=#{stationCode}
-        AND alarm_type=#{alarmType} AND alarm_level=#{level} AND device_name=#{deviceName}
+        WHERE
+        segment=#{segmentCode} AND
+        workshop_code=#{workShopCode} AND
+        workarea_code=#{workAreaCode} AND
+        source_telecode=#{stationCode} AND
+        alarm_type=#{alarmType} AND
+        alarm_level=#{level} AND
+        device_name=#{deviceName}
     </select>
 
     <select id="countAlarmDetail" parameterType="com.wangda.alarm.service.dao.req.QueryAlarmDetailParam" resultType="java.lang.Integer">
         SELECT count(*)
         FROM alarm_info
-        WHERE segment=#{segmentCode} AND workshop_code=#{workShopCode} AND workarea_code=#{workAreaCode} AND source_telecode=#{stationCode}
-        AND alarm_type=#{alarmType} AND alarm_level=#{level} AND device_name=#{deviceName}
+        WHERE segment=#{segmentCode} AND
+        workshop_code=#{workShopCode} AND
+        workarea_code=#{workAreaCode} AND
+        source_telecode=#{stationCode} AND
+        alarm_type=#{alarmType} AND
+        alarm_level=#{level} AND
+        device_name=#{deviceName}
     </select>
 
     <select id="queryAlarmByTimeRange" parameterType="java.util.Map"
@@ -220,76 +217,6 @@
         <include refid="fields"/>
         FROM alarm_info
         WHERE segment=#{segmentCode} AND create_time BETWEEN #{from} AND #{to}
-    </select>
-
-
-    <select id="queryAlarmByDeptAndLevel" parameterType="java.util.Map" resultType="com.wangda.alarm.service.dao.po.AlarmInfoPo">
-        SELECT
-        <include refid="fields"/>
-        FROM alarm_info
-        <where>
-            <if test="segmentCode != null and segmentCode !=''">
-                AND segment=#{segmentCode}
-            </if>
-            <if test="workshopCode != null and workShopCode !=''">
-                AND workshop_code=#{workShopCode}
-            </if>
-            <if test="workareaCode != null and workAreaCode !=''">
-                AND workarea_code=#{workAreaCode}
-            </if>
-            <if test="levels != null">
-                AND alarm_level IN
-                <foreach collection="levels" index="index" item="item" separator="," open="(" close=")">
-                    #{item}
-                </foreach>
-            </if>
-        </where>
-    </select>
-
-    <select id="countAlarmByDeptAndLevel" parameterType="java.util.Map" resultType="java.lang.Integer">
-        SELECT
-        count(*)
-        FROM alarm_info
-        <where>
-            <if test="segmentCode != null and segmentCode !=''">
-                AND segment=#{segmentCode}
-            </if>
-            <if test="workshopCode != null and workShopCode !=''">
-                AND workshop_code=#{workShopCode}
-            </if>
-            <if test="workareaCode != null and workAreaCode !=''">
-                AND workarea_code=#{workAreaCode}
-            </if>
-            <if test="levels != null">
-                AND alarm_level IN
-                <foreach collection="levels" index="index" item="item" separator="," open="(" close=")">
-                    #{item}
-                </foreach>
-            </if>
-        </where>
-    </select>
-
-    <select id="queryL1AlarmForSecion" parameterType="java.lang.String"  resultType="com.wangda.alarm.service.dao.po.AlarmInfoPo">
-        SELECT
-        <include refid="fields"/>
-        FROM alarm_info
-        WHERE alarm_level='LEVEL_ONE'
-    </select>
-
-    <select id="queryL12AlarmForSegment" parameterType="java.lang.String"  resultType="com.wangda.alarm.service.dao.po.AlarmInfoPo">
-        SELECT
-        <include refid="fields"/>
-        FROM alarm_info
-        WHERE segment=#{segment}
-        AND alarm_level IN ('LEVEL_ONE', 'LEVEL_TWO')
-    </select>
-
-    <select id="queryL123AlarmForWshop" parameterType="java.lang.String"  resultType="com.wangda.alarm.service.dao.po.AlarmInfoPo">
-        SELECT
-        <include refid="fields"/>
-        FROM alarm_info
-        WHERE workshop_code=#{workshopCode}
-        AND alarm_level IN ('LEVEL_ONE', 'LEVEL_TWO', 'LEVEL_THREE')
     </select>
 
     <select id="queryAllLevelAlarmForWarea" parameterType="java.lang.String"  resultType="com.wangda.alarm.service.dao.po.AlarmInfoPo">

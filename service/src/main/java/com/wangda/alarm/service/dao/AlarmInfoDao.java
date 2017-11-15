@@ -19,27 +19,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AlarmInfoDao {
 
-    /**
-     * 根据电务段跟报警级别来筛选数据
-     * @param segment 电务段码
-     * @param level 报警级别
-     * @return 筛选的数据
-     */
-    List<AlarmInfoPo> queryAlarmBySegAndLev(@Param("segment") String segment,
-            @Param("level")AlarmLevel level);
-
     int countAlarmByParam(QueryAlarmListParam  param);
-
-
-    List<AlarmInfoPo> queryAlarmByDeptAndLevel(@Param("segmentCode") String segment,
-            @Param("workshopCode") String workshopCode,
-            @Param("workareaCode") String workareaCode,
-            @Param("levels") List<AlarmLevel> levels, RowBounds rowBounds);
-
-    int countAlarmByDeptAndLevel(@Param("segmentCode") String segment,
-            @Param("workshopCode") String workshopCode,
-            @Param("workareaCode") String workareaCode,
-            @Param("levels") List<AlarmLevel> levels);
 
     List<AlarmInfoPo> queryAlarmDetail(QueryAlarmDetailParam param, RowBounds rowBounds);
     int countAlarmDetail(QueryAlarmDetailParam param);

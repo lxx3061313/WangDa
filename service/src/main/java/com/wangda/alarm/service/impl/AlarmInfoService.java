@@ -203,26 +203,6 @@ public class AlarmInfoService {
         return statics;
     }
 
-    public List<AlarmInfo> queryAlarmByDeptAndLevel(String segment, String workshopCode,
-            String workareaCode,
-            List<AlarmLevel> levels, PageRequest pageRequest) {
-        List<AlarmInfoPo> alarmInfoPos = alarmInfoDao
-                .queryAlarmByDeptAndLevel(segment, workshopCode, workareaCode, levels,
-                        new RowBounds(pageRequest.getOffset(), pageRequest.getLimit()));
-        if (CollectionUtils.isEmpty(alarmInfoPos)) {
-            return Collections.EMPTY_LIST;
-        }
-
-        List<String> stationIds = alarmInfoPos.stream().map(AlarmInfoPo::getSourceTeleCode)
-                .distinct()
-                .collect(Collectors.toList());
-        List<DeptHierarchyInfo> deptHierarchyInfos = deptInfoService
-                .queryDeptHireraInfos(stationIds);
-        Map<String, DeptHierarchyInfo> infoMap = deptHierarchyInfos.stream()
-                .collect(Collectors.toMap(DeptHierarchyInfo::getStationSimpleName, p -> p));
-        return AlarmInfoAdaptor.adaptToAlarmInfos(alarmInfoPos, infoMap);
-    }
-
     public List<RealTimeAlarmList> queryAlarmByDeptAndLevel(String segment, String workshopCode,
             String workareaCode, String stationCode,
             List<AlarmLevel> levels, PageRequest pageRequest) {
@@ -250,11 +230,6 @@ public class AlarmInfoService {
             List<AlarmLevel> levels) {
         return alarmInfoDao
                 .countRealtimeAlarmList(segment, workshopCode, workareaCode, stationCode, levels);
-    }
-
-    public int countAlarmByDeptAndLevel(String segment, String workshopCode, String workareaCode,
-            List<AlarmLevel> levels) {
-        return alarmInfoDao.countAlarmByDeptAndLevel(segment, workshopCode, workareaCode, levels);
     }
 
     public int saveAlarmRespInfo(RespContext context) {
