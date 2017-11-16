@@ -115,39 +115,6 @@
         alarm_status=VALUES(alarm_status)
     </insert>
 
-    <!--<select id="queryAlarmByParam" parameterType="com.wangda.alarm.service.dao.req.QueryAlarmListParam"-->
-      <!--resultType="com.wangda.alarm.service.dao.po.AlarmListPo">-->
-        <!--SELECT-->
-        <!--source_telecode AS sourceTelecode,-->
-        <!--alarm_level AS alarmLevel,-->
-        <!--alarm_type AS alarmType,-->
-        <!--device_name AS deviceName,-->
-        <!--COUNT(*) AS alarmCount-->
-        <!--FROM alarm_info-->
-        <!--<where>-->
-            <!--<if test="segmentCode != null and segmentCode !=''">-->
-                <!--AND segment=#{segmentCode}-->
-            <!--</if>-->
-            <!--<if test="workShopCode != null and workShopCode !=''">-->
-                <!--AND workshop_code=#{workShopCode}-->
-            <!--</if>-->
-            <!--<if test="workAreaCode != null and workAreaCode !=''">-->
-                <!--AND workarea_code=#{workAreaCode}-->
-            <!--</if>-->
-            <!--<if test="stationCode != null and stationCode !=''">-->
-                <!--AND source_telecode=#{stationCode}-->
-            <!--</if>-->
-            <!--<if test="level != null">-->
-                <!--AND alarm_level=#{level}-->
-            <!--</if>-->
-            <!--<if test="alarmType != null">-->
-                <!--AND alarm_type=#{alarmType}-->
-            <!--</if>-->
-            <!--AND alarm_time BETWEEN #{startTime} AND #{endTime}-->
-        <!--</where>-->
-        <!--GROUP BY source_telecode, alarm_level,alarm_type,device_name-->
-    <!--</select>-->
-
     <select id="queryAlarmByParam" parameterType="com.wangda.alarm.service.dao.req.QueryAlarmListParam"
       resultType="com.wangda.alarm.service.dao.po.AlarmListPo">
         SELECT
@@ -165,7 +132,6 @@
             MAX(create_time) AS max_time,
             COUNT(*) AS acount
             FROM alarm_info
-            WHERE
             <where>
                 <if test="segmentCode != null and segmentCode !=''">
                     AND segment=#{segmentCode}
@@ -188,7 +154,7 @@
                 AND alarm_time BETWEEN #{startTime} AND #{endTime}
             </where>
             GROUP BY source_telecode, alarm_level,alarm_type,device_name
-        ) ORDER BY max_time DESC
+        ) subresut ORDER BY max_time DESC
     </select>
 
     <select id="countAlarmByParam" parameterType="com.wangda.alarm.service.dao.req.QueryAlarmListParam"
@@ -232,6 +198,7 @@
         alarm_type=#{alarmType} AND
         alarm_level=#{level} AND
         device_name=#{deviceName}
+        ORDER BY create_time DESC
     </select>
 
     <select id="countAlarmDetail" parameterType="com.wangda.alarm.service.dao.req.QueryAlarmDetailParam" resultType="java.lang.Integer">
@@ -279,30 +246,34 @@
         alarm_type AS alarmType,
         device_name AS deviceName,
         alarm_context AS alarmContext,
-        count(*) AS alarmCount
-        from alarm_info
-        <where>
-            <if test="segmentCode != null and segmentCode !=''">
-                AND segment=#{segmentCode}
-            </if>
-            <if test="workshopCode != null and workShopCode !=''">
-                AND workshop_code=#{workShopCode}
-            </if>
-            <if test="workareaCode != null and workAreaCode !=''">
-                AND workarea_code=#{workAreaCode}
-            </if>
-            <if test="stationCode !=null and stationCode!=''">
-                AND source_telecode=#{stationCode}
-            </if>
-            <if test="levels != null">
-                AND alarm_level IN
-                <foreach collection="levels" index="index" item="item" separator="," open="(" close=")">
-                    #{item}
-                </foreach>
-            </if>
-        </where>
-        group by
-        segment,workshop_code,workarea_code,source_telecode,alarm_level,alarm_type,device_name,alarm_context
+        alarmcount AS alarmCount
+        FROM (
+            SELECT segment,workshop_code,workarea_code,source_telecode,
+        alarm_level,alarm_type,device_name,alarm_context,MAX(create_time) AS ctime, COUNT(*) alarmcount
+            FROM alarm_info
+            <where>
+                <if test="segmentCode != null and segmentCode !=''">
+                    AND segment=#{segmentCode}
+                </if>
+                <if test="workshopCode != null and workShopCode !=''">
+                    AND workshop_code=#{workShopCode}
+                </if>
+                <if test="workareaCode != null and workAreaCode !=''">
+                    AND workarea_code=#{workAreaCode}
+                </if>
+                <if test="stationCode !=null and stationCode!=''">
+                    AND source_telecode=#{stationCode}
+                </if>
+                <if test="levels != null">
+                    AND alarm_level IN
+                    <foreach collection="levels" index="index" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+            </where>
+            group by
+            segment,workshop_code,workarea_code,source_telecode,alarm_level,alarm_type,device_name,alarm_context
+        ) subresult ORDER BY ctime DESC
     </select>
 
     <select id="countRealtimeAlarmList" parameterType="java.util.Map" resultType="java.lang.Integer">

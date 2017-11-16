@@ -208,6 +208,7 @@ public class AlarmInfoService {
             List<AlarmLevel> levels, PageRequest pageRequest) {
 
         // 1.报警信息
+        //todo 加入时间段限制, 不然就是查询所有的数据
         List<RealTimeAlarmListPo> alarmListPos = alarmInfoDao.queryRealtimeAlarmList(segment,
                 workshopCode, workareaCode, stationCode, levels,
                 new RowBounds(pageRequest.getOffset(), pageRequest.getLimit()));

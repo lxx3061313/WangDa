@@ -78,8 +78,6 @@ public class AlarmInfoBiz {
             throw new BizException("报警类型未知, 无法查看详情");
         }
 
-        AlarmDetailResp resp = new AlarmDetailResp();
-
         //1. 分页查询详情
         List<AlarmInfo> infos = alarmInfoService
                 .queryAlarmDetailByParam(req.getSegmentCode(), req.getWorkshopCode(),
@@ -90,6 +88,8 @@ public class AlarmInfoBiz {
 
         opLogService.createWatchInfoLog(UserLoginContext.getUser().getUserName(), "查看报警");
         List<AlarmDetailVo> detailVos = AlarmVoAdaptor.adaptDetailVos(infos);
+
+        AlarmDetailResp resp = new AlarmDetailResp();
         resp.setDetails(detailVos);
 
         //2. 符合条件的记录数
