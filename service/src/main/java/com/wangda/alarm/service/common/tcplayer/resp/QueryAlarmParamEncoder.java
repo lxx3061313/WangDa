@@ -13,7 +13,7 @@ import org.apache.mina.filter.codec.demux.MessageEncoder;
 import org.springframework.stereotype.Service;
 
 /**
- * @author lixiaoxiong
+ * @author wenlai
  * @version 2017-10-25
  */
 @Service

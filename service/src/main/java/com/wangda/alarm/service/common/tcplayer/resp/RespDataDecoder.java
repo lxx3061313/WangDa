@@ -8,7 +8,7 @@ import org.apache.mina.core.buffer.IoBuffer;
 import org.springframework.stereotype.Service;
 
 /**
- * @author lixiaoxiong
+ * @author wenlai
  * @version 2017-10-24
  */
 @Service

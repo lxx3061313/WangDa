@@ -5,7 +5,7 @@ import org.apache.mina.core.session.IoSession;
 import org.springframework.stereotype.Service;
 
 /**
- * @author lixiaoxiong
+ * @author wenlai
  * @version 2017-11-07
  */
 @Service

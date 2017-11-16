@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
- * @author lixiaoxiong
+ * @author wangshuo
  * @version 2017-11-01
  */
 @Service

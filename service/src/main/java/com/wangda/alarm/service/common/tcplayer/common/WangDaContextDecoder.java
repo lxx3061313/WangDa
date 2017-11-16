@@ -13,7 +13,7 @@ import org.apache.mina.filter.codec.demux.MessageDecoder;
 import org.apache.mina.filter.codec.demux.MessageDecoderResult;
 
 /**
- * @author lixiaoxiong
+ * @author wenlai
  * @version 2017-10-25
  */
 public abstract class WangDaContextDecoder<T> implements MessageDecoder {

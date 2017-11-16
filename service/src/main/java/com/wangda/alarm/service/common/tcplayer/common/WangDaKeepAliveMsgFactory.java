@@ -8,7 +8,7 @@ import org.apache.mina.filter.keepalive.KeepAliveMessageFactory;
 import org.springframework.stereotype.Service;
 
 /**
- * @author lixiaoxiong
+ * @author wenlai
  * @version 2017-10-25
  */
 @Service

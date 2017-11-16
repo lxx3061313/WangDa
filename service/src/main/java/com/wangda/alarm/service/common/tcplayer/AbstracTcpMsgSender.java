@@ -4,7 +4,7 @@ import javax.annotation.PostConstruct;
 import org.apache.mina.core.session.IoSession;
 
 /**
- * @author lixiaoxiong
+ * @author wangshuo
  * @version 2017-10-28
  */
 public abstract class AbstracTcpMsgSender<T> implements TcpMsgSender<T> {

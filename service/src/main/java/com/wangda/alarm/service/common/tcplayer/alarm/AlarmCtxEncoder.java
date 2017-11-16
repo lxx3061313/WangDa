@@ -6,7 +6,7 @@ import org.apache.mina.filter.codec.ProtocolEncoderOutput;
 import org.springframework.stereotype.Service;
 
 /**
- * @author lixiaoxiong
+ * @author wangshuo
  * @version 2017-10-24
  */
 @Service

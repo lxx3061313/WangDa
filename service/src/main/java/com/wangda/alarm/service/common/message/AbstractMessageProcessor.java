@@ -6,7 +6,7 @@ import javax.annotation.Resource;
 import org.apache.mina.core.session.IoSession;
 
 /**
- * @author lixiaoxiong
+ * @author wangshuo
  * @version 2017-10-28
  */
 public abstract class AbstractMessageProcessor<T> implements MessageProccessor<T> {

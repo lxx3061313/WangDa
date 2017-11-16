@@ -8,7 +8,7 @@ import java.nio.charset.CharsetDecoder;
 import org.apache.mina.core.buffer.IoBuffer;
 
 /**
- * @author lixiaoxiong
+ * @author wenlai
  * @version 2017-10-24
  */
 public abstract class WangDaTransProDecoder<T> {

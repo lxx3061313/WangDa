@@ -3,7 +3,7 @@ package com.wangda.alarm.service.common.appmsg;
 import com.wangda.alarm.service.bean.biz.MsgPushContext;
 
 /**
- * @author lixiaoxiong
+ * @author wangshuo
  * @version 2017-11-01
  */
 public interface MsgPusher {

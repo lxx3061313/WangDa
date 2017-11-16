@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Service;
 
 /**
- * @author lixiaoxiong
+ * @author wangshuo
  * @version 2017-10-28
  */
 @Service

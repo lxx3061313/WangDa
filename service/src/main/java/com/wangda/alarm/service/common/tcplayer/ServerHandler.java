@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 /**
- * @author lixiaoxiong
+ * @author wangshuo
  * @version 2017-10-23
  */
 @Service("serverHandler")

@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author lixiaoxiong
+ * @author wangshuo
  * @version 2016-09-19
  */
 public class TransmissionTemplateBuilder {
