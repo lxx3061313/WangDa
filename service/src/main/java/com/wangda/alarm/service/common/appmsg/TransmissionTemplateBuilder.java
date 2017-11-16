@@ -84,7 +84,7 @@ public class TransmissionTemplateBuilder {
             payload.setContentAvailable(1);
             payload.setSound("default");
             payload.setCategory("$由客户端定义");
-            payload.setAlertMsg(new APNPayload.SimpleAlertMsg(JsonUtil.of(buildTemplate())));
+            payload.setAlertMsg(new APNPayload.SimpleAlertMsg(content));
             this.ext.entrySet().forEach(entry -> {
                 payload.addCustomMsg(entry.getKey(), entry.getValue());
             });
