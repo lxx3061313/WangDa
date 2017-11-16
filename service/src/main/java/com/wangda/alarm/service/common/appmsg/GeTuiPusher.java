@@ -56,9 +56,9 @@ public class GeTuiPusher implements MsgPusher {
 
         try {
             if (cids.size() == 1) {
-                ret = pushSingle(cids.get(0), context.getContent());
+                ret = pushSingle(cids.get(0), context.getContent(), context.getTitle());
             } else {
-                ret = pushTargets(cids, context.getContent());
+                ret = pushTargets(cids, context.getContent(), context.getTitle());
             }
             logger.info("app消息推送返回结果:{}", JsonUtil.of(ret));
         } catch (RequestException e) {
@@ -69,7 +69,7 @@ public class GeTuiPusher implements MsgPusher {
         Preconditions.checkArgument(result.equalsIgnoreCase("ok"), "发送失败");
     }
 
-    public IPushResult pushTargets(List<String> cids, String content) {
+    public IPushResult pushTargets(List<String> cids, String content, String title) {
         List targets = new ArrayList();
         for (String cid : cids) {
             Target t = new Target();
@@ -81,12 +81,12 @@ public class GeTuiPusher implements MsgPusher {
         message.setOffline(true);
         message.setOfflineExpireTime(TimeUnit.DAYS.toMillis(1));
         message.setPushNetWorkType(0);
-        message.setData(builder.setContent(content).build());
+        message.setData(builder.setContent(content).setTitle(title).build());
         String contentId = iGtPush.getContentId(message);
         return iGtPush.pushMessageToList(contentId, targets);
     }
 
-    public IPushResult pushSingle(String cid, String content) {
+    public IPushResult pushSingle(String cid, String content, String title) {
         SingleMessage message = new SingleMessage();
 
         //离线存储
@@ -99,7 +99,7 @@ public class GeTuiPusher implements MsgPusher {
         message.setPushNetWorkType(0);
 
         // 推送数据
-        message.setData(builder.setContent(content).build());
+        message.setData(builder.setContent(content).setTitle(title).build());
 
         Target target = new Target();
         target.setAppId(appId);

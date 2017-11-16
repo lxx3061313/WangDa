@@ -205,12 +205,12 @@ public class AlarmInfoService {
 
     public List<RealTimeAlarmList> queryAlarmByDeptAndLevel(String segment, String workshopCode,
             String workareaCode, String stationCode,
-            List<AlarmLevel> levels, PageRequest pageRequest) {
+            List<AlarmLevel> levels, Date startTime, Date endTime, PageRequest pageRequest) {
 
         // 1.报警信息
         //todo 加入时间段限制, 不然就是查询所有的数据
         List<RealTimeAlarmListPo> alarmListPos = alarmInfoDao.queryRealtimeAlarmList(segment,
-                workshopCode, workareaCode, stationCode, levels,
+                workshopCode, workareaCode, stationCode, levels, startTime, endTime,
                 new RowBounds(pageRequest.getOffset(), pageRequest.getLimit()));
         if (CollectionUtils.isEmpty(alarmListPos)) {
             return Collections.EMPTY_LIST;
@@ -227,10 +227,10 @@ public class AlarmInfoService {
     }
 
     public int countRealTimeAlarmList(String segment, String workshopCode, String workareaCode,
-            String stationCode,
+            String stationCode,Date startTime, Date endTime,
             List<AlarmLevel> levels) {
         return alarmInfoDao
-                .countRealtimeAlarmList(segment, workshopCode, workareaCode, stationCode, levels);
+                .countRealtimeAlarmList(segment, workshopCode, workareaCode, stationCode, levels, startTime, endTime);
     }
 
     public int saveAlarmRespInfo(RespContext context) {

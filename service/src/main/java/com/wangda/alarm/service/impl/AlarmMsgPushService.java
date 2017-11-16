@@ -54,10 +54,7 @@ public class AlarmMsgPushService {
 
     private String alarmHeader(AlarmInfo info) {
         StringBuilder builder = new StringBuilder();
-        builder.append(info.getSegmentName()).append("->")
-                .append(info.getWorkshopName()).append("->")
-                .append(info.getWorkAreaName()).append("->")
-                .append(info.getStationName()).append("设备发生报警");
+        builder.append(info.getStationName()).append("设备发生报警");
         return builder.toString();
     }
 

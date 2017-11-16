@@ -38,11 +38,11 @@ public interface AlarmInfoDao {
             @Param("workshopCode") String workshopCode,
             @Param("workareaCode") String workareaCode,
             @Param("stationCode") String stationCode,
-            @Param("levels") List<AlarmLevel> levels, RowBounds rowBounds);
+            @Param("levels") List<AlarmLevel> levels, Date startTime, Date endTime, RowBounds rowBounds);
 
     int countRealtimeAlarmList(@Param("segmentCode") String segment,
             @Param("workshopCode") String workshopCode,
             @Param("workareaCode") String workareaCode,
             @Param("stationCode") String stationCode,
-            @Param("levels") List<AlarmLevel> levels);
+            @Param("levels") List<AlarmLevel> levels, Date startTime, Date endTime);
 }

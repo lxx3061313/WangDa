@@ -18,17 +18,13 @@ public class LoginSessionService {
     private final static String USER_SESSION_TOKEN_KEY = "token_key_";
     private final static String LOGIN_ERROR_RECORD_PRE = "login_error_record_";
 
-    /**
-     * 登录session10天过期
-     */
-    private final static long SESSION_EXPIRATION = 10 * 24 *60 * 60;
     private final static long FORBIDDEN_EXPIRATION = 6 * 60 * 60;
 
     @Resource
     SimpleRedisClient simpleRedisClient;
 
-    public void saveUserSession(UserSession session) {
-        simpleRedisClient.setex(session.getToken(), session, SESSION_EXPIRATION);
+    public void saveUserSession(UserSession session, int secsOfExpire) {
+        simpleRedisClient.setex(session.getToken(), session, secsOfExpire);
         simpleRedisClient.set(USER_SESSION_TOKEN_KEY+session.getUserName(), session.getToken());
     }
 

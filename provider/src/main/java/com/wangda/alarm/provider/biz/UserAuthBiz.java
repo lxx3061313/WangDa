@@ -52,6 +52,9 @@ public class UserAuthBiz {
     @Value("${login.cookie.domain}")
     private String cookieDomain;
 
+    @Value("${login.session.expire}")
+    private int sessionExpireTime;
+
     public void auth(String userName, String password, String cid, HttpServletResponse response) {
         //密码输入次数大于3次
         if (loginSessionService.isForbiddenLogin(userName)) {
@@ -84,9 +87,10 @@ public class UserAuthBiz {
                     .build();
 
             // 记录session
-            loginSessionService.saveUserSession(session);
+            loginSessionService.saveUserSession(session, sessionExpireTime);
             Cookie cookie = new Cookie(CookieName.LOGIN_TOKEN, token);
             cookie.setDomain(cookieDomain);
+            cookie.setMaxAge(sessionExpireTime);
             cookie.setPath("/");
             response.addCookie(cookie);
         } else {

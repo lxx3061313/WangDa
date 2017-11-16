@@ -3,6 +3,10 @@ package com.wangda.alarm.service.common.appmsg;
 import com.gexin.rp.sdk.base.payload.APNPayload;
 import com.gexin.rp.sdk.template.TransmissionTemplate;
 import com.google.common.collect.Maps;
+import com.wangda.alarm.service.bean.biz.MsgContentAps;
+import com.wangda.alarm.service.bean.biz.MsgContentExtra;
+import com.wangda.alarm.service.bean.biz.MsgContentPayload;
+import com.wangda.alarm.service.bean.biz.MsgContentTemplate;
 import com.wangda.alarm.service.common.util.json.JsonUtil;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,8 +26,10 @@ public class TransmissionTemplateBuilder {
         private String appId;
         private String appKey;
         private String content;
+        private String title;
         private int transmissionType = 2;//收到消息是否立即启动应用，1 为立即启动，2 则广播等待客户 端自启动
         private Map<String, Object> ext = Maps.newHashMap();
+        private MsgContentTemplate contentTemplate = new MsgContentTemplate();
 
         public Builder() {
             ext = new HashMap<>();
@@ -41,6 +47,11 @@ public class TransmissionTemplateBuilder {
 
         public Builder setContent(String content) {
             this.content = content;
+            return this;
+        }
+
+        public Builder setTitle(String title) {
+            this.title = title;
             return this;
         }
 
@@ -73,7 +84,7 @@ public class TransmissionTemplateBuilder {
             payload.setContentAvailable(1);
             payload.setSound("default");
             payload.setCategory("$由客户端定义");
-            payload.setAlertMsg(new APNPayload.SimpleAlertMsg(content));
+            payload.setAlertMsg(new APNPayload.SimpleAlertMsg(JsonUtil.of(buildTemplate())));
             this.ext.entrySet().forEach(entry -> {
                 payload.addCustomMsg(entry.getKey(), entry.getValue());
             });
@@ -82,6 +93,13 @@ public class TransmissionTemplateBuilder {
             transmissionTemplate.setAPNInfo(payload);
             return transmissionTemplate;
         }
-    }
 
+        private MsgContentTemplate buildTemplate() {
+            MsgContentPayload payload = contentTemplate.getPayload();
+            MsgContentAps aps = payload.getAps();
+            aps.setAlert(content);
+            contentTemplate.setExtra(new MsgContentExtra());
+            return contentTemplate;
+        }
+    }
 }

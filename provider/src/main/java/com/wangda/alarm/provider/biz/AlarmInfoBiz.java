@@ -58,8 +58,11 @@ public class AlarmInfoBiz {
     @Resource
     DeptInfoService deptInfoService;
 
-    @Value("${alarm_data_hours_befor}")
+    @Value("${alarm.data.hours.before}")
     private int alarmDataHoursBefore;
+
+    @Value("${alarm.realtime.hours.before}")
+    private int realtimeAlarmHoursBefore;
 
 
     public AlarmListResp queryAlarmList(AlarmListReq listReq) {
@@ -215,8 +218,8 @@ public class AlarmInfoBiz {
             result = alarmInfoService.queryAlarmByDeptAndLevel(null, null, null, null,
                     Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO,
                             AlarmLevel.LEVEL_THREE,
-                            AlarmLevel.WARN), request);
-            count = alarmInfoService.countRealTimeAlarmList(null, null, null, null,
+                            AlarmLevel.WARN), beforeHoursFromNow(realtimeAlarmHoursBefore), new Date(), request);
+            count = alarmInfoService.countRealTimeAlarmList(null, null, null, null, beforeHoursFromNow(realtimeAlarmHoursBefore), new Date(),
                     Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO,
                             AlarmLevel.LEVEL_THREE,
                             AlarmLevel.WARN));
@@ -225,8 +228,8 @@ public class AlarmInfoBiz {
             // 处级接受 一级报警
             if (user.getDeptInfo().getDeptType() == DeptType.SECTION) {
                 result = alarmInfoService.queryAlarmByDeptAndLevel(null, null, null, null,
-                        Arrays.asList(AlarmLevel.LEVEL_ONE), request);
-                count = alarmInfoService.countRealTimeAlarmList(null, null, null, null,
+                        Arrays.asList(AlarmLevel.LEVEL_ONE), beforeHoursFromNow(realtimeAlarmHoursBefore), new Date(), request);
+                count = alarmInfoService.countRealTimeAlarmList(null, null, null, null,beforeHoursFromNow(realtimeAlarmHoursBefore), new Date(),
                         Arrays.asList(AlarmLevel.LEVEL_ONE));
             }
 
@@ -236,10 +239,10 @@ public class AlarmInfoBiz {
                 result = alarmInfoService
                         .queryAlarmByDeptAndLevel(user.getDeptInfo().getDeptSimplename(), null,
                                 null, null,
-                                Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO), request);
+                                Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO), beforeHoursFromNow(realtimeAlarmHoursBefore), new Date(), request);
                 count = alarmInfoService
                         .countRealTimeAlarmList(user.getDeptInfo().getDeptSimplename()
-                                , null, null, null,
+                                , null, null, null, beforeHoursFromNow(realtimeAlarmHoursBefore), new Date(),
                                 Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO));
             }
 
@@ -250,10 +253,10 @@ public class AlarmInfoBiz {
                         .queryAlarmByDeptAndLevel(null, user.getDeptInfo().getDeptSimplename(),
                                 null, null,
                                 Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO,
-                                        AlarmLevel.LEVEL_THREE), request);
+                                        AlarmLevel.LEVEL_THREE), beforeHoursFromNow(realtimeAlarmHoursBefore), new Date(), request);
                 count = alarmInfoService
                         .countRealTimeAlarmList(null, user.getDeptInfo().getDeptSimplename(),
-                                null, null,
+                                null, null, beforeHoursFromNow(realtimeAlarmHoursBefore), new Date(),
                                 Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO,
                                         AlarmLevel.LEVEL_THREE));
             }
@@ -265,9 +268,9 @@ public class AlarmInfoBiz {
                         user.getDeptInfo().getDeptSimplename(), null,
                         Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO,
                                 AlarmLevel.LEVEL_THREE,
-                                AlarmLevel.WARN), request);
+                                AlarmLevel.WARN), beforeHoursFromNow(realtimeAlarmHoursBefore), new Date(), request);
                 count = alarmInfoService.countRealTimeAlarmList(null, null,
-                        user.getDeptInfo().getDeptSimplename(), null,
+                        user.getDeptInfo().getDeptSimplename(), null , beforeHoursFromNow(realtimeAlarmHoursBefore), new Date(),
                         Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO,
                                 AlarmLevel.LEVEL_THREE,
                                 AlarmLevel.WARN));
@@ -279,9 +282,9 @@ public class AlarmInfoBiz {
                         user.getDeptInfo().getDeptSimplename(),
                         Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO,
                                 AlarmLevel.LEVEL_THREE,
-                                AlarmLevel.WARN), request);
+                                AlarmLevel.WARN), beforeHoursFromNow(realtimeAlarmHoursBefore), new Date(), request);
                 count = alarmInfoService.countRealTimeAlarmList(null, null, null,
-                        user.getDeptInfo().getDeptSimplename(),
+                        user.getDeptInfo().getDeptSimplename(), beforeHoursFromNow(realtimeAlarmHoursBefore), new Date(),
                         Arrays.asList(AlarmLevel.LEVEL_ONE, AlarmLevel.LEVEL_TWO,
                                 AlarmLevel.LEVEL_THREE,
                                 AlarmLevel.WARN));

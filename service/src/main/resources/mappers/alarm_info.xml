@@ -270,6 +270,7 @@
                         #{item}
                     </foreach>
                 </if>
+                AND alarm_time BETWEEN #{startTime} AND #{endTime}
             </where>
             group by
             segment,workshop_code,workarea_code,source_telecode,alarm_level,alarm_type,device_name,alarm_context
@@ -299,6 +300,7 @@
                     #{item}
                 </foreach>
             </if>
+            AND alarm_time BETWEEN #{startTime} AND #{endTime}
         </where>
     </select>
 </mapper>
