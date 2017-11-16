@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * @author lixiaoxiong
+ * @author zhangxin
  * @version 2017-10-27
  */
 @Controller

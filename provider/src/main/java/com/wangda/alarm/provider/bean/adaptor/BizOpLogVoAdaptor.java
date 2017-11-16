@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
 
 /**
- * @author lixiaoxiong
+ * @author zhangxin
  * @version 2017-11-05
  */
 public class BizOpLogVoAdaptor {

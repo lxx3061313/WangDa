@@ -18,7 +18,7 @@ import org.slf4j.Logger;
 
 
 /**
- * @author lixiaoxiong
+ * @author zhangxin
  * @version 2017-11-02
  */
 public class AlarmVoAdaptor {

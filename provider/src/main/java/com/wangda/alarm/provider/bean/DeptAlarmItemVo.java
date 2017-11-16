@@ -1,7 +1,7 @@
 package com.wangda.alarm.provider.bean;
 
 /**
- * @author lixiaoxiong
+ * @author cyong
  * @version 2017-11-15
  */
 public class DeptAlarmItemVo {

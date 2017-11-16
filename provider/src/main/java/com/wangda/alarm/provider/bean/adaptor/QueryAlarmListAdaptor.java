@@ -8,7 +8,7 @@ import com.wangda.alarm.service.common.util.PageRequest;
 import com.wangda.alarm.service.dao.req.QueryAlarmListParam;
 
 /**
- * @author lixiaoxiong
+ * @author zhangxin
  * @version 2017-11-07
  */
 public class QueryAlarmListAdaptor {

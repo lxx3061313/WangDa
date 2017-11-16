@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author lixiaoxiong
+ * @author cyong
  * @version 2017-11-05
  */
 public class OpLogVo {

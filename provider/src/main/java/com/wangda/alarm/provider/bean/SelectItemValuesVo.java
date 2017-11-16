@@ -3,7 +3,7 @@ package com.wangda.alarm.provider.bean;
 import java.util.List;
 
 /**
- * @author lixiaoxiong
+ * @author cyong
  * @version 2017-11-06
  */
 public class SelectItemValuesVo {
