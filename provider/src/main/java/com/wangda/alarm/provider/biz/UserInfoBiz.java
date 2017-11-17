@@ -36,7 +36,7 @@ public class UserInfoBiz {
 
     public List<UserInfoVo> queryOnlineUsers() {
         UserSession user = UserLoginContext.getUser();
-        List<UserInfo> userInfos = userInfoService.queryUserInfosRecru(user.getUserName());
+        List<UserInfo> userInfos = userInfoService.queryOnlineUsersInfosRecru(user.getUserName());
         return UserInfoVoAdaptor.adaptToUserInfoVos(userInfos);
     }
 

@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 public class AlarmMsgPushService {
 
     private final static Logger logger = LoggerFactory.getLogger(AlarmMsgPushService.class);
-
+    private final static Integer SECION_LEVEL_DEPT_ID = 24;
     @Resource
     UserInfoService userInfoService;
 
@@ -80,20 +80,30 @@ public class AlarmMsgPushService {
         List<Integer> result = new ArrayList<>();
         result.add(deptHierarchyInfo.getSectionId());
 
+        if (info.getAlarmLevel() == AlarmLevel.LEVEL_ONE) {
+            result.add(SECION_LEVEL_DEPT_ID);
+            result.add(deptHierarchyInfo.getSegmentId());
+            result.add(deptHierarchyInfo.getWorkShopId());
+            result.add(deptHierarchyInfo.getWorkAreaId());
+            result.add(deptHierarchyInfo.getStationId());
+            return result;
+        }
         if (info.getAlarmLevel() == AlarmLevel.LEVEL_TWO) {
             result.add(deptHierarchyInfo.getSegmentId());
+            result.add(deptHierarchyInfo.getWorkShopId());
+            result.add(deptHierarchyInfo.getWorkAreaId());
+            result.add(deptHierarchyInfo.getStationId());
             return result;
         }
 
         if (info.getAlarmLevel() == AlarmLevel.LEVEL_THREE) {
-            result.add(deptHierarchyInfo.getSegmentId());
             result.add(deptHierarchyInfo.getWorkShopId());
+            result.add(deptHierarchyInfo.getWorkAreaId());
+            result.add(deptHierarchyInfo.getStationId());
             return result;
         }
 
         if (info.getAlarmLevel() == AlarmLevel.WARN) {
-            result.add(deptHierarchyInfo.getSegmentId());
-            result.add(deptHierarchyInfo.getWorkShopId());
             result.add(deptHierarchyInfo.getWorkAreaId());
             result.add(deptHierarchyInfo.getStationId());
             return result;
